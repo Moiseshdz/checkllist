@@ -1,0 +1,5 @@
+ENLACE PARA LA SEGUNDA COMPUTADORA
+
+http://192.168.1.66:8765/
+
+La computadora servidor debe permanecer encendida y con SistemaNotasServidor.exe abierto.

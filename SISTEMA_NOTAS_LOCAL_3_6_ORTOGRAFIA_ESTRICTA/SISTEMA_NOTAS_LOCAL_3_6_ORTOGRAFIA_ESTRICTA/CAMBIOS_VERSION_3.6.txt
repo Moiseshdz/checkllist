@@ -1,0 +1,22 @@
+VERSIÓN 3.6 — ORTOGRAFÍA ESTRICTA
+
+- Se mantiene servidor local y base local.
+- Se conservan las 282 tipificaciones CNIE V2.0 y los 65 códigos de cierre.
+- La ortografía ahora usa tres capas de revisión:
+  1) reglas exactas y frases frecuentes;
+  2) diccionario local ampliado con vocabulario derivado de los documentos operativos;
+  3) corrección por similitud para letras repetidas, omitidas, intercambiadas o hasta dos errores en palabras largas cuando existe un candidato suficientemente seguro.
+- Se añadieron 460 reglas explícitas y un vocabulario local de 4,576 palabras derivado del CNIE, códigos de cierre y términos operativos.
+- Se reforzaron tildes de verbos frecuentes de las notas: acudió, llegó, informó, manifestó, indicó, realizó, procedió, brindó, valoró, verificó, localizó, encontró, confirmó, refirió, negó, falleció, salió, quedó y retiró.
+- La revisión se ejecuta mientras se escribe (con espera breve), al pegar, al salir del editor, al guardar y al editar.
+- Se preserva la posición del cursor cuando la corrección automática se aplica mientras se escribe.
+- Se evita sobrescribir texto nuevo si el operador continúa escribiendo mientras el servidor está corrigiendo.
+- Se conserva spellcheck="true" y lang="es-MX" para que el navegador subraye cualquier palabra no reconocida que quede fuera del diccionario automático.
+
+PRUEBAS REALIZADAS
+- "persoan incincuiete ocn atencion media en sittio y traslado al hospitall"
+  -> "persona inconsciente con atención médica en sitio y traslado al hospital"
+- "la uniddad acudio al lugra y realizo valoracion medica"
+  -> "la unidad acudió al lugar y realizó valoración médica"
+- "accidnete multiple con lesionadois"
+  -> "accidente múltiple con lesionados"

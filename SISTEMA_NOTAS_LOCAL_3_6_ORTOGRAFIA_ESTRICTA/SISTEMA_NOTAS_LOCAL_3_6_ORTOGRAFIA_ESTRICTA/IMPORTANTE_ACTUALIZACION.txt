@@ -1,0 +1,12 @@
+ACTUALIZACIÓN 3.5
+
+1. Cierra cualquier ventana o copia anterior del Sistema de Notas.
+2. En la computadora principal conserva tu carpeta datos.
+3. Reemplaza únicamente SistemaNotas.exe.
+4. NO abras el acceso directo antiguo. Ejecuta el nuevo SistemaNotas.exe directamente.
+5. Si quieres un acceso directo nuevo, créalo después desde este EXE.
+
+El acceso directo anterior apuntaba a una ruta de red vieja y podía abrir otra copia/base del sistema.
+
+
+La versión 3.5 conserva la misma base local. Para actualizar una instalación existente, conserva la carpeta datos y reemplaza únicamente SistemaNotas.exe.

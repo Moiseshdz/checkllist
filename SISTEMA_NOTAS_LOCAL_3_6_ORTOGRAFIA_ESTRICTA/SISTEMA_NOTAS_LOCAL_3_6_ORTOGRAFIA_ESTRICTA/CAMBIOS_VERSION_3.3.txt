@@ -1,0 +1,17 @@
+SISTEMA DE NOTAS INFORMATIVAS — VERSIÓN 3.3
+
+NUEVO:
+- El campo Título del incidente abre un selector con buscador de las 282 tipificaciones del Catálogo Nacional de Incidentes de Emergencia 9-1-1 V2.0.
+- Búsqueda por nombre, código, tipo y subtipo, mostrando prioridad.
+- El campo Municipio abre un selector con buscador.
+- Incluye: Amatán, Chapultenango, Francisco León, Huitiupán, Ixhuatán, Ixtacomitán, Ixtapangajoya, Jitotol, Juárez, Ocotepec, Ostuacán, Pantepec, Pichucalco, Pueblo Nuevo Solistahuacán, Rayón, Reforma, Sabanilla, Simojovel, Solosuchiapa, Sunuapa, Tapalapa, Tapilula, San Andrés Duraznal y Rincón San Pedro Chamula.
+- Reforma continúa como sede predeterminada.
+- Ambos selectores funcionan al registrar y editar notas.
+
+SE CONSERVA:
+- Servidor local y base de datos local.
+- Sincronización entre servidor y cliente.
+- Corrección ortográfica automática.
+- Códigos de cierre y cierre automático.
+- Inicio de sesión de despacho y supervisión.
+- Fotografías y arrastre de imágenes.

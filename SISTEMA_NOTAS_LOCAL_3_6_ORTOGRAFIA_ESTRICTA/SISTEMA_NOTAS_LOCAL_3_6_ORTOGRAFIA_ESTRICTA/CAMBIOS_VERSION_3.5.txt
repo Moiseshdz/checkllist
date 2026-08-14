@@ -1,0 +1,44 @@
+VERSIÓN 3.5 — CATÁLOGOS COMPLETOS, DETECTOR DE CIERRE Y ORTOGRAFÍA REFORZADA
+
+1. TIPIFICACIONES CNIE V2.0 COMPLETAS
+- Se validaron 282 incidentes, sin omitir códigos.
+- 7 tipos y 24 subtipos.
+- Se conservaron código, nombre, tipo, subtipo y prioridad del Catálogo Nacional de Incidentes de Emergencia 9-1-1 V2.0.
+- El selector permite buscar por código, nombre, tipo o subtipo.
+
+2. CÓDIGOS DE CIERRE COMPLETOS
+- Se cargaron las 65 filas del PDF DEFINICIONES CODIGO DE CIERRE.
+- Cada código conserva nombre, definición completa y página fuente.
+- Se conserva adicionalmente el texto original extraído del documento para auditoría.
+- El selector manual muestra todos los códigos, incluyendo los saltos numéricos que existen en el documento fuente.
+
+3. DETECCIÓN DE CIERRE REFORZADA
+- El sistema analiza principalmente RESULTADO, CIERRE, CONCLUSIÓN, OBSERVACIONES, ACCIONES REALIZADAS, ATENCIÓN BRINDADA, SITUACIÓN FINAL y NOVEDADES.
+- También pondera las últimas líneas narrativas de la nota, porque el documento de códigos indica que el cierre se determina con base en las últimas notas del incidente.
+- Se ignoran encabezados operativos como FECHA, HORA, SOLICITA, AMBULANCIA, JEFE DE SERVICIO y CRONOMETRÍA para reducir falsos positivos.
+- Se reforzaron combinaciones médicas: atención en sitio, traslado, atención+traslado, negativa, muerte en sitio, durante traslado y en institución de salud.
+- Se reforzaron cierres de seguridad, tránsito, incendios, alarmas bancarias/SEPROBAN, localización, acordonamiento e inteligencia.
+- El detector compara también las definiciones completas de los 65 códigos.
+- El código sigue siendo una SUGERENCIA: el operador puede cerrarlo sin código si la casilla de obligatoriedad está desmarcada.
+
+4. ORTOGRAFÍA AUTOMÁTICA REFORZADA
+- Corrección local/offline al pegar, al salir del editor, al guardar y al editar.
+- Botón ABC✓ para forzar una revisión inmediata.
+- Diccionario construido con las 282 tipificaciones, los 65 códigos/definiciones y vocabulario operativo.
+- Corrige reglas exactas, tildes inequívocas, letras repetidas, transposiciones y errores de una letra en palabras largas cuando hay un único candidato seguro.
+- Se protegen palabras válidas frecuentes para evitar falsos cambios, por ejemplo: “media hora” no se transforma en “médica hora”.
+
+5. ESTRUCTURA DE LA NOTA
+- Al guardar se normalizan bloques pegados desde WhatsApp u otros sistemas sin cambiar el orden del contenido.
+- Los marcadores *texto* se convierten a negrita real.
+- Se reducen saltos excesivos para que la parte final del servicio quede más clara para el detector de cierre.
+- No se reescribe ni cambia el significado de la narrativa.
+
+6. FUNCIONES CONSERVADAS
+- Servidor local y base local JSON.
+- Sin MySQL y sin depender de Internet.
+- Sesión de Despacho y Supervisión.
+- Sincronización entre PC servidor y PC cliente.
+- Fotografías y arrastre.
+- Cierre automático a los 30 minutos cuando corresponde y existe sugerencia confiable.
+- Correcciones de persistencia/eliminación de la versión 3.4.

@@ -1,0 +1,55 @@
+{
+  "version": 5,
+  "nextNoteId": 2,
+  "nextPhotoId": 1,
+  "nextAuditId": 5,
+  "notes": [],
+  "photos": null,
+  "audit": [
+    {
+      "id": 1,
+      "action": "INICIAR_SERVIDOR",
+      "details": {
+        "pc": "DESKTOP-KH651TR",
+        "puerto": 8765,
+        "usuarioSO": "DESKTOP-KH651TR\\moises",
+        "version": "3.6.0-ortografia-estricta"
+      },
+      "createdAt": "2026-08-14T13:16:15-06:00"
+    },
+    {
+      "id": 2,
+      "action": "CREAR_NOTA",
+      "noteId": 1,
+      "folio": "REF/20260814/222",
+      "details": {
+        "corporacion": "PC",
+        "ip": "127.0.0.1",
+        "operador": "SUPERVISOR8"
+      },
+      "createdAt": "2026-08-14T13:16:45-06:00"
+    },
+    {
+      "id": 3,
+      "action": "ABRIR_NOTA",
+      "noteId": 1,
+      "folio": "REF/20260814/222",
+      "details": {
+        "ip": "127.0.0.1",
+        "operador": "SUPERVISOR8"
+      },
+      "createdAt": "2026-08-14T13:16:45-06:00"
+    },
+    {
+      "id": 4,
+      "action": "ELIMINAR_NOTA",
+      "noteId": 1,
+      "folio": "REF/20260814/222",
+      "details": {
+        "ip": "192.168.1.66",
+        "operador": "DESPACHADOR12"
+      },
+      "createdAt": "2026-08-14T13:16:51-06:00"
+    }
+  ]
+}

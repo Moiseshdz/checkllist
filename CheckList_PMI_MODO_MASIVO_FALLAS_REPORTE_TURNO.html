@@ -1,0 +1,4833 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Cámaras - Sincronización en Tiempo Real</title>
+
+  <style>
+    :root {
+      --azul: #2563eb;
+      --azul2: #1e40af;
+      --verde: #16a34a;
+      --rojo: #dc2626;
+      --amarillo: #f59e0b;
+      --gris: #64748b;
+      --fondo: #eef2f7;
+      --borde: #e2e8f0;
+      --texto: #0f172a;
+      --sombra: 0 18px 40px rgba(15, 23, 42, .10);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, .18), transparent 35%),
+        linear-gradient(135deg, #eef2f7, #f8fafc);
+      color: var(--texto);
+    }
+
+    .app {
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .header,
+    .panel {
+      background: rgba(255, 255, 255, .96);
+      border: 1px solid var(--borde);
+      border-radius: 24px;
+      box-shadow: var(--sombra);
+    }
+
+    .header {
+      padding: 28px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: var(--gris);
+      font-weight: 700;
+    }
+
+    .fecha-box {
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: 900;
+      text-transform: uppercase;
+      min-width: 230px;
+      text-align: center;
+    }
+
+    .panel {
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1e40af;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--borde);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, .06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 5px;
+      background: var(--azul);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--gris);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--azul);
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .ok::before {
+      background: var(--verde);
+    }
+
+    .ok span {
+      color: var(--verde);
+    }
+
+    .bad::before {
+      background: var(--rojo);
+    }
+
+    .bad span {
+      color: var(--rojo);
+    }
+
+    .total {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    .total p {
+      color: #cbd5e1;
+    }
+
+    .total span {
+      color: white;
+    }
+
+    .formulario {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 18px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      background: #f8fafc;
+      color: var(--texto);
+      font-size: 15px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    textarea {
+      grid-column: 1 / -1;
+      min-height: 50px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--azul);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .14);
+    }
+
+    .checks {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .check-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--borde);
+      background: #f8fafc;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .check-card input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--azul);
+    }
+
+    /* Animación tipo botón para las opciones de cámaras */
+    .check-card {
+      position: relative;
+      user-select: none;
+      transition: transform .16s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+      box-shadow: 0 5px 12px rgba(15, 23, 42, .05);
+    }
+
+    .check-card:hover:not(.deshabilitado) {
+      transform: translateY(-3px);
+      border-color: #93c5fd;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, .15);
+      background: #eff6ff;
+    }
+
+    .check-card:active:not(.deshabilitado) {
+      transform: translateY(1px) scale(.97);
+      box-shadow: 0 3px 8px rgba(15, 23, 42, .12);
+    }
+
+    .check-card:has(input:checked) {
+      color: #0f172a;
+      border-color: #2563eb;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, .18), inset 0 0 0 1px rgba(37, 99, 235, .08);
+      animation: checkPop .24s ease-out;
+    }
+
+    .check-card:has(input:checked)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      animation: checkPulse .42s ease-out;
+    }
+
+    .check-card:has(input:disabled) {
+      opacity: .46;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    @keyframes checkPop {
+      0% { transform: scale(.96); }
+      55% { transform: scale(1.035); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes checkPulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, .30); }
+      100% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+    }
+
+    button,
+    .btn-file {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      background: linear-gradient(135deg, var(--azul), var(--azul2));
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, .24);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    button:hover,
+    .btn-file:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-editar {
+      background: linear-gradient(135deg, #facc15, #f59e0b);
+      color: #111827;
+    }
+
+    .btn-eliminar {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .btn-verde {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .btn-gris,
+    .btn-file {
+      background: linear-gradient(135deg, #64748b, #475569);
+    }
+
+    .btn-morado {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    }
+
+    .btn-file input {
+      display: none;
+    }
+
+    .tabla-wrap {
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid var(--borde);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      min-width: 760px;
+    }
+
+    thead {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    th {
+      padding: 15px 12px;
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--borde);
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    td button {
+      padding: 9px 12px;
+      font-size: 12px;
+      margin: 2px;
+    }
+
+    .sin-registros {
+      color: var(--gris);
+      font-weight: 900;
+      padding: 18px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 12px;
+      font-weight: 900;
+      margin: 2px;
+    }
+
+    .tag-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .acciones-finales {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 15px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      font-weight: 700;
+    }
+
+    .nota {
+      margin-top: 12px;
+      color: var(--gris);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .firebase-status {
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid rgba(245, 158, 11, .35);
+      white-space: nowrap;
+    }
+
+    .firebase-status.ok {
+      background: #dcfce7;
+      color: #166534;
+      border-color: rgba(22, 163, 74, .35);
+    }
+
+    .firebase-status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: rgba(220, 38, 38, .35);
+    }
+
+    .firebase-status.sync {
+      background: #dbeafe;
+      color: #1e40af;
+      border-color: rgba(37, 99, 235, .35);
+    }
+
+    .btn-firebase {
+      background: linear-gradient(135deg, #fb7185, #e11d48);
+      box-shadow: 0 10px 22px rgba(225, 29, 72, .22);
+    }
+
+    .modal-firebase {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, .66);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-firebase.activo {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(820px, 100%);
+      max-height: 92vh;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 24px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, .28);
+      animation: modalEntrada .18s ease-out;
+    }
+
+    @keyframes modalEntrada {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-head {
+      padding: 22px;
+      border-bottom: 1px solid var(--borde);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .modal-head p {
+      margin: 6px 0 0;
+      color: var(--gris);
+      font-weight: 700;
+    }
+
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #0f172a;
+      box-shadow: none;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .modal-body textarea {
+      min-height: 250px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+      background: #0f172a;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 0 22px 22px;
+    }
+
+    .mini-help {
+      margin: 12px 0 0;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: #eff6ff;
+      color: #1e40af;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+
+    .notificaciones-contenedor {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 12000;
+      width: min(390px, calc(100vw - 24px));
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .notificacion {
+      pointer-events: auto;
+      display: grid;
+      grid-template-columns: 42px 1fr 32px;
+      gap: 10px;
+      align-items: center;
+      padding: 13px;
+      background: rgba(255, 255, 255, .98);
+      border: 1px solid var(--borde);
+      border-left: 6px solid var(--azul);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .20);
+      animation: notificacionEntrada .22s ease-out;
+      overflow: hidden;
+    }
+
+    .notificacion.saliendo {
+      animation: notificacionSalida .18s ease-in forwards;
+    }
+
+    .notificacion.ok {
+      border-left-color: var(--verde);
+    }
+
+    .notificacion.error {
+      border-left-color: var(--rojo);
+    }
+
+    .notificacion.warning {
+      border-left-color: var(--amarillo);
+    }
+
+    .notificacion-icono {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .notificacion.ok .notificacion-icono {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .notificacion.error .notificacion-icono {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .notificacion.warning .notificacion-icono {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .notificacion-titulo {
+      margin: 0 0 2px;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .notificacion-mensaje {
+      margin: 0;
+      color: var(--gris);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .notificacion-cerrar {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: #0f172a;
+      box-shadow: none;
+      font-size: 18px;
+    }
+
+    .modal-confirmacion {
+      position: fixed;
+      inset: 0;
+      z-index: 11500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, .66);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-confirmacion.activo {
+      display: flex;
+    }
+
+    .confirmacion-card {
+      width: min(460px, 100%);
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 24px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, .28);
+      animation: modalEntrada .18s ease-out;
+      overflow: hidden;
+    }
+
+    .confirmacion-head {
+      padding: 22px 22px 10px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .confirmacion-icono {
+      min-width: 46px;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: #fef3c7;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .confirmacion-head h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .confirmacion-body {
+      padding: 0 22px 20px;
+      color: var(--gris);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    @keyframes notificacionEntrada {
+      from {
+        opacity: 0;
+        transform: translateX(18px) scale(.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes notificacionSalida {
+      to {
+        opacity: 0;
+        transform: translateX(18px) scale(.98);
+      }
+    }
+
+
+
+
+    /* ===== ENLACE DE SOLO LECTURA CON FIREBASE DE TICKETS ===== */
+    .ticket-firebase-status {
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid rgba(245, 158, 11, .35);
+      white-space: nowrap;
+    }
+
+    .ticket-firebase-status.ok {
+      background: #dcfce7;
+      color: #166534;
+      border-color: rgba(22, 163, 74, .35);
+    }
+
+    .ticket-firebase-status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: rgba(220, 38, 38, .35);
+    }
+
+    .ticket-firebase-status.sync {
+      background: #dbeafe;
+      color: #1e40af;
+      border-color: rgba(37, 99, 235, .35);
+    }
+
+    .ticket-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 1.15;
+      text-transform: uppercase;
+      box-shadow: 0 6px 16px rgba(220, 38, 38, .12);
+      animation: ticketPulso 1.8s ease-in-out infinite;
+    }
+
+    .ticket-badge::before {
+      content: "!";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #dc2626;
+      color: white;
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .ticket-none {
+      display: inline-flex;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .ticket-detalle {
+      display: block;
+      margin-top: 6px;
+      color: #7f1d1d;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    tr.pmi-con-ticket {
+      background: #fff7ed;
+      box-shadow: inset 5px 0 0 #f97316;
+    }
+
+    tr.pmi-con-ticket:hover {
+      background: #ffedd5;
+    }
+
+    /* ===== CONTROL OPERATIVO PMI / TICKETS ===== */
+    .operativo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .operativo-card {
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      background: #fff;
+      padding: 15px;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
+    }
+
+    .operativo-card p {
+      margin: 0;
+      color: var(--gris);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .operativo-card strong {
+      margin-top: 7px;
+      font-size: 28px;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .operativo-card.alert strong { color: #dc2626; }
+    .operativo-card.warn strong { color: #d97706; }
+    .operativo-card.good strong { color: #16a34a; }
+
+    .turno-control {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 14px;
+      margin-top: 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      background: #eff6ff;
+    }
+
+    .turno-control strong { color: #1e40af; }
+    .turno-control .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .revision-btn {
+      box-shadow: none;
+      padding: 8px 10px;
+      font-size: 11px;
+      min-width: 110px;
+    }
+
+    .revision-btn.pendiente {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .revision-btn.revisado {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .tag.tag-ticket-activo {
+      background: #ffedd5;
+      color: #c2410c;
+      border: 1px solid #fdba74;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, .08);
+    }
+
+    .tag.tag-falla-activa {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .tag.tag-falla-activa.tag-ticket-activo {
+      background: linear-gradient(135deg, #fee2e2, #ffedd5);
+      color: #9a3412;
+      border-color: #fb923c;
+    }
+
+    .cruce-estado {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 2px;
+      white-space: normal;
+      line-height: 1.25;
+    }
+
+    .cruce-ok { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .cruce-alerta { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .cruce-warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+    .ticket-warning {
+      display: block;
+      margin-top: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .modal-historial-pmi {
+      position: fixed;
+      inset: 0;
+      z-index: 11800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, .68);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-historial-pmi.activo { display: flex; }
+
+    .historial-card {
+      width: min(850px, 100%);
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.30);
+      border: 1px solid var(--borde);
+    }
+
+    .historial-body {
+      padding: 18px 22px 22px;
+      overflow-y: auto;
+    }
+
+    .historial-resumen {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .historial-mini {
+      border: 1px solid var(--borde);
+      border-radius: 14px;
+      padding: 12px;
+      background: #f8fafc;
+    }
+
+    .historial-mini span { display:block; color: var(--gris); font-size:10px; font-weight:900; text-transform:uppercase; }
+    .historial-mini strong { display:block; margin-top:5px; }
+
+    .timeline-pmi { display: grid; gap: 9px; }
+    .timeline-item {
+      border-left: 4px solid #2563eb;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 11px 13px;
+      border-top: 1px solid var(--borde);
+      border-right: 1px solid var(--borde);
+      border-bottom: 1px solid var(--borde);
+    }
+    .timeline-item.ticket { border-left-color: #f97316; }
+    .timeline-item.falla { border-left-color: #dc2626; }
+    .timeline-item.revision { border-left-color: #16a34a; }
+    .timeline-item .fecha { color: var(--gris); font-size: 11px; font-weight: 800; }
+    .timeline-item .titulo { margin-top: 2px; font-weight: 900; text-transform: uppercase; }
+    .timeline-item .detalle { margin-top: 3px; color:#334155; font-size: 13px; font-weight:700; }
+
+    @keyframes ticketPulso {
+      0%, 100% { transform: scale(1); box-shadow: 0 6px 16px rgba(220, 38, 38, .10); }
+      50% { transform: scale(1.025); box-shadow: 0 8px 20px rgba(220, 38, 38, .22); }
+    }
+
+    .quick-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .quick-toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.2fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .quick-lote {
+      display: grid;
+      gap: 9px;
+      padding: 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+    }
+
+    .quick-lote-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .quick-lote-input {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .4px;
+      background: white;
+    }
+
+    .quick-lote-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 30px;
+      align-items: center;
+    }
+
+    .quick-lote-chip {
+      border: 1px solid #86efac;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .quick-lote-chip:hover { transform: translateY(-1px); }
+
+    .quick-lote-chip.no-encontrado {
+      border-color: #fecaca;
+      background: #fee2e2;
+      color: #991b1b;
+      cursor: default;
+    }
+
+    .quick-lote-estado {
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .quick-lote-estado strong { color: #0f172a; }
+
+
+    .bulk-tools {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .bulk-tools-title {
+      font-size: 12px;
+      font-weight: 900;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: .35px;
+    }
+
+    .bulk-common-components,
+    .bulk-row-components {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .bulk-component-btn {
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 2px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border-radius: 13px;
+      box-shadow: none;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease, color .14s ease;
+    }
+
+    .bulk-component-btn:hover { transform: translateY(-1px); }
+    .bulk-component-btn:active { transform: scale(.97); }
+    .bulk-component-btn.selected {
+      border-color: #fca5a5;
+      background: #fee2e2;
+      color: #b91c1c;
+      box-shadow: 0 7px 16px rgba(220, 38, 38, .12);
+    }
+
+    .bulk-component-btn.partial {
+      border-color: #fdba74;
+      background: #ffedd5;
+      color: #c2410c;
+    }
+
+    .bulk-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bulk-pmi-row {
+      display: grid;
+      grid-template-columns: minmax(180px, .9fr) minmax(320px, 2fr);
+      gap: 14px;
+      align-items: center;
+      padding: 13px 14px;
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      background: white;
+    }
+
+    .bulk-pmi-row.has-selection {
+      border-color: #fecaca;
+      background: #fffafa;
+    }
+
+    .bulk-pmi-code {
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .bulk-pmi-name {
+      margin-top: 3px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bulk-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bulk-summary {
+      padding: 11px 13px;
+      border-radius: 13px;
+      background: #f8fafc;
+      border: 1px solid var(--borde);
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .bulk-summary strong { color: #0f172a; }
+
+    .quick-equipos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .quick-equipo-btn {
+      min-height: 74px;
+      border: 2px solid #bfdbfe;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      color: #1e3a8a;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, .12);
+      flex-direction: column;
+      gap: 4px;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .quick-equipo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, .18);
+    }
+
+    .quick-equipo-btn:active {
+      transform: scale(.97);
+    }
+
+    .quick-equipo-btn.fuera {
+      border-color: #fecaca;
+      background: linear-gradient(135deg, #fff1f2, #fee2e2);
+      color: #b91c1c;
+      box-shadow: 0 8px 22px rgba(220, 38, 38, .16);
+      animation: quickPulse 1.8s ease-in-out infinite;
+    }
+
+    .quick-equipo-btn .quick-sub {
+      font-size: 10px;
+      font-weight: 900;
+      opacity: .82;
+      letter-spacing: .3px;
+    }
+
+    .quick-hint {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--borde);
+      color: var(--gris);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .quick-hint strong { color: var(--texto); }
+
+    @keyframes quickPulse {
+      0%, 100% { box-shadow: 0 8px 22px rgba(220, 38, 38, .12); }
+      50% { box-shadow: 0 12px 30px rgba(220, 38, 38, .28); }
+    }
+
+    @media (max-width: 768px) {
+      .quick-toolbar { grid-template-columns: 1fr; }
+      .quick-toolbar button { width: 100%; }
+      .quick-lote-row { grid-template-columns: 1fr; }
+      .quick-lote-row button { width: 100%; }
+      .bulk-pmi-row { grid-template-columns: 1fr; }
+      .bulk-actions button { width: 100%; }
+      body {
+        padding: 12px;
+      }
+
+      .header,
+      .panel {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .fecha-box,
+      .header-actions,
+      .header-actions button,
+      .header-actions .firebase-status,
+      .header-actions .ticket-firebase-status,
+      .acciones-finales button,
+      .acciones-finales .btn-file {
+        width: 100%;
+      }
+
+      .notificaciones-contenedor {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+      }
+
+      .formulario {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .formulario,
+      .acciones-finales,
+      .btn-editar,
+      .btn-eliminar,
+      .notificaciones-contenedor,
+      .modal-confirmacion,
+      .modal-firebase {
+        display: none;
+      }
+
+      .header,
+      .panel {
+        box-shadow: none;
+        border: none;
+      }
+
+      pre {
+        background: white;
+        color: black;
+        border: 1px solid black;
+      }
+      p#moi{
+        font-size: 7px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <section class="header">
+      <div>
+        <h1>Checklist Cámaras</h1>
+        <p id="moi">Sistema Creado por Moises.</p>
+      </div>
+      <div class="header-actions">
+        <div class="fecha-box" id="fecha-hoy"></div>
+        <span class="firebase-status" id="firebase-status">Firebase sin configurar</span>
+        <span class="ticket-firebase-status sync" id="ticket-firebase-status">Tickets: conectando...</span>
+        <button type="button" class="btn-firebase" onclick="abrirPopupFirebase()">CONFIGURAR FIREBASE</button>
+        <button type="button" class="btn-firebase" onclick="forzarLecturaFirebase()">RECARGAR FIREBASE</button>
+        <button type="button" class="btn-firebase" onclick="probarSyncFirebase()">PROBAR SYNC</button>
+        <button type="button" class="btn-firebase" onclick="inicializarFirebaseManual()">INICIALIZAR FIREBASE</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Inventario General</h2>
+        <span class="badge">Totales base</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <p>PTZ</p>
+          <span id="inv-ptz">0</span>
+        </div>
+        <div class="card">
+          <p>Fijas</p>
+          <span id="inv-fijas">0</span>
+        </div>
+        <div class="card">
+          <p>Analíticas</p>
+          <span id="inv-analiticas">0</span>
+        </div>
+        <div class="card">
+          <p>LPR</p>
+          <span id="inv-lpr">0</span>
+        </div>
+        <div class="card">
+          <p>Botón de Pánico</p>
+          <span id="inv-panico">0</span>
+        </div>
+      </div>
+
+      <p class="nota">
+        El sistema guarda automático en el navegador y también puede exportar/importar la base en TXT.
+      </p>
+    </section>
+
+    <section class="panel" id="panel-operativo-pmi">
+      <div class="section-title">
+        <h2>Control Operativo PMI</h2>
+        <span class="badge">Cruce Checklist + Tickets</span>
+      </div>
+      <div class="operativo-grid">
+        <div class="operativo-card alert"><p>PMI con falla</p><strong id="op-pmi-falla">0</strong></div>
+        <div class="operativo-card warn"><p>PMI con ticket activo</p><strong id="op-pmi-ticket">0</strong></div>
+        <div class="operativo-card alert"><p>Fallas sin ticket</p><strong id="op-falla-sin-ticket">0</strong></div>
+        <div class="operativo-card warn"><p>Tickets sin falla</p><strong id="op-ticket-sin-falla">0</strong></div>
+        <div class="operativo-card good"><p>Revisados este turno</p><strong id="op-revisados">0</strong></div>
+        <div class="operativo-card"><p>Pendientes este turno</p><strong id="op-pendientes">0</strong></div>
+      </div>
+      <div class="turno-control">
+        <div>
+          <strong id="turno-checklist-label">TURNO ACTUAL</strong>
+          <div class="nota" id="turno-checklist-detalle" style="margin-top:4px">Calculando revisión...</div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-verde" onclick="marcarTodosRevisadosTurno()">MARCAR TODOS REVISADOS</button>
+          <button type="button" class="btn-gris" onclick="reiniciarRevisionTurno()">REINICIAR REVISIÓN</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-chequeo-rapido">
+      <div class="section-title">
+        <h2>Captura Masiva de Fallas</h2>
+        <span class="badge">No marca revisado automáticamente</span>
+      </div>
+      <div class="quick-panel">
+        <div class="quick-lote">
+          <div class="quick-lote-row">
+            <input id="quick-pmi-lote" class="quick-lote-input" type="text" inputmode="numeric" autocomplete="off"
+              placeholder="ESCRIBE: 11,15,20,50" aria-label="Crear lista de PMI por terminación">
+            <button type="button" class="btn-gris" onclick="limpiarSeleccionRapidaPMI()">LIMPIAR LISTA</button>
+          </div>
+          <div id="quick-pmi-lote-chips" class="quick-lote-chips"></div>
+          <div id="quick-pmi-lote-estado" class="quick-lote-estado">
+            Escribe las terminaciones separadas por coma. Ejemplo: <strong>11,15,20,50</strong> = 6011, 6015, 6020 y 6050. <strong>Solo crea la lista; no registra ni revisa nada.</strong>
+          </div>
+        </div>
+
+        <div class="bulk-tools" id="bulk-tools">
+          <div class="bulk-tools-title">Aplicar el mismo componente a todos los PMI compatibles (opcional)</div>
+          <div class="bulk-common-components" id="bulk-common-components"></div>
+          <div class="bulk-summary" id="bulk-summary">Primero crea la lista de PMI.</div>
+        </div>
+
+        <div class="bulk-list" id="bulk-pmi-list"></div>
+
+        <div class="bulk-actions">
+          <button type="button" class="btn-gris" onclick="limpiarComponentesMasivos()">LIMPIAR COMPONENTES</button>
+          <button type="button" class="btn-verde" id="bulk-registrar-btn" onclick="registrarFallasMasivas()">REGISTRAR FALLAS MASIVAS</button>
+        </div>
+
+        <div class="quick-hint">
+          La lista <strong>NO se marca como revisada</strong>. Selecciona en cada PMI el componente que está fuera. Puedes elegir componentes diferentes por PMI y registrar todo de una sola vez. Los componentes que un PMI no tenga simplemente no aparecen.
+        </div>
+      </div>
+    </section>
+
+ <section class="panel">
+      <details id="details-ptz">
+        <summary style="cursor: pointer; font-weight: 900; padding: 10px;">
+          INVENTARIO DE PMI
+        </summary>
+        
+        <div class="section-title">
+          <h2>Agregar / Editar PMI en Inventario</h2>
+          <span class="badge">Selecciona los equipos instalados</span>
+        </div>
+
+        <form class="formulario" id="form-catalogo">
+          <input type="text" id="cat-clave" placeholder="CLAVE / PMI EJEMPLO: 711" required>
+          <input type="text" id="cat-localidad" placeholder="LOCALIDAD EJEMPLO: MORELOS II" required>
+
+          <div class="checks">
+            <label class="check-card"><input type="checkbox" id="cat-ptz" value="PTZ"> PTZ</label>
+            <label class="check-card"><input type="checkbox" id="cat-f1" value="F1"> F1</label>
+            <label class="check-card"><input type="checkbox" id="cat-f2" value="F2"> F2</label>
+            <label class="check-card"><input type="checkbox" id="cat-analitica" value="ANALÍTICA"> ANALÍTICA</label>
+            <label class="check-card"><input type="checkbox" id="cat-lpr" value="LPR"> LPR</label>
+            <label class="check-card"><input type="checkbox" id="cat-panico" value="BOTÓN DE PÁNICO"> BOTÓN DE PÁNICO</label>
+          </div>
+
+          <button type="submit" id="btn-catalogo">GUARDAR PMI</button>
+          <button type="button" class="btn-gris" onclick="cancelarEditarCatalogo()">CANCELAR</button>
+        </form>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Clave</th>
+                <th>Equipos del Punto</th>
+                <th>Localidad</th>
+                <th>Revisión turno</th>
+                <th>Ticket activo</th>
+                <th colspan="2">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-catalogo"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Registrar Falla en Punto</h2>
+        <span class="badge">Marca solo lo que falló</span>
+      </div>
+
+      <form class="formulario" id="form-fuera-camara">
+        <select id="select-camara" required></select>
+
+        <div class="checks">
+          <label class="check-card">
+            <input type="checkbox" id="check-ptz" value="PTZ">
+            PTZ FUERA
+          </label>
+
+          <label class="check-card">
+            <input type="checkbox" id="check-f1" value="F1">
+            F1 FUERA
+          </label>
+
+          <label class="check-card">
+            <input type="checkbox" id="check-f2" value="F2">
+            F2 FUERA
+          </label>
+          
+          <label class="check-card">
+            <input type="checkbox" id="check-analitica" value="ANALÍTICA">
+            ANALÍTICA FUERA
+          </label>
+
+          <label class="check-card">
+            <input type="checkbox" id="check-lpr" value="LPR">
+            LPR FUERA
+          </label>
+
+          <label class="check-card">
+            <input type="checkbox" id="check-panico" value="BOTÓN DE PÁNICO">
+            BOTÓN DE PÁNICO FUERA
+          </label>
+        </div>
+
+        <textarea id="obs-camara" placeholder="OBSERVACIÓN OPCIONAL"></textarea>
+
+        <button type="submit" id="btn-fuera">AGREGAR FALLA</button>
+        <button type="button" class="btn-gris" onclick="cancelarEditarFalla()">CANCELAR</button>
+      </form>
+
+      <div class="tabla-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Clave</th>
+              <th>Equipos Fuera</th>
+              <th>Localidad</th>
+              <th>Observación</th>
+              <th>Validación Ticket</th>
+              <th colspan="2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-camaras-fuera"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Cámaras Activas</h2>
+        <span class="badge">Disponibles</span>
+      </div>
+
+      <div class="grid">
+        <div class="card ok"><p>PTZ</p><span id="act-ptz">0</span></div>
+        <div class="card ok"><p>Fijas</p><span id="act-fijas">0</span></div>
+        <div class="card ok"><p>Analíticas</p><span id="act-analiticas">0</span></div>
+        <div class="card ok"><p>LPR</p><span id="act-lpr">0</span></div>
+        <div class="card ok"><p>Botón de Pánico</p><span id="act-panico">0</span></div>
+        <div class="card total"><p>Total Activas</p><span id="total-activas">0</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Cámaras Fuera</h2>
+        <span class="badge">Afectadas</span>
+      </div>
+
+      <div class="grid">
+        <div class="card bad"><p>PTZ</p><span id="fuera-ptz">0</span></div>
+        <div class="card bad"><p>Fijas</p><span id="fuera-fijas">0</span></div>
+        <div class="card bad"><p>Analíticas</p><span id="fuera-analiticas">0</span></div>
+        <div class="card bad"><p>LPR</p><span id="fuera-lpr">0</span></div>
+        <div class="card bad"><p>Botón de Pánico</p><span id="fuera-panico">0</span></div>
+        <div class="card total"><p>Total Fuera</p><span id="total-fuera">0</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Reporte Final</h2>
+        <span class="badge">Formato operativo</span>
+      </div>
+
+      <pre id="reporte-texto"></pre>
+    </section>
+
+    <section class="acciones-finales">
+      <button class="btn-verde" onclick="copiarReporte()">COPIAR REPORTE</button>
+      <button class="btn-verde" onclick="window.print()">IMPRIMIR</button>
+      <button class="btn-morado" onclick="exportarBaseTXT()">EXPORTAR BASE TXT</button>
+
+      <label class="btn-file">
+        IMPORTAR BASE TXT
+        <input type="file" accept=".txt,.json" onchange="importarBaseTXT(event)">
+      </label>
+
+      <button class="btn-morado" onclick="intentarRecuperacionTotal()">RECUPERAR DATOS</button>
+      <button class="btn-gris" onclick="limpiarFuera()">LIMPIAR FALLAS</button>
+      <button class="btn-eliminar" onclick="borrarTodo()">BORRAR TODO</button>
+    </section>
+
+  </main>
+
+  <div class="modal-firebase" id="modal-firebase" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="firebase-title">
+      <div class="modal-head">
+        <div>
+          <h2 id="firebase-title">Configurar Firebase</h2>
+          <p>Pega aquí el objeto completo <b>firebaseConfig</b>. El sistema lo guardará y se conectará solo.</p>
+        </div>
+        <button type="button" class="modal-close" onclick="cerrarPopupFirebase()" aria-label="Cerrar">×</button>
+      </div>
+
+      <div class="modal-body">
+        <textarea id="firebase-config-input" spellcheck="false" placeholder='Pega aquí algo como:
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_PROYECTO.firebaseapp.com",
+  databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+  projectId: "TU_PROYECTO",
+  storageBucket: "TU_PROYECTO.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:000000000000",
+  measurementId: "G-XXXXXXXXXX"
+};'></textarea>
+
+        <div class="mini-help">
+          Al guardar, el checklist seguirá usando el navegador como respaldo y también sincronizará catálogo, fallas y reporte en Firebase Realtime Database. Si tu base usa otro databaseURL regional, pégalo dentro del config.
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-gris" onclick="cerrarPopupFirebase()">CANCELAR</button>
+        <button type="button" class="btn-eliminar" onclick="borrarConfigFirebase()">BORRAR CONFIG</button>
+        <button type="button" class="btn-verde" onclick="guardarConfigFirebasePopup()">GUARDAR Y CONECTAR</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="notificaciones" class="notificaciones-contenedor" aria-live="polite" aria-atomic="false"></div>
+
+  <div class="modal-confirmacion" id="modal-confirmacion" aria-hidden="true">
+    <div class="confirmacion-card" role="dialog" aria-modal="true" aria-labelledby="confirmacion-title">
+      <div class="confirmacion-head">
+        <div class="confirmacion-icono">!</div>
+        <div>
+          <h2 id="confirmacion-title">Confirmar acción</h2>
+        </div>
+      </div>
+      <div class="confirmacion-body" id="confirmacion-mensaje"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-gris" onclick="cancelarConfirmacion()">CANCELAR</button>
+        <button type="button" class="btn-eliminar" onclick="aceptarConfirmacion()">CONFIRMAR</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-historial-pmi" id="modal-historial-pmi" aria-hidden="true">
+    <div class="historial-card" role="dialog" aria-modal="true" aria-labelledby="historial-pmi-title">
+      <div class="modal-head">
+        <div>
+          <h2 id="historial-pmi-title">Historial del PMI</h2>
+          <p id="historial-pmi-subtitulo">Actividad operativa</p>
+        </div>
+        <button type="button" class="modal-close" onclick="cerrarHistorialPMI()" aria-label="Cerrar">×</button>
+      </div>
+      <div class="historial-body" id="historial-pmi-body"></div>
+    </div>
+  </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
+    const inventario = {
+      ptz: 50,
+      fijas: 74,
+      analiticas: 10,
+      lpr: 4,
+      panico: 2
+    };
+
+    const KEY_CATALOGO = "check_catalogo_puntos_ptz_f1_f2_v4";
+    const KEY_FUERA = "check_fallas_individuales_ptz_f1_f2_v4";
+    const KEY_OTROS = "check_otros_fuera_v4";
+    const KEY_REVISIONES = "check_revisiones_pmi_v1";
+    const KEY_HISTORIAL_PMI = "check_historial_pmi_v1";
+    const KEY_EVENTOS_RAPIDOS = "check_eventos_rapidos_v1";
+    const KEY_RESPALDOS_EMERGENCIA = "check_respaldos_emergencia_v1";
+    const KEY_FIREBASE_CONFIG = "check_firebase_config_dinamico_v1";
+    const FIREBASE_APP_NAME = "checklistCamarasApp";
+    const FIREBASE_DB_PATH = "checklist_camaras/base_datos";
+
+    // Firebase secundaria de la app Control de Tickets de Cámaras.
+    // IMPORTANTE: este checklist SOLO LEE esta base; nunca escribe ni modifica tickets.
+    const TICKET_FIREBASE_APP_NAME = "checklistTicketReader";
+    const TICKET_FIREBASE_PATH = "escudo_pakal_c5/control_tickets_camaras";
+    const TICKET_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAIZq73WJmuMc_Z61524sUYxHec9--uXIk",
+      authDomain: "control-de-tickets-de-camaras.firebaseapp.com",
+      databaseURL: "https://control-de-tickets-de-camaras-default-rtdb.firebaseio.com",
+      projectId: "control-de-tickets-de-camaras",
+      storageBucket: "control-de-tickets-de-camaras.firebasestorage.app",
+      messagingSenderId: "299746412034",
+      appId: "1:299746412034:web:a3b0ecd6b2ffc3298b091b",
+      measurementId: "G-EWSTRW9F4W"
+    };
+    const FIREBASE_CONFIG_DEFAULT = `// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBdqKRS7yacnsb4x2skabJinZU_Q1c_0qw",
+  authDomain: "checklist-calle-api.firebaseapp.com",
+  databaseURL: "https://checklist-calle-api-default-rtdb.firebaseio.com",
+  projectId: "checklist-calle-api",
+  storageBucket: "checklist-calle-api.firebasestorage.app",
+  messagingSenderId: "1046193679893",
+  appId: "1:1046193679893:web:31a81a516be635fbd1681c",
+  measurementId: "G-JS96CYLV3M"
+};`;
+
+    const catalogoInicial = [
+      { id: "cam_711", clave: "711", localidad: "MORELOS II" },
+      { id: "cam_717", clave: "717", localidad: "CRUCERO A ZARAGOZA" },
+      { id: "cam_718", clave: "718", localidad: "BOMBERO" },
+      { id: "cam_719", clave: "719", localidad: "NEGALUMA" },
+      { id: "cam_724", clave: "724", localidad: "ZAPOTAL" },
+      { id: "cam_729", clave: "729", localidad: "PLAZA CIVICA" },
+      { id: "cam_739", clave: "739", localidad: "Z6 Y PETROLERA" },
+      { id: "cam_741", clave: "741", localidad: "POZO BONANZA" },
+      { id: "cam_742", clave: "742", localidad: "ZONA 6-ESPERANZA" },
+      { id: "cam_750", clave: "750", localidad: "MERCADO ZONA 5B" },
+      { id: "cam_760", clave: "760", localidad: "LOMAS DEL SANTUARIO" }
+    ];
+
+    let catalogo = cargar(KEY_CATALOGO, catalogoInicial);
+    let camarasFuera = cargar(KEY_FUERA, []);
+    // Solo se conserva para poder leer/importar bases antiguas; ya no se muestra ni se contabiliza.
+    let otrosFuera = cargar(KEY_OTROS, []);
+    let revisionesPMI = cargar(KEY_REVISIONES, []);
+    let historialPMI = cargar(KEY_HISTORIAL_PMI, []);
+    let eventosRapidos = cargar(KEY_EVENTOS_RAPIDOS, []);
+    let quickLoteTimer = null;
+    let quickLoteUltimaFirmaAplicada = "";
+
+    let editandoCatalogoId = null;
+    let editandoFallaId = null;
+    let editandoOtroId = null;
+
+    let firebaseAppChecklist = null;
+    let firebaseDBChecklist = null;
+    let firebaseRefChecklist = null;
+    let firebaseInfoRefChecklist = null;
+    let firebaseConectado = false;
+    let firebaseAplicandoRemoto = false;
+    let firebaseSubiendo = false;
+    let firebasePrimerEvento = true;
+    let firebaseEscuchando = false;
+    let firebaseConectando = false;
+    let firebaseListo = false;
+    let firebasePendienteLocal = localStorage.getItem("check_firebase_pendiente_sync_v1") === "1";
+    let ultimoSyncAplicado = "";
+    let firebaseUltimaLectura = "";
+    let firebaseUltimaEscritura = "";
+    let firebaseColaGuardado = Promise.resolve();
+    let firebaseUltimoIntentoConexion = 0;
+    let firebaseTimerVigilancia = null;
+    let aplicandoEstadoInterfazRemoto = false;
+
+    // Estado de tickets recibido en vivo (solo lectura).
+    let ticketFirebaseApp = null;
+    let ticketFirebaseRef = null;
+    let ticketFirebaseInfoRef = null;
+    let ticketFirebaseConectado = false;
+    let ticketDB = { tickets: [], cameras: [] };
+
+    const CLIENTE_FIREBASE_ID = (() => {
+      const key = "checklist_cliente_pantalla_v1";
+      let id = sessionStorage.getItem(key);
+
+      if (!id) {
+        id = "pantalla_" + Date.now() + "_" + Math.floor(Math.random() * 999999);
+        sessionStorage.setItem(key, id);
+      }
+
+      return id;
+    })();
+
+
+    let confirmacionActual = null;
+
+    function tituloNotificacion(tipo) {
+      if (tipo === "ok") return "Correcto";
+      if (tipo === "error") return "Error";
+      if (tipo === "warning") return "Atención";
+      return "Notificación";
+    }
+
+    function iconoNotificacion(tipo) {
+      if (tipo === "ok") return "✓";
+      if (tipo === "error") return "×";
+      if (tipo === "warning") return "!";
+      return "i";
+    }
+
+    const NOTIFICACIONES_RECIENTES = new Map();
+    function notificar(mensaje, tipo = "info", duracion = 3600) {
+      const contenedor = document.getElementById("notificaciones");
+      if (!contenedor) return;
+
+      // Evita la cascada de avisos idénticos cuando Firebase reconecta varias veces.
+      const claveAviso = `${tipo}|${String(mensaje || "")}`;
+      const ahoraAviso = Date.now();
+      const ultima = NOTIFICACIONES_RECIENTES.get(claveAviso) || 0;
+      if (ahoraAviso - ultima < 8000) return;
+      NOTIFICACIONES_RECIENTES.set(claveAviso, ahoraAviso);
+      if (NOTIFICACIONES_RECIENTES.size > 40) {
+        for (const [k, t] of NOTIFICACIONES_RECIENTES) {
+          if (ahoraAviso - t > 60000) NOTIFICACIONES_RECIENTES.delete(k);
+        }
+      }
+
+      // Máximo tres avisos visibles al mismo tiempo.
+      while (contenedor.children.length >= 3) {
+        contenedor.firstElementChild?.remove();
+      }
+
+      const item = document.createElement("div");
+      item.className = `notificacion ${tipo}`;
+      item.innerHTML = `
+        <div class="notificacion-icono">${iconoNotificacion(tipo)}</div>
+        <div>
+          <p class="notificacion-titulo">${tituloNotificacion(tipo)}</p>
+          <p class="notificacion-mensaje">${limpiarTexto(mensaje)}</p>
+        </div>
+        <button type="button" class="notificacion-cerrar" aria-label="Cerrar notificación">×</button>
+      `;
+
+      const cerrar = () => {
+        if (item.classList.contains("saliendo")) return;
+        item.classList.add("saliendo");
+        setTimeout(() => item.remove(), 200);
+      };
+
+      item.querySelector("button").addEventListener("click", cerrar);
+      contenedor.appendChild(item);
+
+      if (duracion > 0) {
+        setTimeout(cerrar, duracion);
+      }
+    }
+
+    function pedirConfirmacion(mensaje, alAceptar, alCancelar) {
+      const modal = document.getElementById("modal-confirmacion");
+      const texto = document.getElementById("confirmacion-mensaje");
+      if (!modal || !texto) return;
+
+      confirmacionActual = {
+        alAceptar: typeof alAceptar === "function" ? alAceptar : null,
+        alCancelar: typeof alCancelar === "function" ? alCancelar : null
+      };
+
+      texto.textContent = mensaje;
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function cerrarConfirmacion(ejecutarCancelacion = false) {
+      const modal = document.getElementById("modal-confirmacion");
+      const actual = confirmacionActual;
+
+      confirmacionActual = null;
+
+      if (modal) {
+        modal.classList.remove("activo");
+        modal.setAttribute("aria-hidden", "true");
+      }
+
+      if (ejecutarCancelacion && actual && actual.alCancelar) {
+        actual.alCancelar();
+      }
+    }
+
+    function aceptarConfirmacion() {
+      const actual = confirmacionActual;
+      cerrarConfirmacion(false);
+
+      if (actual && actual.alAceptar) {
+        actual.alAceptar();
+      }
+    }
+
+    function cancelarConfirmacion() {
+      cerrarConfirmacion(true);
+    }
+
+    function confirmarPromesa(mensaje) {
+      return new Promise(resolve => {
+        pedirConfirmacion(mensaje, () => resolve(true), () => resolve(false));
+      });
+    }
+
+
+
+function ordenarCamarasFuera() {
+  camarasFuera.sort((a, b) => {
+    const camA = buscarCamara(a.camaraId);
+    const camB = buscarCamara(b.camaraId);
+
+    return Number(camA?.clave || 0) - Number(camB?.clave || 0);
+  });
+}
+
+    document.getElementById("fecha-hoy").textContent =
+      new Date().toLocaleDateString("es-MX", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+
+    function marcarEstadoFirebase(texto, estado = "") {
+      const badge = document.getElementById("firebase-status");
+      if (!badge) return;
+
+      badge.textContent = texto;
+      badge.className = "firebase-status";
+
+      if (estado) {
+        badge.classList.add(estado);
+      }
+    }
+
+    function marcarPendienteFirebase(valor) {
+      firebasePendienteLocal = !!valor;
+
+      if (firebasePendienteLocal) {
+        localStorage.setItem("check_firebase_pendiente_sync_v1", "1");
+      } else {
+        localStorage.removeItem("check_firebase_pendiente_sync_v1");
+      }
+    }
+
+    function puedeUsarFirebase() {
+      return !!(firebaseConectado && firebaseRefChecklist && !firebaseAplicandoRemoto);
+    }
+
+    function programarGuardadoFirebase() {
+      marcarPendienteFirebase(true);
+
+      if (!puedeUsarFirebase()) {
+        marcarEstadoFirebase("Cambio pendiente de subir", "sync");
+        return;
+      }
+
+      firebaseColaGuardado = firebaseColaGuardado
+        .then(() => subirCambiosPendientesFirebase())
+        .catch(error => {
+          console.error(error);
+          marcarEstadoFirebase("Pendiente por reconectar", "sync");
+        });
+    }
+
+    async function subirCambiosPendientesFirebase() {
+      if (!firebasePendienteLocal || !puedeUsarFirebase()) return false;
+
+      const ok = await guardarEnFirebase(true);
+
+      if (ok) {
+        marcarPendienteFirebase(false);
+      }
+
+      return ok;
+    }
+
+    function abrirPopupFirebase() {
+      const modal = document.getElementById("modal-firebase");
+      const input = document.getElementById("firebase-config-input");
+      const guardado = localStorage.getItem(KEY_FIREBASE_CONFIG);
+
+      input.value = guardado || FIREBASE_CONFIG_DEFAULT;
+
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+      setTimeout(() => input.focus(), 80);
+    }
+
+    function cerrarPopupFirebase() {
+      const modal = document.getElementById("modal-firebase");
+      modal.classList.remove("activo");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function extraerConfigFirebase(texto) {
+      let limpio = String(texto || "").trim();
+
+      if (!limpio) {
+        throw new Error("Pega el firebaseConfig antes de guardar.");
+      }
+
+      // IMPORTANTE:
+      // Antes se borraba cualquier texto después de // y eso rompía URLs como https://...
+      // Por eso al recargar la página se perdía la conexión si el config guardado traía databaseURL.
+      // Ahora solo se eliminan comentarios de línea completa y comentarios de bloque.
+      limpio = limpio
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/^\s*\/\/.*$/gm, "")
+        .trim();
+
+      const inicio = limpio.indexOf("{");
+      const fin = limpio.lastIndexOf("}");
+
+      if (inicio === -1 || fin === -1 || fin <= inicio) {
+        throw new Error("No se encontró el objeto firebaseConfig.");
+      }
+
+      let objeto = limpio.slice(inicio, fin + 1);
+
+      objeto = objeto
+        .replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":')
+        .replace(/,\s*}/g, "}")
+        .replace(/,\s*]/g, "]");
+
+      const config = JSON.parse(objeto);
+
+      if (!config.apiKey || !config.projectId) {
+        throw new Error("El config debe incluir apiKey y projectId.");
+      }
+
+      if (!config.databaseURL) {
+        config.databaseURL = `https://${config.projectId}-default-rtdb.firebaseio.com`;
+      }
+
+      config.databaseURL = normalizarURLFirebase(config.databaseURL);
+
+      return config;
+    }
+
+    function normalizarURLFirebase(url) {
+      const valor = String(url || "").trim();
+      if (!valor) return valor;
+      return valor.replace(/\/+$/, "");
+    }
+
+    async function guardarConfigFirebasePopup() {
+      const texto = document.getElementById("firebase-config-input").value;
+
+      try {
+        await conectarFirebaseConTexto(texto, true);
+        cerrarPopupFirebase();
+        notificar("Firebase configurado y conectado correctamente.", "ok");
+      } catch (error) {
+        firebaseConectando = false;
+        console.error(error);
+        marcarEstadoFirebase("Error Firebase", "error");
+        notificar("No se pudo conectar Firebase: " + error.message, "error", 6000);
+      }
+    }
+
+    function normalizarTextoFirebaseConfig(config) {
+      return `// Configuración Firebase guardada por el checklist
+const firebaseConfig = ${JSON.stringify(config, null, 2)};`;
+    }
+
+    async function conectarFirebaseConTexto(texto, guardarConfig) {
+      if (firebaseConectando) return;
+
+      firebaseConectando = true;
+      const config = extraerConfigFirebase(texto);
+
+      if (!window.firebase || !firebase.initializeApp || !firebase.database) {
+        throw new Error("No cargó el SDK de Firebase. Revisa tu conexión a internet.");
+      }
+
+      marcarEstadoFirebase("Conectando Firebase...", "sync");
+
+      if (firebaseRefChecklist) {
+        firebaseRefChecklist.off();
+        firebaseRefChecklist = null;
+      }
+
+      if (firebaseInfoRefChecklist) {
+        firebaseInfoRefChecklist.off();
+        firebaseInfoRefChecklist = null;
+      }
+
+      const appAnterior = firebase.apps.find(app => app.name === FIREBASE_APP_NAME);
+
+      if (appAnterior) {
+        await appAnterior.delete();
+      }
+
+      // Ayuda cuando una red bloquea WebSockets. Debe ejecutarse antes de crear la instancia de database.
+      try {
+        if (
+          firebase.database &&
+          firebase.database.INTERNAL &&
+          typeof firebase.database.INTERNAL.forceLongPolling === "function"
+        ) {
+          firebase.database.INTERNAL.forceLongPolling();
+        }
+      } catch (error) {
+        console.warn("No se pudo forzar long polling, se continúa normal.", error);
+      }
+
+      firebaseAppChecklist = firebase.initializeApp(config, FIREBASE_APP_NAME);
+      firebaseDBChecklist = firebaseAppChecklist.database();
+
+      try {
+        if (typeof firebaseDBChecklist.goOnline === "function") {
+          firebaseDBChecklist.goOnline();
+        }
+      } catch (error) {
+        console.warn("No se pudo forzar goOnline, se continúa normal.", error);
+      }
+
+      firebaseRefChecklist = firebaseDBChecklist.ref(FIREBASE_DB_PATH);
+      firebaseConectado = true;
+      firebasePrimerEvento = true;
+      firebaseEscuchando = false;
+      ultimoSyncAplicado = "";
+
+      if (guardarConfig) {
+        localStorage.setItem(KEY_FIREBASE_CONFIG, normalizarTextoFirebaseConfig(config));
+      }
+
+      escucharEstadoConexionFirebase();
+
+      try {
+        await probarConexionFirebase();
+      } catch (error) {
+        console.warn("No se pudo escribir prueba de conexión, se continúa con la ruta principal.", error);
+      }
+
+      await sincronizarFirebaseInicial();
+      escucharCambiosFirebase();
+
+      firebaseListo = true;
+      firebaseConectando = false;
+      iniciarVigilanciaFirebase();
+      marcarEstadoFirebase("Firebase conectado en vivo", "ok");
+      notificar(`Conectado a Firebase: ${config.databaseURL}/${FIREBASE_DB_PATH}`, "ok", 5200);
+
+      if (firebasePendienteLocal) {
+        await subirCambiosPendientesFirebase();
+      }
+    }
+
+    function escucharEstadoConexionFirebase() {
+      if (!firebaseDBChecklist) return;
+
+      try {
+        if (firebaseInfoRefChecklist) {
+          firebaseInfoRefChecklist.off();
+        }
+
+        firebaseInfoRefChecklist = firebaseDBChecklist.ref(".info/connected");
+        firebaseInfoRefChecklist.on("value", function(snapshot) {
+          const conectado = snapshot.val() === true;
+
+          if (conectado) {
+            if (!firebaseSubiendo) {
+              marcarEstadoFirebase(firebasePendienteLocal ? "Subiendo pendiente..." : "Firebase conectado en vivo", firebasePendienteLocal ? "sync" : "ok");
+            }
+
+            subirCambiosPendientesFirebase().catch(error => {
+              console.error(error);
+              marcarEstadoFirebase("Pendiente por reconectar", "sync");
+            });
+          } else if (firebaseConectado) {
+            marcarEstadoFirebase("Reconectando Firebase...", "sync");
+          }
+        });
+      } catch (error) {
+        console.warn("No se pudo escuchar .info/connected", error);
+      }
+    }
+
+    async function sincronizarFirebaseInicial() {
+      if (!firebaseRefChecklist) return;
+
+      try {
+        const snapshot = await firebaseRefChecklist.once("value");
+
+        if (!snapshot.exists()) {
+          // MODO SEGURO: una Firebase vacía jamás se rellena automáticamente con
+          // una base local que podría haber sido borrada por error.
+          marcarEstadoFirebase("Firebase vacía · protegida", "sync");
+          return;
+        }
+
+        const base = snapshot.val();
+
+        const baseNormalizada = normalizarBaseFirebase(base);
+
+        if (baseNormalizada) {
+          if (firebasePendienteLocal) {
+            await guardarEnFirebase(true);
+            marcarPendienteFirebase(false);
+            return;
+          }
+
+          ultimoSyncAplicado = obtenerFirmaBase(baseNormalizada);
+          firebaseUltimaLectura = new Date().toLocaleString("es-MX");
+          aplicarBaseFirebase(baseNormalizada, true);
+
+          if (!baseValida(base)) {
+            notificar("Firebase tenía datos de otra versión. Se normalizaron para el checklist.", "warning", 5200);
+            await guardarEnFirebase(true);
+          }
+        } else {
+          // No reparar escribiendo encima: primero preservar cualquier posibilidad de recuperación.
+          marcarEstadoFirebase("Firebase sin datos válidos · protegida", "sync");
+        }
+      } catch (error) {
+        console.error(error);
+        marcarEstadoFirebase("Error al leer Firebase", "error");
+        throw error;
+      }
+    }
+
+    function obtenerFirmaBase(base) {
+      const meta = base && base.metadata ? base.metadata : {};
+
+      return meta.syncId ||
+        meta.actualizadoISO ||
+        `${(base.catalogo || []).length}_${(base.camarasFuera || []).length}_${(base.otrosFuera || []).length}_${Date.now()}`;
+    }
+
+    function escucharCambiosFirebase() {
+      if (!firebaseRefChecklist || firebaseEscuchando) return;
+
+      firebaseEscuchando = true;
+
+      firebaseRefChecklist.on("value", function(snapshot) {
+        if (!snapshot.exists()) {
+          firebasePrimerEvento = false;
+          marcarEstadoFirebase("Firebase vacío", "sync");
+          return;
+        }
+
+        const base = snapshot.val();
+
+        const baseNormalizada = normalizarBaseFirebase(base);
+
+        if (!baseNormalizada) {
+          firebasePrimerEvento = false;
+          marcarEstadoFirebase("Firebase sin datos válidos · protegida", "sync");
+          return;
+        }
+
+        const firma = obtenerFirmaBase(baseNormalizada);
+        const actualizadoPor = baseNormalizada.metadata && baseNormalizada.metadata.actualizadoPor;
+        const vieneDeOtraPantalla = actualizadoPor && actualizadoPor !== CLIENTE_FIREBASE_ID;
+        const esCambioNuevo = firma !== ultimoSyncAplicado;
+
+        ultimoSyncAplicado = firma;
+        firebaseUltimaLectura = new Date().toLocaleString("es-MX");
+
+        // IMPORTANTE: en navegadores diferentes siempre se aplica lo que llega de Firebase.
+        // No dependemos de localStorage ni de eventos de pestañas.
+        aplicarBaseFirebase(baseNormalizada, true);
+
+        if (vieneDeOtraPantalla && !firebasePrimerEvento) {
+          marcarEstadoFirebase("Cambio recibido en vivo", "ok");
+          notificar("Cambio recibido desde otra pantalla.", "info", 3000);
+        } else if (esCambioNuevo && !firebasePrimerEvento) {
+          marcarEstadoFirebase("Cambio sincronizado", "ok");
+        } else {
+          marcarEstadoFirebase("Firebase sincronizado", "ok");
+        }
+
+        firebasePrimerEvento = false;
+      }, function(error) {
+        console.error(error);
+        firebaseEscuchando = false;
+        marcarEstadoFirebase("Error Firebase", "error");
+        notificar("Firebase no permite leer datos. Revisa Realtime Database y sus reglas.", "error", 7000);
+      });
+    }
+
+    function listaFirebase(valor) {
+      if (Array.isArray(valor)) return valor;
+
+      if (valor && typeof valor === "object") {
+        return Object.values(valor).filter(item => item && typeof item === "object");
+      }
+
+      return [];
+    }
+
+    function normalizarBaseFirebase(base) {
+      if (!base || typeof base !== "object") return null;
+
+      const candidatos = [
+        base,
+        base.base,
+        base.data,
+        base.datos,
+        base.checklist,
+        base.baseDatos,
+        base.base_datos,
+        base.checklist_camaras,
+        base.CHECKLIST_CAMARAS_DB
+      ].filter(Boolean);
+
+      for (const item of candidatos) {
+        if (!item || typeof item !== "object") continue;
+
+        const tieneFormatoChecklist =
+          Object.prototype.hasOwnProperty.call(item, "catalogo") ||
+          Object.prototype.hasOwnProperty.call(item, "camarasFuera") ||
+          Object.prototype.hasOwnProperty.call(item, "otrosFuera") ||
+          Object.prototype.hasOwnProperty.call(item, "camaras_fuera") ||
+          Object.prototype.hasOwnProperty.call(item, "fallas") ||
+          Object.prototype.hasOwnProperty.call(item, "puntos");
+
+        if (!tieneFormatoChecklist) continue;
+
+        const metadata = item.metadata && typeof item.metadata === "object"
+          ? { ...item.metadata }
+          : {};
+
+        // Compatibilidad con versiones anteriores que guardaban este dato fuera de metadata.
+        if (
+          typeof metadata.panelPTZAbierto === "undefined" &&
+          typeof item.panelPTZAbierto !== "undefined"
+        ) {
+          metadata.panelPTZAbierto = !!item.panelPTZAbierto;
+        }
+
+        return {
+          metadata,
+          inventario: item.inventario && typeof item.inventario === "object" ? item.inventario : inventario,
+          catalogo: listaFirebase(item.catalogo || item.puntos),
+          camarasFuera: listaFirebase(item.camarasFuera || item.camaras_fuera || item.fallas || item.fallasCamaras),
+          otrosFuera: listaFirebase(item.otrosFuera || item.otros_fuera || item.otros),
+          revisionesPMI: listaFirebase(item.revisionesPMI || item.revisiones_pmi),
+          historialPMI: listaFirebase(item.historialPMI || item.historial_pmi),
+          eventosRapidos: Object.prototype.hasOwnProperty.call(item, "eventosRapidos")
+            ? listaFirebase(item.eventosRapidos)
+            : eventosRapidos
+        };
+      }
+
+      return null;
+    }
+
+    function baseValida(base) {
+      return !!normalizarBaseFirebase(base);
+    }
+
+    async function repararFirebaseConBaseLocal(mensaje) {
+      if (!firebaseRefChecklist) return false;
+
+      // Protección anti-borrado: nunca inicializar Firebase si el catálogo local está vacío.
+      if (!Array.isArray(catalogo) || catalogo.length === 0) {
+        marcarEstadoFirebase("Inicialización bloqueada · base local vacía", "error");
+        notificar("No se inicializó Firebase porque el catálogo local está vacío. Primero recupera los PMI.", "error", 8000);
+        return false;
+      }
+
+      try {
+        notificar(mensaje, "warning", 6500);
+        marcarEstadoFirebase("Inicializando Firebase...", "sync");
+        await guardarEnFirebase(true);
+        marcarEstadoFirebase("Firebase inicializado", "ok");
+        notificar("Base Firebase inicializada correctamente. El otro navegador se actualizará solo si está conectado.", "ok", 6500);
+        return true;
+      } catch (error) {
+        console.error(error);
+        marcarEstadoFirebase("No pudo inicializar Firebase", "error");
+        notificar("No se pudo inicializar Firebase. Revisa que las reglas permitan escribir en Realtime Database.", "error", 8000);
+        return false;
+      }
+    }
+
+    async function inicializarFirebaseManual() {
+      if (!firebaseRefChecklist) {
+        notificar("Firebase no está conectado todavía.", "warning");
+        return;
+      }
+
+      const confirmado = await confirmarPromesa("¿Inicializar la ruta de Firebase con los datos actuales de este checklist? Esto corrige el formato para que los navegadores sincronicen.");
+      if (!confirmado) return;
+
+      await repararFirebaseConBaseLocal("Se está inicializando Firebase con el formato correcto del checklist.");
+    }
+
+    function aplicarBaseFirebase(base, desdeFirebase = false) {
+      const normalizada = normalizarBaseFirebase(base);
+      if (!normalizada) return;
+
+      firebaseAplicandoRemoto = true;
+
+      try {
+        catalogo = Array.isArray(normalizada.catalogo) ? normalizada.catalogo : [];
+        camarasFuera = Array.isArray(normalizada.camarasFuera) ? normalizada.camarasFuera : [];
+        otrosFuera = Array.isArray(normalizada.otrosFuera) ? normalizada.otrosFuera : [];
+        revisionesPMI = Array.isArray(normalizada.revisionesPMI) ? normalizada.revisionesPMI : [];
+        historialPMI = Array.isArray(normalizada.historialPMI) ? normalizada.historialPMI : [];
+        eventosRapidos = Array.isArray(normalizada.eventosRapidos) ? normalizada.eventosRapidos : eventosRapidos;
+
+        if (normalizada.inventario && typeof normalizada.inventario === "object") {
+          inventario.ptz = numero(normalizada.inventario.ptz);
+          inventario.fijas = numero(normalizada.inventario.fijas);
+          inventario.analiticas = numero(normalizada.inventario.analiticas);
+          inventario.lpr = numero(normalizada.inventario.lpr);
+          inventario.panico = numero(normalizada.inventario.panico);
+        }
+
+        // Refleja también el estado abierto/cerrado del panel PTZ en todas las pantallas.
+        const detailsPTZ = document.getElementById("details-ptz");
+        if (
+          detailsPTZ &&
+          normalizada.metadata &&
+          typeof normalizada.metadata.panelPTZAbierto !== "undefined"
+        ) {
+          aplicandoEstadoInterfazRemoto = true;
+          detailsPTZ.open = !!normalizada.metadata.panelPTZAbierto;
+
+          // El evento toggle se dispara de forma asíncrona; se evita que vuelva a subir el mismo cambio.
+          setTimeout(() => {
+            aplicandoEstadoInterfazRemoto = false;
+          }, 0);
+        }
+
+        respaldarPersistidoAntesDeCambiar("ANTES DE APLICAR CAMBIO DE FIREBASE");
+        guardarLocal();
+        cancelarEditarCatalogo();
+        cancelarEditarFalla();
+        cancelarEditarOtro();
+        render();
+      } finally {
+        firebaseAplicandoRemoto = false;
+      }
+    }
+
+    document.getElementById("details-ptz").addEventListener("toggle", function() {
+      if (aplicandoEstadoInterfazRemoto || firebaseAplicandoRemoto) return;
+      programarGuardadoFirebase();
+    });
+
+    async function guardarEnFirebase(forzar = false) {
+      if (!firebaseConectado || !firebaseRefChecklist || firebaseAplicandoRemoto) {
+        marcarPendienteFirebase(true);
+        if (forzar) return false;
+        return false;
+      }
+
+      try {
+        firebaseSubiendo = true;
+        marcarEstadoFirebase("Subiendo cambio...", "sync");
+
+        const base = obtenerBaseDatosTXT();
+
+        // PROTECCIÓN CRÍTICA: nunca reemplazar la base remota con un catálogo vacío.
+        // Esto evita que BORRAR TODO accidental destruya también la copia de Firebase.
+        if (!Array.isArray(base.catalogo) || base.catalogo.length === 0) {
+          firebaseSubiendo = false;
+          marcarPendienteFirebase(false);
+          marcarEstadoFirebase("Firebase protegida · no se subió base vacía", "sync");
+          return false;
+        }
+
+        const syncId = CLIENTE_FIREBASE_ID + "_" + Date.now() + "_" + Math.floor(Math.random() * 999999);
+
+        base.metadata.actualizadoPor = CLIENTE_FIREBASE_ID;
+        base.metadata.actualizadoISO = new Date().toISOString();
+        base.metadata.revision = Date.now();
+        base.metadata.syncId = syncId;
+        base.metadata.rutaFirebase = FIREBASE_DB_PATH;
+
+        if (window.firebase && firebase.database && firebase.database.ServerValue) {
+          base.metadata.timestampFirebase = firebase.database.ServerValue.TIMESTAMP;
+        }
+
+        ultimoSyncAplicado = syncId;
+        firebaseUltimaEscritura = new Date().toLocaleString("es-MX");
+
+        await firebaseRefChecklist.set(base);
+
+        marcarPendienteFirebase(false);
+        firebaseSubiendo = false;
+        marcarEstadoFirebase("Firebase sincronizado", "ok");
+        return true;
+      } catch (error) {
+        firebaseSubiendo = false;
+        marcarPendienteFirebase(true);
+        console.error(error);
+
+        if (forzar) {
+          throw error;
+        }
+
+        marcarEstadoFirebase("No guardó en Firebase", "error");
+        notificar("No se pudo guardar en Firebase. Abre Firebase Console > Realtime Database y revisa las reglas de lectura/escritura.", "error", 8000);
+        return false;
+      }
+    }
+
+    async function probarConexionFirebase() {
+      if (!firebaseDBChecklist) return;
+
+      const pruebaRef = firebaseDBChecklist.ref("checklist_camaras/_conexion/" + CLIENTE_FIREBASE_ID);
+      const payload = {
+        online: true,
+        pantalla: CLIENTE_FIREBASE_ID,
+        fecha: new Date().toISOString()
+      };
+
+      if (window.firebase && firebase.database && firebase.database.ServerValue) {
+        payload.timestamp = firebase.database.ServerValue.TIMESTAMP;
+      }
+
+      await pruebaRef.set(payload);
+
+      if (pruebaRef.onDisconnect) {
+        pruebaRef.onDisconnect().remove();
+      }
+    }
+
+    async function forzarLecturaFirebase() {
+      if (!firebaseRefChecklist) {
+        notificar("Firebase no está conectado todavía.", "warning");
+        return;
+      }
+
+      try {
+        marcarEstadoFirebase("Leyendo Firebase...", "sync");
+        const snapshot = await firebaseRefChecklist.once("value");
+        const base = snapshot.val();
+
+        const baseNormalizada = normalizarBaseFirebase(base);
+
+        if (baseNormalizada) {
+          const firma = obtenerFirmaBase(baseNormalizada);
+          ultimoSyncAplicado = firma;
+          firebaseUltimaLectura = new Date().toLocaleString("es-MX");
+          aplicarBaseFirebase(baseNormalizada, true);
+          marcarEstadoFirebase("Firebase recargado", "ok");
+          notificar("Datos recargados desde Firebase.", "ok");
+        } else {
+          marcarEstadoFirebase("Firebase vacía o sin datos válidos", "sync");
+          notificar("Firebase no contiene una copia recuperable. No se sobrescribió nada.", "warning", 6500);
+        }
+      } catch (error) {
+        console.error(error);
+        marcarEstadoFirebase("Error Firebase", "error");
+        notificar("No se pudo leer Firebase. Revisa reglas o conexión.", "error", 7000);
+      }
+    }
+
+    async function probarSyncFirebase() {
+      if (!firebaseConectado || !firebaseRefChecklist || !firebaseDBChecklist) {
+        notificar("Firebase no está conectado todavía.", "warning");
+        return;
+      }
+
+      try {
+        marcarEstadoFirebase("Probando sincronización...", "sync");
+        await guardarEnFirebase(true);
+
+        const pruebaRef = firebaseDBChecklist.ref("checklist_camaras/_prueba_sync");
+        await pruebaRef.set({
+          cliente: CLIENTE_FIREBASE_ID,
+          fechaISO: new Date().toISOString(),
+          fechaLocal: new Date().toLocaleString("es-MX"),
+          rutaDatos: FIREBASE_DB_PATH,
+          ultimoSync: ultimoSyncAplicado || "sin_firma"
+        });
+
+        marcarEstadoFirebase("Prueba enviada", "ok");
+        notificar("Prueba enviada. En el otro navegador debe aparecer la notificación de cambio recibido.", "ok", 6000);
+      } catch (error) {
+        console.error(error);
+        marcarEstadoFirebase("Falló prueba Firebase", "error");
+        notificar("No se pudo hacer la prueba. Revisa que Realtime Database esté creado y que las reglas permitan leer/escribir.", "error", 8000);
+      }
+    }
+
+    function iniciarVigilanciaFirebase() {
+      if (firebaseTimerVigilancia) return;
+
+      firebaseTimerVigilancia = setInterval(() => {
+        const ahora = Date.now();
+
+        if (!firebaseRefChecklist && !firebaseConectando && ahora - firebaseUltimoIntentoConexion > 5000) {
+          firebaseUltimoIntentoConexion = ahora;
+          iniciarFirebaseAutomatico();
+          return;
+        }
+
+        if (firebaseRefChecklist && !firebaseEscuchando) {
+          escucharCambiosFirebase();
+        }
+
+        if (firebasePendienteLocal && puedeUsarFirebase()) {
+          subirCambiosPendientesFirebase().catch(error => {
+            console.error(error);
+            marcarEstadoFirebase("Pendiente por reconectar", "sync");
+          });
+        }
+      }, 3500);
+    }
+
+    function reactivarFirebase() {
+      if (!navigator.onLine) {
+        marcarEstadoFirebase("Sin internet", "error");
+        return;
+      }
+
+      if (!firebaseRefChecklist || !firebaseConectado) {
+        iniciarFirebaseAutomatico();
+        return;
+      }
+
+      escucharCambiosFirebase();
+
+      if (firebasePendienteLocal) {
+        subirCambiosPendientesFirebase().catch(console.error);
+      }
+    }
+
+    async function iniciarFirebaseAutomatico() {
+      if (firebaseConectando) return;
+
+      firebaseUltimoIntentoConexion = Date.now();
+      const textoGuardado = localStorage.getItem(KEY_FIREBASE_CONFIG);
+      const textoConfig = textoGuardado || FIREBASE_CONFIG_DEFAULT;
+
+      try {
+        marcarEstadoFirebase("Conectando Firebase...", "sync");
+        await conectarFirebaseConTexto(textoConfig, !textoGuardado);
+      } catch (error) {
+        console.error(error);
+
+        // Si quedó guardado un config roto por una versión anterior, se borra y se intenta con el config integrado.
+        if (textoGuardado) {
+          try {
+            localStorage.removeItem(KEY_FIREBASE_CONFIG);
+          } catch (e) {
+            console.warn(e);
+          }
+
+          firebaseConectando = false;
+          marcarEstadoFirebase("Reparando config Firebase...", "sync");
+
+          setTimeout(() => {
+            conectarFirebaseConTexto(FIREBASE_CONFIG_DEFAULT, true).catch(err => {
+              firebaseConectando = false;
+              console.error(err);
+              marcarEstadoFirebase("Firebase sin conexión", "error");
+              setTimeout(iniciarFirebaseAutomatico, 3500);
+            });
+          }, 300);
+
+          return;
+        }
+
+        firebaseConectando = false;
+        marcarEstadoFirebase("Firebase sin conexión", "error");
+        setTimeout(iniciarFirebaseAutomatico, 3500);
+      }
+    }
+
+    async function borrarConfigFirebase() {
+      const confirmado = await confirmarPromesa("¿Borrar la configuración Firebase guardada en este navegador?");
+      if (!confirmado) return;
+
+      try {
+        if (firebaseRefChecklist) {
+          firebaseRefChecklist.off();
+          firebaseRefChecklist = null;
+          firebaseEscuchando = false;
+        }
+
+        if (firebaseInfoRefChecklist) {
+          firebaseInfoRefChecklist.off();
+          firebaseInfoRefChecklist = null;
+        }
+
+        const appAnterior = firebase.apps.find(app => app.name === FIREBASE_APP_NAME);
+
+        if (appAnterior) {
+          await appAnterior.delete();
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+
+      firebaseAppChecklist = null;
+      firebaseDBChecklist = null;
+      firebaseConectado = false;
+      firebaseListo = false;
+      firebaseConectando = false;
+
+      localStorage.removeItem(KEY_FIREBASE_CONFIG);
+      document.getElementById("firebase-config-input").value = "";
+      marcarEstadoFirebase("Firebase sin configurar");
+      notificar("Configuración Firebase eliminada.", "ok");
+    }
+
+    document.getElementById("modal-firebase").addEventListener("click", function(e) {
+      if (e.target.id === "modal-firebase") {
+        cerrarPopupFirebase();
+      }
+    });
+
+    document.getElementById("modal-confirmacion").addEventListener("click", function(e) {
+      if (e.target.id === "modal-confirmacion") {
+        cancelarConfirmacion();
+      }
+    });
+
+    function clonarSeguro(valor, respaldo = []) {
+      try { return JSON.parse(JSON.stringify(valor ?? respaldo)); }
+      catch { return JSON.parse(JSON.stringify(respaldo)); }
+    }
+
+    function baseDesdeLocalStorageActual() {
+      const parse = (key, fallback) => {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : clonarSeguro(fallback);
+        } catch { return clonarSeguro(fallback); }
+      };
+      return {
+        metadata: { nombre: "CHECKLIST_CAMARAS_DB", origenRecuperacion: "localStorage", actualizadoISO: new Date().toISOString() },
+        inventario: { ...inventario },
+        catalogo: parse(KEY_CATALOGO, []),
+        camarasFuera: parse(KEY_FUERA, []),
+        otrosFuera: parse(KEY_OTROS, []),
+        revisionesPMI: parse(KEY_REVISIONES, []),
+        historialPMI: parse(KEY_HISTORIAL_PMI, []),
+        eventosRapidos: parse(KEY_EVENTOS_RAPIDOS, [])
+      };
+    }
+
+    function contarBaseRecuperable(base) {
+      if (!base || typeof base !== "object") return 0;
+      const campos = ["catalogo", "camarasFuera", "otrosFuera", "revisionesPMI", "historialPMI", "eventosRapidos"];
+      return campos.reduce((n, k) => n + (Array.isArray(base[k]) ? base[k].length : 0), 0);
+    }
+
+    function firmaBaseRecuperable(base) {
+      try {
+        return JSON.stringify({
+          catalogo: base?.catalogo || [], camarasFuera: base?.camarasFuera || [], otrosFuera: base?.otrosFuera || [],
+          revisionesPMI: base?.revisionesPMI || [], historialPMI: base?.historialPMI || [], eventosRapidos: base?.eventosRapidos || []
+        });
+      } catch { return String(Date.now()); }
+    }
+
+    function guardarRespaldoEmergencia(base, motivo = "CAMBIO") {
+      if (!base || contarBaseRecuperable(base) <= 0) return false;
+      try {
+        let lista = JSON.parse(localStorage.getItem(KEY_RESPALDOS_EMERGENCIA) || "[]");
+        if (!Array.isArray(lista)) lista = [];
+        const firma = firmaBaseRecuperable(base);
+        if (lista[0]?.firma === firma) return false;
+        lista.unshift({
+          id: "bak_" + Date.now() + "_" + Math.floor(Math.random() * 999999),
+          creadoISO: new Date().toISOString(),
+          creado: new Date().toLocaleString("es-MX"),
+          motivo,
+          firma,
+          base: clonarSeguro(base, {})
+        });
+        // Evita llenar el almacenamiento: intenta conservar varias copias y reduce si el navegador no tiene espacio.
+        for (const limite of [8, 5, 3, 1]) {
+          try {
+            localStorage.setItem(KEY_RESPALDOS_EMERGENCIA, JSON.stringify(lista.slice(0, limite)));
+            return true;
+          } catch (quotaError) {
+            console.warn("Reduciendo cantidad de respaldos por límite de almacenamiento", quotaError);
+          }
+        }
+        return false;
+      } catch (e) {
+        console.warn("No se pudo crear respaldo de emergencia", e);
+        return false;
+      }
+    }
+
+    function respaldarPersistidoAntesDeCambiar(motivo = "ANTES DE CAMBIO") {
+      return guardarRespaldoEmergencia(baseDesdeLocalStorageActual(), motivo);
+    }
+
+    function normalizarBaseRecuperable(base) {
+      if (!base || typeof base !== "object") return null;
+      const normalizadaFirebase = normalizarBaseFirebase(base);
+      const fuente = normalizadaFirebase || base;
+      const cat = listaFirebase(fuente.catalogo || fuente.puntos);
+      const fuera = listaFirebase(fuente.camarasFuera || fuente.camaras_fuera || fuente.fallas || fuente.fallasCamaras);
+      const otros = listaFirebase(fuente.otrosFuera || fuente.otros_fuera || fuente.otros);
+      const revisiones = listaFirebase(fuente.revisionesPMI || fuente.revisiones || fuente.checksTurno);
+      const historial = listaFirebase(fuente.historialPMI || fuente.historial || fuente.historialPmi);
+      const eventos = listaFirebase(fuente.eventosRapidos || fuente.eventos || fuente.fallasMomentaneas);
+      if (!(cat.length || fuera.length || otros.length || revisiones.length || historial.length || eventos.length)) return null;
+      return {
+        metadata: fuente.metadata && typeof fuente.metadata === "object" ? { ...fuente.metadata } : {},
+        inventario: fuente.inventario && typeof fuente.inventario === "object" ? { ...fuente.inventario } : { ...inventario },
+        catalogo: cat, camarasFuera: fuera, otrosFuera: otros,
+        revisionesPMI: revisiones, historialPMI: historial, eventosRapidos: eventos
+      };
+    }
+
+    function aplicarBaseRecuperada(base, origen = "RESPALDO") {
+      const b = normalizarBaseRecuperable(base);
+      if (!b) return false;
+      respaldarPersistidoAntesDeCambiar("ANTES DE RESTAURAR " + origen);
+      catalogo = clonarSeguro(b.catalogo, []);
+      camarasFuera = clonarSeguro(b.camarasFuera, []);
+      otrosFuera = clonarSeguro(b.otrosFuera, []);
+      revisionesPMI = clonarSeguro(b.revisionesPMI, []);
+      historialPMI = clonarSeguro(b.historialPMI, []);
+      eventosRapidos = clonarSeguro(b.eventosRapidos, []);
+      if (b.inventario && typeof b.inventario === "object") {
+        inventario.ptz = numero(b.inventario.ptz);
+        inventario.fijas = numero(b.inventario.fijas);
+        inventario.analiticas = numero(b.inventario.analiticas);
+        inventario.lpr = numero(b.inventario.lpr);
+        inventario.panico = numero(b.inventario.panico);
+      }
+      guardarLocal();
+      marcarPendienteFirebase(true);
+      render();
+      programarGuardadoFirebase();
+      return true;
+    }
+
+    function convertirComponenteTicketAEquipo(valor) {
+      const v = normalizarClaveTicket(valor);
+      if (v.includes("PTZ")) return "PTZ";
+      if (v === "F1" || v.includes("FIJA 1") || v.includes("FIJA1")) return "F1";
+      if (v === "F2" || v.includes("FIJA 2") || v.includes("FIJA2")) return "F2";
+      if (v.includes("ANALIT")) return "ANALÍTICA";
+      if (v.includes("LPR")) return "LPR";
+      if (v.includes("PANICO") || v.includes("PÁNICO") || v.includes("BOTON")) return "BOTÓN DE PÁNICO";
+      return "";
+    }
+
+    function baseDesdeInventarioTickets() {
+      const cams = listaTicketFirebase(ticketDB?.cameras);
+      const tickets = listaTicketFirebase(ticketDB?.tickets);
+      if (!cams.length && !tickets.length) return null;
+
+      const mapa = new Map();
+
+      function agregarPunto({ id, clave, localidad, equipos }) {
+        clave = String(clave || "").trim();
+        if (!clave) return;
+        const key = normalizarClaveTicket(clave);
+        const prev = mapa.get(key) || {
+          id: String(id || ("rec_ticket_" + clave.replace(/[^a-zA-Z0-9_-]/g, "_"))),
+          clave,
+          localidad: String(localidad || "SIN LOCALIDAD").trim() || "SIN LOCALIDAD",
+          equipos: []
+        };
+        if ((!prev.localidad || prev.localidad === "SIN LOCALIDAD") && localidad) prev.localidad = String(localidad).trim();
+        prev.equipos = Array.from(new Set([
+          ...(prev.equipos || []),
+          ...(Array.isArray(equipos) ? equipos : [])
+        ].map(convertirComponenteTicketAEquipo).filter(Boolean)));
+        mapa.set(key, prev);
+      }
+
+      // 1. Inventario formal de la app de Tickets.
+      cams.forEach((c, i) => {
+        agregarPunto({
+          id: c.id || ("rec_cam_" + i),
+          clave: c.code ?? c.clave ?? c.cameraCode,
+          localidad: c.name ?? c.nombre ?? c.location ?? c.ubicacion,
+          equipos: Array.isArray(c.components) ? c.components : [c.type]
+        });
+      });
+
+      // 2. También reconstruye desde los tickets históricos/activos. Esto permite
+      // recuperar PMI aunque el inventario de la app de Tickets estuviera incompleto.
+      tickets.forEach((t, i) => {
+        let clave = String(codigoCamaraTicket(t) || t.cameraCode || t.code || t.clave || t.pmi || "").trim();
+        const textoCam = String(t.camera || t.camara || "").trim();
+        if (!clave && textoCam) {
+          const m = textoCam.match(/\b(\d{3,6})\b/);
+          if (m) clave = m[1];
+        }
+        if (!clave) return;
+
+        const camRef = cams.find(c => c && (c.id === t.cameraId || normalizarClaveTicket(c.code) === normalizarClaveTicket(clave)));
+        let localidad = String(camRef?.name ?? camRef?.nombre ?? t.location ?? t.ubicacion ?? "").trim();
+        if (!localidad && textoCam) {
+          localidad = textoCam.replace(new RegExp("^\\s*" + clave.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&") + "\\s*[-–—:/]*\\s*", "i"), "").trim();
+        }
+
+        const comps = [
+          ...(Array.isArray(camRef?.components) ? camRef.components : []),
+          ...(Array.isArray(t.componentsReported) ? t.componentsReported : []),
+          ...String(t.component || "").split(/\s*\/\s*/).filter(Boolean)
+        ];
+
+        agregarPunto({ id: camRef?.id || t.cameraId || ("rec_ticket_" + i), clave, localidad, equipos: comps });
+      });
+
+      const recuperado = Array.from(mapa.values())
+        .map(p => ({ ...p, equipos: p.equipos.length ? p.equipos : ["PTZ", "F1", "F2"] }))
+        .sort((a,b) => Number(a.clave) - Number(b.clave) || String(a.clave).localeCompare(String(b.clave)));
+
+      if (!recuperado.length) return null;
+
+      return {
+        metadata: { nombre: "CHECKLIST_CAMARAS_DB", origenRecuperacion: "Firebase Tickets - cámaras + tickets", actualizadoISO: new Date().toISOString() },
+        inventario: { ...inventario }, catalogo: recuperado, camarasFuera: [], otrosFuera: [], revisionesPMI: [], historialPMI: [], eventosRapidos: []
+      };
+    }
+
+    function candidatosLocalesRecuperacion() {
+      const candidatos = [];
+      try {
+        let backups = JSON.parse(localStorage.getItem(KEY_RESPALDOS_EMERGENCIA) || "[]");
+        if (Array.isArray(backups)) backups.forEach((b, i) => {
+          const n = normalizarBaseRecuperable(b?.base);
+          if (n) candidatos.push({ origen: `RESPALDO DE EMERGENCIA ${b.creado || (i + 1)}`, base: n, prioridad: 1000000 + contarBaseRecuperable(n) });
+        });
+      } catch {}
+
+      // Busca bases compatibles guardadas por versiones anteriores bajo cualquier otra clave del mismo origen.
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (!key || key === KEY_RESPALDOS_EMERGENCIA || key === KEY_FIREBASE_CONFIG) continue;
+          let valor;
+          try { valor = JSON.parse(localStorage.getItem(key)); } catch { continue; }
+          const n = normalizarBaseRecuperable(valor);
+          if (n) candidatos.push({ origen: "ALMACENAMIENTO LOCAL: " + key, base: n, prioridad: 500000 + contarBaseRecuperable(n) });
+        }
+      } catch {}
+      return candidatos;
+    }
+
+    async function intentarRecuperacionTotal() {
+      marcarEstadoFirebase("Buscando recuperación...", "sync");
+      notificar("Buscando copias reales. No se inicializará ni sobrescribirá Firebase.", "info", 5000);
+
+      // Fuerza una lectura fresca de la app de Tickets antes de evaluar candidatos.
+      if (!ticketFirebaseRef) conectarFirebaseTicketsSoloLectura();
+      if (ticketFirebaseRef) {
+        try {
+          const snapTickets = await ticketFirebaseRef.once("value");
+          aplicarSnapshotTickets(snapTickets.val());
+        } catch (e) {
+          console.warn("No se pudo leer Tickets durante recuperación", e);
+        }
+      }
+
+      const candidatos = candidatosLocalesRecuperacion();
+
+      // Estado persistido actual, por si la interfaz quedó vacía pero el navegador aún conserva datos.
+      const actualPersistido = normalizarBaseRecuperable(baseDesdeLocalStorageActual());
+      if (actualPersistido) candidatos.push({ origen: "DATOS LOCALES ACTUALES", base: actualPersistido, prioridad: 400000 + contarBaseRecuperable(actualPersistido) });
+
+      if (firebaseRefChecklist) {
+        try {
+          const snap = await firebaseRefChecklist.once("value");
+          const remoto = normalizarBaseRecuperable(snap.val());
+          if (remoto) candidatos.push({ origen: "FIREBASE CHECKLIST", base: remoto, prioridad: 800000 + contarBaseRecuperable(remoto) });
+        } catch (e) { console.warn("No se pudo leer Firebase para recuperación", e); }
+      }
+
+      const desdeTickets = baseDesdeInventarioTickets();
+      if (desdeTickets) candidatos.push({ origen: "FIREBASE TICKETS (RECUPERA INVENTARIO)", base: desdeTickets, prioridad: 100000 + contarBaseRecuperable(desdeTickets) });
+
+      // Elimina duplicados por firma y ordena: primero respaldos completos, luego Firebase, al final inventario de Tickets.
+      const unicos = [];
+      const firmas = new Set();
+      candidatos.sort((a,b) => b.prioridad - a.prioridad).forEach(c => {
+        const f = firmaBaseRecuperable(c.base);
+        if (!firmas.has(f)) { firmas.add(f); unicos.push(c); }
+      });
+
+      if (!unicos.length) {
+        marcarEstadoFirebase(firebaseConectado ? "Sin copia en Firebase Checklist" : "Sin datos recuperables", "error");
+        const tc = listaTicketFirebase(ticketDB?.cameras).length;
+        const tt = listaTicketFirebase(ticketDB?.tickets).length;
+        notificar(`No encontré una copia del Checklist. Firebase Tickets devolvió ${tc} cámaras y ${tt} tickets. Si otra PC todavía muestra los PMI originales, NO la recargues y exporta BASE TXT desde esa PC.`, "error", 12000);
+        return;
+      }
+
+      const mejor = unicos[0];
+      const b = mejor.base;
+      const resumen = `${mejor.origen}. PMI: ${(b.catalogo||[]).length}, fallas: ${(b.camarasFuera||[]).length}, revisiones: ${(b.revisionesPMI||[]).length}, historial: ${(b.historialPMI||[]).length}, eventos rápidos: ${(b.eventosRapidos||[]).length}.`;
+      pedirConfirmacion("Se encontró una recuperación: " + resumen + " ¿Restaurarla ahora?", function() {
+        if (aplicarBaseRecuperada(b, mejor.origen)) {
+          marcarEstadoFirebase("Datos recuperados", "ok");
+          notificar("RECUPERACIÓN APLICADA: " + resumen, "ok", 9000);
+        }
+      });
+    }
+
+    function cargar(key, respaldo) {
+      try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : JSON.parse(JSON.stringify(respaldo));
+      } catch {
+        return JSON.parse(JSON.stringify(respaldo));
+      }
+    }
+
+    function guardarLocal() {
+      localStorage.setItem(KEY_CATALOGO, JSON.stringify(catalogo));
+      localStorage.setItem(KEY_FUERA, JSON.stringify(camarasFuera));
+      localStorage.setItem(KEY_OTROS, JSON.stringify(otrosFuera));
+      localStorage.setItem(KEY_REVISIONES, JSON.stringify(revisionesPMI));
+      localStorage.setItem(KEY_HISTORIAL_PMI, JSON.stringify(historialPMI));
+      localStorage.setItem(KEY_EVENTOS_RAPIDOS, JSON.stringify(eventosRapidos));
+    }
+
+    function guardar() {
+      // Guarda el estado ANTERIOR antes de sobrescribirlo. Esto permite deshacer borrados accidentales.
+      respaldarPersistidoAntesDeCambiar("ANTES DE GUARDAR CAMBIO");
+      guardarLocal();
+      programarGuardadoFirebase();
+    }
+
+    function crearId(prefix) {
+      return prefix + "_" + Date.now() + "_" + Math.floor(Math.random() * 9999);
+    }
+
+    function limpiarTexto(texto) {
+      return String(texto || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function numero(valor) {
+      return Number(valor) || 0;
+    }
+
+    function formato2(num) {
+      return String(num).padStart(2, "0");
+    }
+
+    function fechaReporte() {
+      return new Date().toLocaleDateString("es-MX", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }).toUpperCase();
+    }
+
+    function buscarCamara(idCamara) {
+      return catalogo.find(c => c.id === idCamara);
+    }
+
+    function ordenarCatalogo() {
+      catalogo.sort((a, b) => Number(a.clave) - Number(b.clave));
+    }
+
+    const EQUIPOS_PMI = ["PTZ", "F1", "F2", "ANALÍTICA", "LPR", "BOTÓN DE PÁNICO"];
+
+    function fechaClaveLocal(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function turnoActualChecklist(fecha = new Date()) {
+      const h = fecha.getHours();
+      let turno = "NOCTURNO";
+      let rango = "22:00–06:00";
+      let base = new Date(fecha);
+      if (h >= 6 && h < 14) {
+        turno = "MATUTINO";
+        rango = "06:00–14:00";
+      } else if (h >= 14 && h < 22) {
+        turno = "VESPERTINO";
+        rango = "14:00–22:00";
+      } else if (h < 6) {
+        base.setDate(base.getDate() - 1);
+      }
+      const fechaBase = fechaClaveLocal(base);
+      return { turno, rango, fechaBase, key: `${fechaBase}|${turno}` };
+    }
+
+    function registrarHistorialPMI(camara, tipo, detalle) {
+      if (!camara) return;
+      historialPMI.unshift({
+        id: crearId("hist"),
+        camaraId: camara.id,
+        clave: camara.clave || "",
+        localidad: camara.localidad || "",
+        tipo: tipo || "EVENTO",
+        detalle: detalle || "",
+        fecha: new Date().toLocaleString("es-MX"),
+        iso: new Date().toISOString()
+      });
+      if (historialPMI.length > 3000) historialPMI = historialPMI.slice(0, 3000);
+    }
+
+    function revisionActualDePMI(camara) {
+      if (!camara) return null;
+      const t = turnoActualChecklist();
+      return revisionesPMI.find(r => r && r.camaraId === camara.id && r.turnoKey === t.key) || null;
+    }
+
+    function estaRevisadoTurno(camara) {
+      return !!revisionActualDePMI(camara);
+    }
+
+    function asegurarRevisionPMI(camara, detalle = "CHEQUEO RÁPIDO") {
+      if (!camara) return false;
+      const t = turnoActualChecklist();
+      if (revisionesPMI.some(r => r && r.camaraId === camara.id && r.turnoKey === t.key)) return false;
+      revisionesPMI.unshift({
+        id: crearId("rev"), camaraId: camara.id, turnoKey: t.key, turno: t.turno,
+        fechaBase: t.fechaBase, fecha: new Date().toLocaleString("es-MX"), iso: new Date().toISOString(), origen: detalle
+      });
+      registrarHistorialPMI(camara, "REVISIÓN", `PMI marcado REVISADO automáticamente por ${detalle} en turno ${t.turno}.`);
+      return true;
+    }
+
+    function eventoRapidoAbierto(camaraId, equipo) {
+      const eq = normalizarEquipoTicket(equipo);
+      return eventosRapidos.find(ev => ev && ev.camaraId === camaraId && normalizarEquipoTicket(ev.equipo) === eq && !ev.finISO) || null;
+    }
+
+    function equipoEstaFuera(camara, equipo) {
+      return equiposFueraDePMI(camara).includes(normalizarEquipoTicket(equipo));
+    }
+
+    function registrarFallaRapida(camara, equipo) {
+      if (!camara) return;
+      const eq = normalizarEquipoTicket(equipo);
+      if (!normalizarEquiposPunto(camara).map(normalizarEquipoTicket).includes(eq)) {
+        notificar("Ese equipo no pertenece al PMI seleccionado.", "error");
+        return;
+      }
+      if (equipoEstaFuera(camara, eq)) return;
+
+      let reg = registroFallaDePMI(camara);
+      if (reg) {
+        reg.equiposFuera = Array.from(new Set([...(reg.equiposFuera || []), eq]));
+        reg.fecha = new Date().toLocaleString("es-MX");
+        reg.observacion = reg.observacion || "CHEQUEO RÁPIDO";
+      } else {
+        reg = {
+          id: crearId("fuera"), camaraId: camara.id, equiposFuera: [eq],
+          observacion: "CHEQUEO RÁPIDO", fecha: new Date().toLocaleString("es-MX"), origen: "CHEQUEO_RAPIDO"
+        };
+        camarasFuera.push(reg);
+      }
+
+      const ahora = new Date();
+      const t = turnoActualChecklist(ahora);
+      eventosRapidos.unshift({
+        id: crearId("rapido"), camaraId: camara.id, clave: camara.clave || "", localidad: camara.localidad || "",
+        equipo: eq, inicio: ahora.toLocaleString("es-MX"), inicioISO: ahora.toISOString(),
+        turnoKey: t.key, turno: t.turno, fechaBase: t.fechaBase, fin: "", finISO: "",
+        estado: "FUERA", tuvoTicket: ticketActivoCubreEquipo(camara, eq)
+      });
+      if (eventosRapidos.length > 2500) eventosRapidos = eventosRapidos.slice(0, 2500);
+      asegurarRevisionPMI(camara, "CHEQUEO RÁPIDO");
+      registrarHistorialPMI(camara, "FALLA RÁPIDA", `${eq} marcado FUERA desde chequeo rápido.`);
+      guardar();
+      render();
+      notificar(`${camara.clave} ${eq}: marcado FUERA. Si responde, toca el mismo botón rojo.`, "warning", 4200);
+    }
+
+    function resolverFallaRapida(camara, equipo) {
+      if (!camara) return;
+      const eq = normalizarEquipoTicket(equipo);
+      const reg = registroFallaDePMI(camara);
+      if (!reg || !Array.isArray(reg.equiposFuera) || !reg.equiposFuera.map(normalizarEquipoTicket).includes(eq)) return;
+
+      reg.equiposFuera = reg.equiposFuera.filter(x => normalizarEquipoTicket(x) !== eq);
+      reg.fecha = new Date().toLocaleString("es-MX");
+      if (!reg.equiposFuera.length) camarasFuera = camarasFuera.filter(r => r.id !== reg.id);
+
+      const ahora = new Date();
+      let ev = eventoRapidoAbierto(camara.id, eq);
+      if (!ev) {
+        const t = turnoActualChecklist(ahora);
+        ev = {
+          id: crearId("rapido"), camaraId: camara.id, clave: camara.clave || "", localidad: camara.localidad || "",
+          equipo: eq, inicio: "REGISTRADA PREVIAMENTE", inicioISO: agoraISOSeguro(reg.fecha),
+          turnoKey: t.key, turno: t.turno, fechaBase: t.fechaBase, estado: "FUERA", tuvoTicket: ticketActivoCubreEquipo(camara, eq)
+        };
+        eventosRapidos.unshift(ev);
+      }
+      ev.fin = ahora.toLocaleString("es-MX");
+      ev.finISO = ahora.toISOString();
+      ev.estado = "RESTABLECIDO";
+      ev.tuvoTicket = !!ev.tuvoTicket || ticketActivoCubreEquipo(camara, eq);
+      asegurarRevisionPMI(camara, "CHEQUEO RÁPIDO");
+      registrarHistorialPMI(camara, "RESTABLECIDA", `${eq} volvió a responder. Se conserva en Reporte Final como falla momentánea.`);
+      guardar();
+      render();
+      notificar(`${camara.clave} ${eq}: RESTABLECIDO. Quedó asentado en Reporte Final.`, "ok", 4600);
+    }
+
+    function agoraISOSeguro(valor) {
+      const d = new Date(valor || Date.now());
+      return Number.isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+    }
+
+    function toggleFallaRapida(idCam, equipo) {
+      const cam = buscarCamara(idCam);
+      if (!cam) return;
+      if (equipoEstaFuera(cam, equipo)) resolverFallaRapida(cam, equipo);
+      else registrarFallaRapida(cam, equipo);
+    }
+
+    function normalizarEntradaPMICorta(valor) {
+      const digitos = String(valor || "").replace(/\D/g, "");
+      if (!digitos) return "";
+      if (digitos.startsWith("60") && digitos.length >= 4) return digitos;
+      if (digitos.length <= 2) return "60" + digitos.padStart(2, "0");
+      return digitos;
+    }
+
+    function resolverPMIPorEntradaCorta(valor) {
+      const objetivo = normalizarEntradaPMICorta(valor);
+      if (!objetivo) return null;
+      return catalogo.find(cam => String(cam?.clave || "").replace(/\D/g, "") === objetivo) || null;
+    }
+
+    function tokensSeleccionRapidaPMI() {
+      const input = document.getElementById("quick-pmi-lote");
+      if (!input) return [];
+      return String(input.value || "")
+        .split(/[,;\s]+/)
+        .map(v => v.trim())
+        .filter(Boolean)
+        .filter((v, i, arr) => arr.indexOf(v) === i);
+    }
+
+    // Selección temporal del modo masivo. No se guarda en Firebase hasta confirmar.
+    let quickMasivoSeleccion = {};
+
+    function claveEquipoMasivo(equipo) {
+      return normalizarEquipoTicket(equipo);
+    }
+
+    function limpiarSeleccionMasivaInexistente(encontrados) {
+      const idsValidos = new Set(encontrados.map(c => c.id));
+      Object.keys(quickMasivoSeleccion).forEach(id => {
+        if (!idsValidos.has(id)) delete quickMasivoSeleccion[id];
+      });
+    }
+
+    function seleccionarPMIDesdeChip(idCam) {
+      const fila = document.querySelector(`[data-bulk-pmi-id="${idCam}"]`);
+      if (fila) fila.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function renderSeleccionRapidaPMI() {
+      const chips = document.getElementById("quick-pmi-lote-chips");
+      const estado = document.getElementById("quick-pmi-lote-estado");
+      if (!chips || !estado) return { encontrados: [], faltantes: [] };
+
+      const tokens = tokensSeleccionRapidaPMI();
+      const encontrados = [];
+      const faltantes = [];
+      const ids = new Set();
+
+      tokens.forEach(token => {
+        const cam = resolverPMIPorEntradaCorta(token);
+        if (cam) {
+          if (!ids.has(cam.id)) {
+            ids.add(cam.id);
+            encontrados.push(cam);
+          }
+        } else {
+          faltantes.push(normalizarEntradaPMICorta(token) || token);
+        }
+      });
+
+      limpiarSeleccionMasivaInexistente(encontrados);
+
+      chips.innerHTML = [
+        ...encontrados.map(cam => `<button type="button" class="quick-lote-chip" onclick="seleccionarPMIDesdeChip('${cam.id}')">✓ ${limpiarTexto(cam.clave)} · ${limpiarTexto(cam.localidad)}</button>`),
+        ...faltantes.map(valor => `<span class="quick-lote-chip no-encontrado">× ${limpiarTexto(valor)} NO ENCONTRADO</span>`)
+      ].join("");
+
+      if (!tokens.length) {
+        estado.innerHTML = 'Escribe las terminaciones separadas por coma. Ejemplo: <strong>11,15,20,50</strong> = 6011, 6015, 6020 y 6050. <strong>Solo crea la lista; no registra ni revisa nada.</strong>';
+      } else if (encontrados.length) {
+        estado.innerHTML = `<strong>${encontrados.length} PMI en la lista</strong>. ${faltantes.length ? `${faltantes.length} no encontrado${faltantes.length === 1 ? "" : "s"}. ` : ""}Ahora selecciona los componentes fuera y confirma al final.`;
+      } else {
+        estado.innerHTML = `<strong>No se encontró ningún PMI.</strong> Revisa los números escritos.`;
+      }
+
+      renderModoMasivo(encontrados);
+      return { encontrados, faltantes };
+    }
+
+    function seleccionEquiposPMI(idCam) {
+      if (!Array.isArray(quickMasivoSeleccion[idCam])) quickMasivoSeleccion[idCam] = [];
+      return quickMasivoSeleccion[idCam];
+    }
+
+    function toggleComponenteMasivo(idCam, equipo) {
+      const cam = buscarCamara(idCam);
+      if (!cam) return;
+      const eq = claveEquipoMasivo(equipo);
+      const disponibles = normalizarEquiposPunto(cam).map(claveEquipoMasivo);
+      if (!disponibles.includes(eq)) return;
+      const lista = seleccionEquiposPMI(idCam);
+      const idx = lista.indexOf(eq);
+      if (idx >= 0) lista.splice(idx, 1);
+      else lista.push(eq);
+      renderSeleccionRapidaPMI();
+    }
+
+    function estadoComponenteComun(equipo, encontrados) {
+      const eq = claveEquipoMasivo(equipo);
+      const compatibles = encontrados.filter(cam => normalizarEquiposPunto(cam).map(claveEquipoMasivo).includes(eq));
+      if (!compatibles.length) return { clase: "", total: 0, seleccionados: 0 };
+      const seleccionados = compatibles.filter(cam => seleccionEquiposPMI(cam.id).includes(eq)).length;
+      return {
+        clase: seleccionados === compatibles.length ? "selected" : (seleccionados > 0 ? "partial" : ""),
+        total: compatibles.length,
+        seleccionados
+      };
+    }
+
+    function toggleComponenteComun(equipo) {
+      const { encontrados } = obtenerSeleccionRapidaPMI(false);
+      if (!encontrados.length) return;
+      const eq = claveEquipoMasivo(equipo);
+      const compatibles = encontrados.filter(cam => normalizarEquiposPunto(cam).map(claveEquipoMasivo).includes(eq));
+      if (!compatibles.length) return notificar(`Ningún PMI seleccionado tiene ${eq}.`, "warning");
+      const todosMarcados = compatibles.every(cam => seleccionEquiposPMI(cam.id).includes(eq));
+      compatibles.forEach(cam => {
+        const lista = seleccionEquiposPMI(cam.id);
+        const idx = lista.indexOf(eq);
+        if (todosMarcados && idx >= 0) lista.splice(idx, 1);
+        if (!todosMarcados && idx < 0) lista.push(eq);
+      });
+      renderSeleccionRapidaPMI();
+    }
+
+    function obtenerSeleccionRapidaPMI(renderizar = true) {
+      if (renderizar) return renderSeleccionRapidaPMI();
+      const tokens = tokensSeleccionRapidaPMI();
+      const encontrados = [];
+      const faltantes = [];
+      const ids = new Set();
+      tokens.forEach(token => {
+        const cam = resolverPMIPorEntradaCorta(token);
+        if (cam && !ids.has(cam.id)) { ids.add(cam.id); encontrados.push(cam); }
+        else if (!cam) faltantes.push(normalizarEntradaPMICorta(token) || token);
+      });
+      return { encontrados, faltantes };
+    }
+
+    function renderModoMasivo(encontrados) {
+      const comunes = document.getElementById("bulk-common-components");
+      const lista = document.getElementById("bulk-pmi-list");
+      const resumen = document.getElementById("bulk-summary");
+      const btn = document.getElementById("bulk-registrar-btn");
+      if (!comunes || !lista || !resumen || !btn) return;
+
+      if (!encontrados.length) {
+        comunes.innerHTML = "";
+        lista.innerHTML = "";
+        resumen.innerHTML = "Primero crea la lista de PMI.";
+        btn.disabled = true;
+        btn.style.opacity = ".55";
+        return;
+      }
+
+      comunes.innerHTML = EQUIPOS_PMI.map(eq => {
+        const st = estadoComponenteComun(eq, encontrados);
+        if (!st.total) return "";
+        const texto = st.seleccionados ? `${eq} · ${st.seleccionados}/${st.total}` : `${eq} · ${st.total} PMI`;
+        return `<button type="button" class="bulk-component-btn ${st.clase}" onclick="toggleComponenteComun('${limpiarTexto(eq)}')">${limpiarTexto(texto)}</button>`;
+      }).join("");
+
+      lista.innerHTML = encontrados.map(cam => {
+        const sel = seleccionEquiposPMI(cam.id);
+        const disponibles = normalizarEquiposPunto(cam).map(claveEquipoMasivo);
+        return `<div class="bulk-pmi-row ${sel.length ? "has-selection" : ""}" data-bulk-pmi-id="${cam.id}">
+          <div>
+            <div class="bulk-pmi-code">${limpiarTexto(cam.clave)}</div>
+            <div class="bulk-pmi-name">${limpiarTexto(cam.localidad)}</div>
+          </div>
+          <div class="bulk-row-components">
+            ${disponibles.map(eq => `<button type="button" class="bulk-component-btn ${sel.includes(eq) ? "selected" : ""}" onclick="toggleComponenteMasivo('${cam.id}','${limpiarTexto(eq)}')">${limpiarTexto(eq)}</button>`).join("")}
+          </div>
+        </div>`;
+      }).join("");
+
+      const pmiConSeleccion = encontrados.filter(cam => seleccionEquiposPMI(cam.id).length > 0);
+      const totalComponentes = pmiConSeleccion.reduce((n, cam) => n + seleccionEquiposPMI(cam.id).length, 0);
+      resumen.innerHTML = `<strong>${encontrados.length} PMI en la lista.</strong> ${pmiConSeleccion.length} PMI con falla preparada · ${totalComponentes} componente${totalComponentes === 1 ? "" : "s"} seleccionado${totalComponentes === 1 ? "" : "s"}. Nada se guardará hasta presionar REGISTRAR FALLAS MASIVAS.`;
+      btn.disabled = totalComponentes === 0;
+      btn.style.opacity = totalComponentes === 0 ? ".55" : "1";
+    }
+
+    function programarSeleccionRapidaPMI() {
+      // Ya no existe temporizador de auto-check. Cada tecla solo actualiza la lista.
+      if (quickLoteTimer) clearTimeout(quickLoteTimer);
+      quickLoteTimer = null;
+      quickLoteUltimaFirmaAplicada = "";
+      renderSeleccionRapidaPMI();
+    }
+
+    function aplicarSeleccionRapidaPMI() {
+      // Enter solo termina de interpretar la lista; NO marca revisado ni guarda fallas.
+      if (quickLoteTimer) clearTimeout(quickLoteTimer);
+      quickLoteTimer = null;
+      renderSeleccionRapidaPMI();
+      document.getElementById("bulk-pmi-list")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function limpiarSeleccionRapidaPMI() {
+      if (quickLoteTimer) clearTimeout(quickLoteTimer);
+      quickLoteTimer = null;
+      quickLoteUltimaFirmaAplicada = "";
+      quickMasivoSeleccion = {};
+      const input = document.getElementById("quick-pmi-lote");
+      if (input) {
+        input.value = "";
+        input.focus();
+      }
+      renderSeleccionRapidaPMI();
+    }
+
+    function limpiarComponentesMasivos() {
+      quickMasivoSeleccion = {};
+      renderSeleccionRapidaPMI();
+    }
+
+    function agregarFallaMasivaSinRender(camara, equipo) {
+      if (!camara) return { ok: false, motivo: "PMI no encontrado" };
+      const eq = claveEquipoMasivo(equipo);
+      const instalados = normalizarEquiposPunto(camara).map(claveEquipoMasivo);
+      if (!instalados.includes(eq)) return { ok: false, motivo: "No instalado" };
+      if (equipoEstaFuera(camara, eq)) return { ok: false, motivo: "Ya estaba fuera" };
+
+      let reg = registroFallaDePMI(camara);
+      const ahora = new Date();
+      if (reg) {
+        reg.equiposFuera = Array.from(new Set([...(reg.equiposFuera || []).map(claveEquipoMasivo), eq]));
+        reg.fecha = ahora.toLocaleString("es-MX");
+        reg.observacion = reg.observacion || "CAPTURA MASIVA";
+      } else {
+        reg = {
+          id: crearId("fuera"), camaraId: camara.id, equiposFuera: [eq],
+          observacion: "CAPTURA MASIVA", fecha: ahora.toLocaleString("es-MX"), origen: "CAPTURA_MASIVA"
+        };
+        camarasFuera.push(reg);
+      }
+
+      const t = turnoActualChecklist(ahora);
+      eventosRapidos.unshift({
+        id: crearId("masivo"), camaraId: camara.id, clave: camara.clave || "", localidad: camara.localidad || "",
+        equipo: eq, inicio: ahora.toLocaleString("es-MX"), inicioISO: ahora.toISOString(),
+        turnoKey: t.key, turno: t.turno, fechaBase: t.fechaBase, fin: "", finISO: "",
+        estado: "FUERA", tuvoTicket: ticketActivoCubreEquipo(camara, eq), origen: "CAPTURA_MASIVA"
+      });
+      registrarHistorialPMI(camara, "FALLA MASIVA", `${eq} marcado FUERA mediante captura masiva. No se marcó el PMI como revisado.`);
+      return { ok: true };
+    }
+
+    function registrarFallasMasivas() {
+      const { encontrados, faltantes } = obtenerSeleccionRapidaPMI(false);
+      if (!encontrados.length) return notificar("Primero crea la lista de PMI.", "warning");
+
+      const preparados = encontrados.filter(cam => seleccionEquiposPMI(cam.id).length > 0);
+      if (!preparados.length) return notificar("Selecciona al menos un componente fuera.", "warning");
+
+      let agregadas = 0;
+      let yaFuera = 0;
+      let incompatibles = 0;
+      const afectados = [];
+
+      preparados.forEach(cam => {
+        let cambiosPMI = 0;
+        seleccionEquiposPMI(cam.id).forEach(eq => {
+          const r = agregarFallaMasivaSinRender(cam, eq);
+          if (r.ok) { agregadas++; cambiosPMI++; }
+          else if (r.motivo === "Ya estaba fuera") yaFuera++;
+          else incompatibles++;
+        });
+        if (cambiosPMI) afectados.push(cam.clave);
+      });
+
+      if (!agregadas) {
+        return notificar("No se agregó ninguna falla nueva. Los componentes seleccionados ya estaban fuera o no corresponden al PMI.", "warning", 6000);
+      }
+
+      if (eventosRapidos.length > 2500) eventosRapidos = eventosRapidos.slice(0, 2500);
+      guardar();
+      quickMasivoSeleccion = {};
+      render();
+
+      const extra = [
+        yaFuera ? `${yaFuera} ya estaban fuera` : "",
+        incompatibles ? `${incompatibles} incompatibles` : "",
+        faltantes.length ? `${faltantes.length} PMI no encontrados` : ""
+      ].filter(Boolean).join(" · ");
+      notificar(`Fallas masivas registradas: ${agregadas} componente${agregadas === 1 ? "" : "s"} en ${afectados.length} PMI.${extra ? " " + extra + "." : ""}`, "ok", 6500);
+    }
+
+    function renderChequeoRapido() {
+      renderSeleccionRapidaPMI();
+    }
+
+    function toggleRevisionPMI(idCam) {
+      const cam = buscarCamara(idCam);
+      if (!cam) return;
+      const t = turnoActualChecklist();
+      const idx = revisionesPMI.findIndex(r => r && r.camaraId === cam.id && r.turnoKey === t.key);
+      if (idx >= 0) {
+        revisionesPMI.splice(idx, 1);
+        registrarHistorialPMI(cam, "REVISIÓN", `Se regresó a PENDIENTE en turno ${t.turno}.`);
+      } else {
+        revisionesPMI.unshift({
+          id: crearId("rev"), camaraId: cam.id, turnoKey: t.key, turno: t.turno,
+          fechaBase: t.fechaBase, fecha: new Date().toLocaleString("es-MX"), iso: new Date().toISOString()
+        });
+        registrarHistorialPMI(cam, "REVISIÓN", `PMI marcado REVISADO en turno ${t.turno}.`);
+      }
+      guardar();
+      render();
+    }
+
+    function marcarTodosRevisadosTurno() {
+      const t = turnoActualChecklist();
+      let agregados = 0;
+      catalogo.forEach(cam => {
+        if (!revisionesPMI.some(r => r && r.camaraId === cam.id && r.turnoKey === t.key)) {
+          revisionesPMI.unshift({
+            id: crearId("rev"), camaraId: cam.id, turnoKey: t.key, turno: t.turno,
+            fechaBase: t.fechaBase, fecha: new Date().toLocaleString("es-MX"), iso: new Date().toISOString()
+          });
+          registrarHistorialPMI(cam, "REVISIÓN", `PMI marcado REVISADO en turno ${t.turno}.`);
+          agregados++;
+        }
+      });
+      guardar();
+      render();
+      notificar(agregados ? `${agregados} PMI marcados como revisados.` : "Todos los PMI ya estaban revisados.", "ok");
+    }
+
+    function reiniciarRevisionTurno() {
+      const t = turnoActualChecklist();
+      pedirConfirmacion(`¿Reiniciar la revisión del turno ${t.turno}?`, function() {
+        const ids = new Set(revisionesPMI.filter(r => r?.turnoKey === t.key).map(r => r.camaraId));
+        catalogo.filter(c => ids.has(c.id)).forEach(c => registrarHistorialPMI(c, "REVISIÓN", `Revisión reiniciada en turno ${t.turno}.`));
+        revisionesPMI = revisionesPMI.filter(r => r?.turnoKey !== t.key);
+        guardar();
+        render();
+        notificar("Revisión del turno reiniciada.", "ok");
+      });
+    }
+
+    function normalizarEquipoTicket(valor) {
+      const n = normalizarClaveTicket(valor);
+      if (!n) return "";
+      if (n === "F1" || n === "FIJA 1" || n === "FIJA1") return "F1";
+      if (n === "F2" || n === "FIJA 2" || n === "FIJA2") return "F2";
+      if (n.includes("PTZ")) return "PTZ";
+      if (n.includes("ANALIT")) return "ANALÍTICA";
+      if (n.includes("LPR")) return "LPR";
+      if (n.includes("PANICO")) return "BOTÓN DE PÁNICO";
+      return String(valor || "").trim().toUpperCase();
+    }
+
+    function componentesTicketNormalizados(ticket) {
+      return Array.from(new Set(componentesTicket(ticket).map(normalizarEquipoTicket).filter(Boolean)));
+    }
+
+    function registroFallaDePMI(camara) {
+      if (!camara) return null;
+      return camarasFuera.find(r => r && r.camaraId === camara.id) || null;
+    }
+
+    function equiposFueraDePMI(camara) {
+      const r = registroFallaDePMI(camara);
+      return r && Array.isArray(r.equiposFuera) ? r.equiposFuera.map(normalizarEquipoTicket) : [];
+    }
+
+    function ticketPertenecePMI(ticket, camara) {
+      if (!ticket || !camara) return false;
+      const clavePMI = normalizarClaveTicket(camara.clave);
+      const localidadPMI = normalizarClaveTicket(camara.localidad);
+      const codigo = normalizarClaveTicket(codigoCamaraTicket(ticket));
+      if (codigo && clavePMI && codigo === clavePMI) return true;
+      const nombre = normalizarClaveTicket(ticket.camera || "");
+      const tokens = nombre.split(/\s+/).filter(Boolean);
+      if (clavePMI && tokens.includes(clavePMI)) return true;
+      if (localidadPMI.length >= 5 && nombre.includes(localidadPMI)) return true;
+      return false;
+    }
+
+    function ticketsTodosDePMI(camara) {
+      return listaTicketFirebase(ticketDB.tickets).filter(t => t && ticketPertenecePMI(t, camara));
+    }
+
+    function equiposConTicketActivo(camara) {
+      const tickets = ticketsActivosDePMI(camara);
+      const componentes = tickets.flatMap(componentesTicketNormalizados);
+      return Array.from(new Set(componentes));
+    }
+
+    function ticketActivoCubreEquipo(camara, equipo) {
+      const tickets = ticketsActivosDePMI(camara);
+      const eq = normalizarEquipoTicket(equipo);
+      return tickets.some(t => {
+        const comps = componentesTicketNormalizados(t);
+        return comps.length === 0 || comps.includes(eq);
+      });
+    }
+
+    function equiposFallaSinTicket(camara) {
+      return equiposFueraDePMI(camara).filter(eq => !ticketActivoCubreEquipo(camara, eq));
+    }
+
+    function equiposTicketSinFalla(camara) {
+      const tickets = ticketsActivosDePMI(camara);
+      if (!tickets.length) return [];
+      const fuera = new Set(equiposFueraDePMI(camara));
+      const reportados = Array.from(new Set(tickets.flatMap(componentesTicketNormalizados)));
+      if (!reportados.length) return fuera.size ? [] : ["PMI"];
+      return reportados.filter(eq => !fuera.has(eq));
+    }
+
+    function htmlEquiposEstadoPMI(camara) {
+      const fuera = new Set(equiposFueraDePMI(camara));
+      const conTicket = new Set(equiposConTicketActivo(camara));
+      return normalizarEquiposPunto(camara).map(eq => {
+        const clases = ["tag"];
+        if (fuera.has(eq)) clases.push("tag-falla-activa");
+        if (conTicket.has(eq)) clases.push("tag-ticket-activo");
+        let title = [];
+        if (fuera.has(eq)) title.push("Falla registrada");
+        if (conTicket.has(eq)) title.push("Componente incluido en ticket activo");
+        return `<span class="${clases.join(" ")}" title="${limpiarTexto(title.join(" · "))}">${limpiarTexto(eq)}</span>`;
+      }).join(" ");
+    }
+
+    function validacionFallaPMI(camara) {
+      const reg = registroFallaDePMI(camara);
+      if (!reg) return { tipo: "", texto: "" };
+      const tickets = ticketsActivosDePMI(camara);
+      if (!tickets.length) return { tipo: "alerta", texto: "FALLA SIN TICKET" };
+      const sin = equiposFallaSinTicket(camara);
+      if (sin.length) return { tipo: "warning", texto: `SIN TICKET: ${sin.join(" / ")}` };
+      return { tipo: "ok", texto: "COINCIDE CON TICKET" };
+    }
+
+    function renderPanelOperativo() {
+      const t = turnoActualChecklist();
+      const conFalla = new Set(camarasFuera.filter(r => r?.camaraId).map(r => r.camaraId)).size;
+      const conTicket = catalogo.filter(c => ticketsActivosDePMI(c).length).length;
+      const fallaSinTicket = catalogo.filter(c => registroFallaDePMI(c) && equiposFallaSinTicket(c).length).length;
+      const ticketSinFalla = catalogo.filter(c => ticketsActivosDePMI(c).length && equiposTicketSinFalla(c).length).length;
+      const revisados = catalogo.filter(estaRevisadoTurno).length;
+      const pendientes = Math.max(0, catalogo.length - revisados);
+      const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+      set("op-pmi-falla", conFalla);
+      set("op-pmi-ticket", conTicket);
+      set("op-falla-sin-ticket", fallaSinTicket);
+      set("op-ticket-sin-falla", ticketSinFalla);
+      set("op-revisados", revisados);
+      set("op-pendientes", pendientes);
+      const label = document.getElementById("turno-checklist-label");
+      const detalle = document.getElementById("turno-checklist-detalle");
+      if (label) label.textContent = `TURNO ${t.turno} · ${t.rango}`;
+      if (detalle) detalle.textContent = `${revisados} de ${catalogo.length} PMI revisados · Fecha base ${t.fechaBase}`;
+    }
+
+    function cerrarHistorialPMI() {
+      const modal = document.getElementById("modal-historial-pmi");
+      if (!modal) return;
+      modal.classList.remove("activo");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function abrirHistorialPMI(idCam) {
+      const cam = buscarCamara(idCam);
+      if (!cam) return;
+      const modal = document.getElementById("modal-historial-pmi");
+      const title = document.getElementById("historial-pmi-title");
+      const sub = document.getElementById("historial-pmi-subtitulo");
+      const body = document.getElementById("historial-pmi-body");
+      if (!modal || !body) return;
+      title.textContent = `HISTORIAL PMI ${cam.clave}`;
+      sub.textContent = cam.localidad || "";
+
+      const eventos = historialPMI
+        .filter(h => h && h.camaraId === cam.id)
+        .map(h => ({ iso: h.iso || "", fecha: h.fecha || "", tipo: h.tipo || "EVENTO", detalle: h.detalle || "", clase: String(h.tipo || "").includes("FALLA") ? "falla" : String(h.tipo || "").includes("REVIS") ? "revision" : "" }));
+
+      ticketsTodosDePMI(cam).forEach(t => {
+        const folio = t.folio || "SIN FOLIO";
+        const estado = t.status ?? t.estatus ?? t.estado ?? "Reportado";
+        const comps = componentesTicketNormalizados(t).join(" / ") || "COMPONENTE NO ESPECIFICADO";
+        eventos.push({ iso: t.createdAt || t.updatedAt || t.statusChangedAt || "", fecha: t.fecha || t.createdAt || "", tipo: `TICKET ${folio}`, detalle: `${comps} · Estado actual: ${estado}`, clase: "ticket" });
+        if (Array.isArray(t.history)) {
+          t.history.forEach(h => eventos.push({ iso: h.at || h.iso || "", fecha: [h.fecha, h.hora].filter(Boolean).join(" "), tipo: `${h.type || "CAMBIO TICKET"} · ${folio}`, detalle: `${h.status || ""}${h.by ? ` · ${h.by}` : ""}`, clase: "ticket" }));
+        }
+      });
+
+      eventos.sort((a,b) => (Date.parse(b.iso || "") || 0) - (Date.parse(a.iso || "") || 0));
+      const t = turnoActualChecklist();
+      const revision = estaRevisadoTurno(cam) ? "REVISADO" : "PENDIENTE";
+      const falla = equiposFueraDePMI(cam).join(" / ") || "SIN FALLA";
+      const tickets = ticketsActivosDePMI(cam).map(x => x.folio || "SIN FOLIO").join(" / ") || "SIN TICKET ACTIVO";
+
+      body.innerHTML = `
+        <div class="historial-resumen">
+          <div class="historial-mini"><span>Equipos</span><strong>${normalizarEquiposPunto(cam).map(limpiarTexto).join(" / ")}</strong></div>
+          <div class="historial-mini"><span>Falla actual</span><strong>${limpiarTexto(falla)}</strong></div>
+          <div class="historial-mini"><span>Ticket actual</span><strong>${limpiarTexto(tickets)}</strong></div>
+          <div class="historial-mini"><span>${limpiarTexto(t.turno)}</span><strong>${revision}</strong></div>
+        </div>
+        <div class="timeline-pmi">
+          ${eventos.length ? eventos.map(ev => `<div class="timeline-item ${ev.clase}"><div class="fecha">${limpiarTexto(ev.fecha || ev.iso || "SIN FECHA")}</div><div class="titulo">${limpiarTexto(ev.tipo)}</div><div class="detalle">${limpiarTexto(ev.detalle)}</div></div>`).join("") : '<div class="sin-registros">AÚN NO HAY EVENTOS EN EL HISTORIAL DE ESTE PMI.</div>'}
+        </div>`;
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+
+    function marcarEstadoTicketFirebase(texto, estado = "") {
+      const badge = document.getElementById("ticket-firebase-status");
+      if (!badge) return;
+      badge.textContent = texto;
+      badge.className = "ticket-firebase-status";
+      if (estado) badge.classList.add(estado);
+    }
+
+    function listaTicketFirebase(valor) {
+      if (Array.isArray(valor)) return valor.filter(Boolean);
+      if (valor && typeof valor === "object") return Object.values(valor).filter(Boolean);
+      return [];
+    }
+
+    function normalizarClaveTicket(valor) {
+      return String(valor ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]+/g, " ")
+        .trim();
+    }
+
+    function codigoCamaraTicket(ticket) {
+      if (!ticket) return "";
+
+      // Primero busca el código en el inventario de la propia app de tickets.
+      const camTicket = ticketDB.cameras.find(c => c && c.id === ticket.cameraId);
+      if (camTicket && camTicket.code != null) return String(camTicket.code).trim();
+
+      // Compatibilidad si el ticket ya guarda el código explícitamente.
+      const directo = ticket.cameraCode || ticket.code || ticket.clave || ticket.pmi;
+      if (directo != null && String(directo).trim()) return String(directo).trim();
+
+      // Último recurso: extrae el primer bloque numérico/alfa de "camera" (ej. "711 - MORELOS II").
+      const nombre = String(ticket.camera || "").trim();
+      const match = nombre.match(/\b([A-Z]*\d+[A-Z0-9-]*)\b/i);
+      return match ? match[1] : "";
+    }
+
+    function estatusActualTicket(ticket) {
+      if (!ticket || typeof ticket !== "object") return "REPORTADO";
+
+      // La app de Tickets actual usa `status`. Se aceptan nombres anteriores
+      // para que un respaldo viejo no deje un folio pegado por incompatibilidad.
+      const bruto = ticket.status ?? ticket.estatus ?? ticket.estado ?? ticket.state ?? "Reportado";
+      const normalizado = normalizarClaveTicket(bruto);
+
+      // Si alguna versión antigua no guardó status, intenta tomar el último
+      // estatus del historial. La versión actual siempre guarda status.
+      if (!normalizado && Array.isArray(ticket.history) && ticket.history.length) {
+        for (let i = ticket.history.length - 1; i >= 0; i--) {
+          const h = ticket.history[i];
+          const desdeHistorial = normalizarClaveTicket(h?.status ?? h?.estatus ?? h?.estado ?? "");
+          if (desdeHistorial) return desdeHistorial;
+        }
+      }
+
+      return normalizado || "REPORTADO";
+    }
+
+    function ticketEstaSolucionado(ticket) {
+      const estado = estatusActualTicket(ticket);
+      return estado === "SOLUCIONADO" || estado === "RESUELTO" || estado === "CERRADO";
+    }
+
+    function ticketsActivos() {
+      // Regla principal: un ticket con estado actual SOLUCIONADO no se muestra.
+      // Si después se REABRE a "En atención", vuelve a mostrarse porque manda
+      // el estado actual, no campos históricos como solvedAt.
+      return listaTicketFirebase(ticketDB.tickets).filter(t => t && !ticketEstaSolucionado(t));
+    }
+
+    function ticketsActivosDePMI(camara) {
+      if (!camara) return [];
+      return ticketsActivos().filter(t => ticketPertenecePMI(t, camara));
+    }
+
+    function componentesTicket(ticket) {
+      const lista = Array.isArray(ticket?.componentsReported)
+        ? ticket.componentsReported
+        : String(ticket?.component || "").split(/\s*\/\s*/).filter(Boolean);
+      return lista.filter(Boolean);
+    }
+
+    function htmlTicketPMI(camara) {
+      const tickets = ticketsActivosDePMI(camara);
+      if (!tickets.length) return `<span class="ticket-none">SIN TICKET</span>`;
+
+      const principal = tickets[0];
+      const folios = tickets.map(t => limpiarTexto(t.folio || "SIN FOLIO")).join(" / ");
+      const componentes = Array.from(new Set(tickets.flatMap(componentesTicket))).map(limpiarTexto);
+      const estatus = Array.from(new Set(tickets.map(t => limpiarTexto(t.status ?? t.estatus ?? t.estado ?? "Reportado")))).join(" / ");
+      const extra = tickets.length > 1 ? ` · ${tickets.length} TICKETS` : "";
+      const comp = componentes.length ? `<span class="ticket-detalle">${componentes.join(" · ")} · ${estatus}</span>` : `<span class="ticket-detalle">${estatus}</span>`;
+      const sinFalla = equiposTicketSinFalla(camara);
+      const aviso = sinFalla.length ? `<span class="ticket-warning">TICKET SIN FALLA EN CHECKLIST${sinFalla[0] === "PMI" ? "" : `: ${sinFalla.map(limpiarTexto).join(" / ")}`}</span>` : "";
+
+      return `<span class="ticket-badge">TICKET ${folios}${extra}</span>${comp}${aviso}`;
+    }
+
+    function textoTicketPMI(camara) {
+      const tickets = ticketsActivosDePMI(camara);
+      if (!tickets.length) return "";
+      const folios = tickets.map(t => t.folio || "SIN FOLIO").join(", ");
+      const componentes = Array.from(new Set(tickets.flatMap(componentesTicket))).filter(Boolean).join("/");
+      return ` ⚠ TICKET ${folios}${componentes ? ` [${componentes}]` : ""}`;
+    }
+
+    function aplicarSnapshotTickets(valor) {
+      const base = valor && typeof valor === "object" ? valor : {};
+      ticketDB = {
+        tickets: listaTicketFirebase(base.tickets),
+        cameras: listaTicketFirebase(base.cameras)
+      };
+      const activos = ticketsActivos().length;
+      marcarEstadoTicketFirebase(`Tickets: ${activos} activo${activos === 1 ? "" : "s"}`, "ok");
+      render();
+
+      // Si el Checklist quedó vacío por accidente pero Tickets aún conoce cámaras/tickets,
+      // ofrece recuperación automáticamente una sola vez.
+      if (!catalogo.length && !window.__recuperacionAutomaticaMostrada && (ticketDB.cameras.length || ticketDB.tickets.length)) {
+        window.__recuperacionAutomaticaMostrada = true;
+        setTimeout(() => intentarRecuperacionTotal(), 500);
+      }
+    }
+
+    function releerFirebaseTickets() {
+      if (!ticketFirebaseRef || !ticketFirebaseConectado) return Promise.resolve(false);
+      return ticketFirebaseRef.once("value")
+        .then(snap => {
+          aplicarSnapshotTickets(snap.val());
+          return true;
+        })
+        .catch(error => {
+          console.warn("No se pudo actualizar Firebase de Tickets:", error);
+          return false;
+        });
+    }
+
+    function conectarFirebaseTicketsSoloLectura() {
+      if (!window.firebase || !firebase.initializeApp || !firebase.database) {
+        marcarEstadoTicketFirebase("Tickets: SDK no disponible", "error");
+        return;
+      }
+
+      try {
+        marcarEstadoTicketFirebase("Tickets: conectando...", "sync");
+
+        let app = firebase.apps.find(a => a.name === TICKET_FIREBASE_APP_NAME);
+        if (!app) app = firebase.initializeApp(TICKET_FIREBASE_CONFIG, TICKET_FIREBASE_APP_NAME);
+        ticketFirebaseApp = app;
+
+        if (ticketFirebaseRef) ticketFirebaseRef.off();
+        if (ticketFirebaseInfoRef) ticketFirebaseInfoRef.off();
+
+        const dbTickets = app.database();
+        ticketFirebaseRef = dbTickets.ref(TICKET_FIREBASE_PATH);
+        ticketFirebaseInfoRef = dbTickets.ref(".info/connected");
+
+        ticketFirebaseInfoRef.on("value", snap => {
+          ticketFirebaseConectado = snap.val() === true;
+
+          if (!ticketFirebaseConectado) {
+            marcarEstadoTicketFirebase("Tickets: reconectando...", "sync");
+            return;
+          }
+
+          // Al recuperar internet hacemos una lectura inmediata. Esto evita que
+          // quede visible un folio que fue solucionado mientras esta pantalla
+          // estuvo temporalmente sin conexión.
+          marcarEstadoTicketFirebase("Tickets: sincronizando...", "sync");
+          ticketFirebaseRef.once("value")
+            .then(snapshot => aplicarSnapshotTickets(snapshot.val()))
+            .catch(error => {
+              console.warn("No se pudo releer Tickets al reconectar:", error);
+              marcarEstadoTicketFirebase("Tickets: conectado, esperando datos...", "sync");
+            });
+        });
+
+        // SOLO LECTURA: no hay set(), update(), push() ni remove() sobre esta referencia.
+        // Cada cambio de status en la app de Tickets dispara este listener.
+        ticketFirebaseRef.on("value", snap => {
+          aplicarSnapshotTickets(snap.val());
+        }, error => {
+          console.error("Firebase Tickets (solo lectura):", error);
+          ticketFirebaseConectado = false;
+          marcarEstadoTicketFirebase("Tickets: sin acceso", "error");
+        });
+      } catch (error) {
+        console.error("No se pudo conectar a Firebase de Tickets:", error);
+        ticketFirebaseConectado = false;
+        marcarEstadoTicketFirebase("Tickets: error de conexión", "error");
+      }
+    }
+
+    function normalizarEquiposPunto(camara) {
+      if (!camara) return [];
+      // Compatibilidad: los puntos creados en versiones anteriores eran PTZ + F1 + F2.
+      if (!Array.isArray(camara.equipos) || camara.equipos.length === 0) {
+        camara.equipos = ["PTZ", "F1", "F2"];
+      }
+      camara.equipos = Array.from(new Set(camara.equipos.filter(e => EQUIPOS_PMI.includes(e))));
+      return camara.equipos;
+    }
+
+    function equiposSeleccionadosCatalogo() {
+      const ids = {
+        PTZ: "cat-ptz", F1: "cat-f1", F2: "cat-f2",
+        "ANALÍTICA": "cat-analitica", LPR: "cat-lpr",
+        "BOTÓN DE PÁNICO": "cat-panico"
+      };
+      return EQUIPOS_PMI.filter(e => document.getElementById(ids[e])?.checked);
+    }
+
+    function actualizarChecksFallaPorPMI() {
+      const cam = buscarCamara(document.getElementById("select-camara").value);
+      const instalados = cam ? normalizarEquiposPunto(cam) : [];
+      const ids = {
+        PTZ: "check-ptz", F1: "check-f1", F2: "check-f2",
+        "ANALÍTICA": "check-analitica", LPR: "check-lpr",
+        "BOTÓN DE PÁNICO": "check-panico"
+      };
+      EQUIPOS_PMI.forEach(e => {
+        const input = document.getElementById(ids[e]);
+        if (!input) return;
+        const disponible = !!cam && instalados.includes(e);
+        input.disabled = !disponible;
+        if (!disponible) input.checked = false;
+        const label = input.closest("label");
+        if (label) {
+          label.style.opacity = disponible ? "1" : ".38";
+          label.title = disponible ? "" : (cam ? "Este equipo no está registrado en este PMI" : "Selecciona un PMI");
+        }
+      });
+    }
+
+    function tag(equipo, rojo = false) {
+      return `<span class="tag ${rojo ? "tag-danger" : ""}">${limpiarTexto(equipo)}</span>`;
+    }
+
+    function nombreTipo(tipo) {
+      if (tipo === "analiticas") return "ANALÍTICAS";
+      if (tipo === "lpr") return "LPR";
+      if (tipo === "panico") return "BOTÓN DE PÁNICO";
+      return tipo.toUpperCase();
+    }
+
+    function renderCatalogo() {
+      const tbody = document.getElementById("tbody-catalogo");
+      tbody.innerHTML = "";
+
+      if (catalogo.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="sin-registros">SIN PUNTOS REGISTRADOS</td></tr>`;
+        return;
+      }
+
+      catalogo.forEach(c => {
+        const tr = document.createElement("tr");
+        const tieneTicket = ticketsActivosDePMI(c).length > 0;
+        if (tieneTicket) tr.classList.add("pmi-con-ticket");
+
+        tr.innerHTML = `
+          <td><strong>${limpiarTexto(c.clave)}</strong></td>
+          <td>${htmlEquiposEstadoPMI(c)}</td>
+          <td>${limpiarTexto(c.localidad)}</td>
+          <td><button type="button" class="revision-btn ${estaRevisadoTurno(c) ? "revisado" : "pendiente"}" onclick="toggleRevisionPMI('${c.id}')">${estaRevisadoTurno(c) ? "✓ REVISADO" : "PENDIENTE"}</button></td>
+          <td>${htmlTicketPMI(c)}</td>
+          <td>
+            <button class="btn-editar" onclick="editarCatalogo('${c.id}')">EDITAR</button>
+            <button class="btn-gris" onclick="abrirHistorialPMI('${c.id}')">HISTORIAL</button>
+          </td>
+          <td>
+            <button class="btn-eliminar" onclick="eliminarCatalogo('${c.id}')">ELIMINAR</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function cargarSelect() {
+      const select = document.getElementById("select-camara");
+      const actual = select.value;
+
+      // Si estamos editando una falla, permitimos ver únicamente su PMI actual
+      // aunque ya tenga una falla registrada. En modo alta, los PMI con falla
+      // desaparecen del selector para evitar registros duplicados.
+      const registroEditando = editandoFallaId
+        ? camarasFuera.find(r => r.id === editandoFallaId)
+        : null;
+      const camaraPermitidaEdicion = registroEditando?.camaraId || "";
+
+      const idsConFalla = new Set(
+        camarasFuera
+          .filter(r => r && r.camaraId && r.id !== editandoFallaId)
+          .map(r => r.camaraId)
+      );
+
+      const disponibles = catalogo.filter(c => {
+        if (c.id === camaraPermitidaEdicion) return true;
+        return !idsConFalla.has(c.id);
+      });
+
+      select.innerHTML = disponibles.length
+        ? `<option value="">SELECCIONA CÁMARA / PUNTO</option>`
+        : `<option value="">NO HAY PMI DISPONIBLES SIN FALLA</option>`;
+
+      disponibles.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = `${c.clave} [${normalizarEquiposPunto(c).join(" / ")}] - ${c.localidad}${textoTicketPMI(c)}`;
+        select.appendChild(option);
+      });
+
+      if (actual && disponibles.some(c => c.id === actual)) {
+        select.value = actual;
+      } else if (camaraPermitidaEdicion && disponibles.some(c => c.id === camaraPermitidaEdicion)) {
+        select.value = camaraPermitidaEdicion;
+      }
+
+      actualizarChecksFallaPorPMI();
+    }
+
+    function renderCamarasFuera() {
+      const tbody = document.getElementById("tbody-camaras-fuera");
+      tbody.innerHTML = "";
+
+      if (camarasFuera.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="sin-registros">SIN FALLAS REGISTRADAS</td></tr>`;
+        return;
+      }
+
+      camarasFuera.forEach(reg => {
+        const cam = buscarCamara(reg.camaraId);
+        if (!cam) return;
+
+        const tr = document.createElement("tr");
+        const validacion = validacionFallaPMI(cam);
+        const claseCruce = validacion.tipo === "ok" ? "cruce-ok" : validacion.tipo === "warning" ? "cruce-warning" : "cruce-alerta";
+
+        tr.innerHTML = `
+          <td>${limpiarTexto(reg.fecha)}</td>
+          <td><strong>${limpiarTexto(cam.clave)}</strong></td>
+          <td>${reg.equiposFuera.map(e => tag(e, true)).join(" ")}</td>
+          <td>${limpiarTexto(cam.localidad)}</td>
+          <td>${limpiarTexto(reg.observacion || "-")}</td>
+          <td><span class="cruce-estado ${claseCruce}">${limpiarTexto(validacion.texto)}</span><div style="margin-top:8px"><button type="button" class="btn-verde" style="padding:8px 10px;font-size:11px" onclick="resolverRegistroCompleto('${reg.id}')">YA RESPONDIÓ ✓</button></div></td>
+          <td>
+            <button class="btn-editar" onclick="editarCamaraFuera('${reg.id}')">EDITAR</button>
+          </td>
+          <td>
+            <button class="btn-eliminar" onclick="eliminarCamaraFuera('${reg.id}')">ELIMINAR</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderOtros() {
+      // Módulo retirado: Analítica, LPR y Botón de Pánico ahora se registran directamente por PMI.
+    }
+
+    function contarFuera() {
+      const fuera = {
+        ptz: 0,
+        fijas: 0,
+        analiticas: 0,
+        lpr: 0,
+        panico: 0
+      };
+
+      camarasFuera.forEach(reg => {
+        reg.equiposFuera.forEach(equipo => {
+          if (equipo === "PTZ") {
+            fuera.ptz++;
+          }
+
+          if (equipo === "F1" || equipo === "F2") {
+            fuera.fijas++;
+          }
+          
+          if (equipo === "ANALÍTICA") {
+            fuera.analiticas++;
+          }
+
+          if (equipo === "LPR") {
+            fuera.lpr++;
+          }
+
+          if (equipo === "BOTÓN DE PÁNICO") {
+            fuera.panico++;
+          }
+        });
+      });
+
+      return fuera;
+    }
+
+    function calcular() {
+      const fuera = contarFuera();
+
+      const activas = {
+        ptz: Math.max(inventario.ptz - fuera.ptz, 0),
+        fijas: Math.max(inventario.fijas - fuera.fijas, 0),
+        analiticas: Math.max(inventario.analiticas - fuera.analiticas, 0),
+        lpr: Math.max(inventario.lpr - fuera.lpr, 0),
+        panico: Math.max(inventario.panico - fuera.panico, 0)
+      };
+
+      const totalFuera =
+        fuera.ptz +
+        fuera.fijas +
+        fuera.analiticas +
+        fuera.lpr +
+        fuera.panico;
+
+      const totalActivas =
+        activas.ptz +
+        activas.fijas +
+        activas.analiticas +
+        activas.lpr +
+        activas.panico;
+
+      document.getElementById("inv-ptz").textContent = inventario.ptz;
+      document.getElementById("inv-fijas").textContent = inventario.fijas;
+      document.getElementById("inv-analiticas").textContent = formato2(inventario.analiticas);
+      document.getElementById("inv-lpr").textContent = formato2(inventario.lpr);
+      document.getElementById("inv-panico").textContent = formato2(inventario.panico);
+
+      document.getElementById("fuera-ptz").textContent = formato2(fuera.ptz);
+      document.getElementById("fuera-fijas").textContent = formato2(fuera.fijas);
+      document.getElementById("fuera-analiticas").textContent = formato2(fuera.analiticas);
+      document.getElementById("fuera-lpr").textContent = formato2(fuera.lpr);
+      document.getElementById("fuera-panico").textContent = formato2(fuera.panico);
+      document.getElementById("total-fuera").textContent = formato2(totalFuera);
+
+      document.getElementById("act-ptz").textContent = formato2(activas.ptz);
+      document.getElementById("act-fijas").textContent = formato2(activas.fijas);
+      document.getElementById("act-analiticas").textContent = formato2(activas.analiticas);
+      document.getElementById("act-lpr").textContent = formato2(activas.lpr);
+      document.getElementById("act-panico").textContent = formato2(activas.panico);
+      document.getElementById("total-activas").textContent = totalActivas;
+
+      generarReporte(fuera, activas, totalFuera, totalActivas);
+    }
+
+    function generarReporte(fuera, activas, totalFuera, totalActivas) {
+      let lista = "";
+      let iterador = 1;
+
+      camarasFuera.forEach((reg) => {
+        const cam = buscarCamara(reg.camaraId);
+        if (!cam) return;
+
+        lista += `${iterador++}.  ${cam.clave} ${reg.equiposFuera.join(" ")} -------------------- ${cam.localidad}.\n`;
+      });
+      
+      if (!lista) {
+        lista = "SIN FALLAS ACTIVAS REGISTRADAS.\n";
+      }
+
+      const turnoReporte = turnoActualChecklist();
+      const texto = `TURNO ${turnoReporte.turno} · CHECKLIST CÁMARAS · ${fechaReporte()}.
+
+       PTZ: ${inventario.ptz}
+     FIJAS: ${inventario.fijas}
+ANALITICAS: ${formato2(inventario.analiticas)}
+       LPR: ${formato2(inventario.lpr)}
+BOTON PANICO: ${formato2(inventario.panico)}
+
+${lista}
+CAMARAS ACTIVAS: ${totalActivas}
+            PTZ: ${formato2(activas.ptz)}
+          FIJAS: ${formato2(activas.fijas)}
+     ANALITICAS: ${formato2(activas.analiticas)}
+            LPR: ${formato2(activas.lpr)}
+BOTON DE PANICO: ${formato2(activas.panico)}
+
+ CAMARAS FUERAS: ${formato2(totalFuera)}
+            PTZ: ${formato2(fuera.ptz)}
+          FIJAS: ${formato2(fuera.fijas)}
+     ANALITICAS: ${formato2(fuera.analiticas)}
+            LPR: ${formato2(fuera.lpr)}
+BOTON DE PANICO: ${formato2(fuera.panico)}
+----------------------------------`;
+
+      document.getElementById("reporte-texto").textContent = texto;
+    }
+
+    function editarCatalogo(idCam) {
+      const camara = buscarCamara(idCam);
+
+      if (!camara) return;
+
+      editandoCatalogoId = idCam;
+
+      document.getElementById("cat-clave").value = camara.clave;
+      document.getElementById("cat-localidad").value = camara.localidad;
+      const equipos = normalizarEquiposPunto(camara);
+      document.getElementById("cat-ptz").checked = equipos.includes("PTZ");
+      document.getElementById("cat-f1").checked = equipos.includes("F1");
+      document.getElementById("cat-f2").checked = equipos.includes("F2");
+      document.getElementById("cat-analitica").checked = equipos.includes("ANALÍTICA");
+      document.getElementById("cat-lpr").checked = equipos.includes("LPR");
+      document.getElementById("cat-panico").checked = equipos.includes("BOTÓN DE PÁNICO");
+      document.getElementById("btn-catalogo").textContent = "ACTUALIZAR PMI";
+
+      window.scrollTo({
+        top: document.getElementById("form-catalogo").offsetTop - 30,
+        behavior: "smooth"
+      });
+    }
+
+    function cancelarEditarCatalogo() {
+      editandoCatalogoId = null;
+
+      document.getElementById("form-catalogo").reset();
+      document.getElementById("btn-catalogo").textContent = "GUARDAR PMI";
+    }
+
+    function editarCamaraFuera(idReg) {
+      const registro = camarasFuera.find(r => r.id === idReg);
+
+      if (!registro) return;
+
+      editandoFallaId = idReg;
+
+      // Recarga el selector para mostrar temporalmente el PMI que se está editando.
+      cargarSelect();
+      document.getElementById("select-camara").value = registro.camaraId;
+      actualizarChecksFallaPorPMI();
+      document.getElementById("check-ptz").checked = registro.equiposFuera.includes("PTZ");
+      document.getElementById("check-f1").checked = registro.equiposFuera.includes("F1");
+      document.getElementById("check-f2").checked = registro.equiposFuera.includes("F2");
+      document.getElementById("check-analitica").checked = registro.equiposFuera.includes("ANALÍTICA");
+      document.getElementById("check-lpr").checked = registro.equiposFuera.includes("LPR");
+      document.getElementById("check-panico").checked = registro.equiposFuera.includes("BOTÓN DE PÁNICO");
+      document.getElementById("obs-camara").value = registro.observacion || "";
+      document.getElementById("btn-fuera").textContent = "ACTUALIZAR FALLA";
+
+      window.scrollTo({
+        top: document.getElementById("form-fuera-camara").offsetTop - 30,
+        behavior: "smooth"
+      });
+    }
+
+    function cancelarEditarFalla() {
+      editandoFallaId = null;
+
+      document.getElementById("form-fuera-camara").reset();
+      document.getElementById("btn-fuera").textContent = "AGREGAR FALLA";
+      // Al salir de edición vuelve a ocultar todos los PMI que ya tienen falla.
+      cargarSelect();
+    }
+
+    function editarOtro(idReg) {
+      const registro = otrosFuera.find(r => r.id === idReg);
+
+      if (!registro) return;
+
+      editandoOtroId = idReg;
+
+      document.getElementById("tipo-otro").value = registro.tipo;
+      document.getElementById("cantidad-otro").value = registro.cantidad;
+      document.getElementById("localidad-otro").value = registro.localidad;
+      document.getElementById("btn-otros").textContent = "ACTUALIZAR";
+
+      window.scrollTo({
+        top: document.getElementById("form-otros").offsetTop - 30,
+        behavior: "smooth"
+      });
+    }
+
+    function cancelarEditarOtro() {
+      // Compatibilidad con bases antiguas: este módulo ya no se muestra.
+      editandoOtroId = null;
+    }
+
+    document.getElementById("form-catalogo").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const clave = document.getElementById("cat-clave").value.trim().toUpperCase();
+      const localidad = document.getElementById("cat-localidad").value.trim().toUpperCase();
+      const equipos = equiposSeleccionadosCatalogo();
+
+      if (!clave || !localidad) {
+        notificar("Ingresa clave y localidad.", "warning");
+        return;
+      }
+
+      if (equipos.length === 0) {
+        notificar("Selecciona al menos un tipo de cámara/equipo para este PMI.", "warning");
+        return;
+      }
+
+      const claveExiste = catalogo.some(c => {
+        return c.clave === clave && c.id !== editandoCatalogoId;
+      });
+
+      if (claveExiste) {
+        notificar("Esa clave ya existe.", "warning");
+        return;
+      }
+
+      if (editandoCatalogoId) {
+        const camara = buscarCamara(editandoCatalogoId);
+
+        if (camara) {
+          camara.clave = clave;
+          camara.localidad = localidad;
+          camara.equipos = equipos;
+          registrarHistorialPMI(camara, "INVENTARIO", `PMI actualizado. Equipos: ${equipos.join(" / ")}.`);
+        }
+
+        cancelarEditarCatalogo();
+      } else {
+        const nueva = {
+          id: crearId("cam"),
+          clave,
+          localidad,
+          equipos
+        };
+        catalogo.push(nueva);
+        registrarHistorialPMI(nueva, "INVENTARIO", `PMI agregado. Equipos: ${equipos.join(" / ")}.`);
+
+        document.getElementById("form-catalogo").reset();
+      }
+
+      guardar();
+      render();
+      notificar("Punto guardado correctamente.", "ok");
+    });
+
+    document.getElementById("form-fuera-camara").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const camaraId = document.getElementById("select-camara").value;
+      const cam = buscarCamara(camaraId);
+      const observacion = document.getElementById("obs-camara").value.trim().toUpperCase();
+
+      if (!cam) {
+        notificar("Selecciona una cámara.", "warning");
+        return;
+      }
+
+      const equiposFuera = [];
+
+      if (document.getElementById("check-ptz").checked) {
+        equiposFuera.push("PTZ");
+      }
+
+      if (document.getElementById("check-f1").checked) {
+        equiposFuera.push("F1");
+      }
+
+      if (document.getElementById("check-f2").checked) {
+        equiposFuera.push("F2");
+      }
+      
+      if (document.getElementById("check-analitica").checked) {
+        equiposFuera.push("ANALÍTICA");
+      }
+
+      if (document.getElementById("check-lpr").checked) {
+        equiposFuera.push("LPR");
+      }
+
+      if (document.getElementById("check-panico").checked) {
+        equiposFuera.push("BOTÓN DE PÁNICO");
+      }
+
+      const instalados = normalizarEquiposPunto(cam);
+      const invalidos = equiposFuera.filter(e => !instalados.includes(e));
+      if (invalidos.length) {
+        notificar("Hay equipos seleccionados que no pertenecen a este PMI.", "error");
+        return;
+      }
+
+      if (equiposFuera.length === 0) {
+        notificar("Selecciona uno de los equipos instalados en este PMI.", "warning");
+        return;
+      }
+
+      if (editandoFallaId) {
+        const registro = camarasFuera.find(r => r.id === editandoFallaId);
+
+        if (registro) {
+          registro.camaraId = camaraId;
+          registro.equiposFuera = equiposFuera;
+          registro.observacion = observacion;
+          registro.fecha = new Date().toLocaleString("es-MX");
+          registrarHistorialPMI(cam, "FALLA ACTUALIZADA", `Equipos fuera: ${equiposFuera.join(" / ")}${observacion ? `. ${observacion}` : ""}`);
+        }
+
+        cancelarEditarFalla();
+      } else {
+        const existente = camarasFuera.find(r => r.camaraId === camaraId);
+
+        if (existente) {
+          existente.equiposFuera = Array.from(new Set([...existente.equiposFuera, ...equiposFuera]));
+          existente.observacion = observacion || existente.observacion;
+          existente.fecha = new Date().toLocaleString("es-MX");
+          registrarHistorialPMI(cam, "FALLA ACTUALIZADA", `Equipos fuera: ${existente.equiposFuera.join(" / ")}${existente.observacion ? `. ${existente.observacion}` : ""}`);
+        } else {
+          camarasFuera.push({
+            id: crearId("fuera"),
+            camaraId,
+            equiposFuera,
+            observacion,
+            fecha: new Date().toLocaleString("es-MX")
+          });
+          registrarHistorialPMI(cam, "FALLA REGISTRADA", `Equipos fuera: ${equiposFuera.join(" / ")}${observacion ? `. ${observacion}` : ""}`);
+        }
+
+        document.getElementById("form-fuera-camara").reset();
+      }
+
+      guardar();
+      render();
+      notificar("Falla guardada correctamente.", "ok");
+    });
+
+    function eliminarCatalogo(idCam) {
+      pedirConfirmacion("¿Eliminar este punto del catálogo?", function() {
+        catalogo = catalogo.filter(c => c.id !== idCam);
+        camarasFuera = camarasFuera.filter(r => r.camaraId !== idCam);
+
+        guardar();
+        render();
+        notificar("Punto eliminado correctamente.", "ok");
+      });
+    }
+
+    function resolverRegistroCompleto(idReg) {
+      const reg = camarasFuera.find(r => r.id === idReg);
+      const cam = reg ? buscarCamara(reg.camaraId) : null;
+      if (!reg || !cam) return;
+      pedirConfirmacion(`¿Confirmas que ya respondió ${cam.clave} (${(reg.equiposFuera || []).join(" / ")})?`, function() {
+        const ahora = new Date();
+        const t = turnoActualChecklist(ahora);
+        (reg.equiposFuera || []).forEach(equipo => {
+          const eq = normalizarEquipoTicket(equipo);
+          let ev = eventoRapidoAbierto(cam.id, eq);
+          if (!ev) {
+            ev = {
+              id: crearId("rapido"), camaraId: cam.id, clave: cam.clave || "", localidad: cam.localidad || "", equipo: eq,
+              inicio: reg.fecha || "REGISTRADA PREVIAMENTE", inicioISO: agoraISOSeguro(reg.fecha),
+              turnoKey: t.key, turno: t.turno, fechaBase: t.fechaBase, estado: "FUERA", tuvoTicket: ticketActivoCubreEquipo(cam, eq)
+            };
+            eventosRapidos.unshift(ev);
+          }
+          ev.fin = ahora.toLocaleString("es-MX");
+          ev.finISO = ahora.toISOString();
+          ev.estado = "RESTABLECIDO";
+          ev.tuvoTicket = !!ev.tuvoTicket || ticketActivoCubreEquipo(cam, eq);
+        });
+        camarasFuera = camarasFuera.filter(r => r.id !== idReg);
+        asegurarRevisionPMI(cam, "CONFIRMACIÓN YA RESPONDIÓ");
+        registrarHistorialPMI(cam, "RESTABLECIDA", `Respondieron: ${(reg.equiposFuera || []).join(" / ")}. Conservado en Reporte Final.`);
+        guardar();
+        render();
+        notificar(`${cam.clave}: falla restablecida y asentada en Reporte Final.`, "ok");
+      });
+    }
+
+    function eliminarCamaraFuera(idReg) {
+      pedirConfirmacion("¿Eliminar este registro de falla?", function() {
+        const reg = camarasFuera.find(r => r.id === idReg);
+        const cam = reg ? buscarCamara(reg.camaraId) : null;
+        if (cam && reg) registrarHistorialPMI(cam, "FALLA ELIMINADA", `Se retiró la falla: ${(reg.equiposFuera || []).join(" / ")}.`);
+        camarasFuera = camarasFuera.filter(r => r.id !== idReg);
+
+        guardar();
+        render();
+        notificar("Registro de falla eliminado.", "ok");
+      });
+    }
+
+    function eliminarOtro(idReg) {
+      pedirConfirmacion("¿Eliminar este registro?", function() {
+        otrosFuera = otrosFuera.filter(r => r.id !== idReg);
+
+        guardar();
+        render();
+        notificar("Registro eliminado.", "ok");
+      });
+    }
+
+    function limpiarFuera() {
+      pedirConfirmacion("¿Limpiar todas las fallas registradas?", function() {
+        camarasFuera.forEach(reg => {
+          const cam = buscarCamara(reg.camaraId);
+          if (cam) registrarHistorialPMI(cam, "FALLA ELIMINADA", `Limpieza general de fallas: ${(reg.equiposFuera || []).join(" / ")}.`);
+        });
+        camarasFuera = [];
+        otrosFuera = [];
+
+        cancelarEditarFalla();
+        cancelarEditarOtro();
+
+        guardar();
+        render();
+        notificar("Fallas limpiadas correctamente.", "ok");
+      });
+    }
+
+    function borrarTodo() {
+      pedirConfirmacion("ADVERTENCIA: esta acción vacía catálogo, fallas, revisiones e historial. Se creará un respaldo automático antes de borrar. ¿Continuar?", function() {
+        const escrito = window.prompt('Para confirmar escribe exactamente: BORRAR TODO');
+        if (String(escrito || "").trim().toUpperCase() !== "BORRAR TODO") {
+          notificar("Borrado cancelado. No se eliminó ningún dato.", "warning", 5000);
+          return;
+        }
+
+        // Respaldo explícito independiente de las claves que se vaciarán.
+        guardarRespaldoEmergencia(obtenerBaseDatosTXT(), "ANTES DE BORRAR TODO");
+
+        catalogo = [];
+        camarasFuera = [];
+        otrosFuera = [];
+        revisionesPMI = [];
+        historialPMI = [];
+        eventosRapidos = [];
+
+        cancelarEditarCatalogo();
+        cancelarEditarFalla();
+        cancelarEditarOtro();
+
+        guardarLocal();
+        // No se sincroniza un catálogo vacío: la copia remota queda protegida.
+        marcarPendienteFirebase(false);
+        render();
+        notificar("Datos locales borrados. Firebase NO fue vaciada y el respaldo de emergencia quedó disponible en RECUPERAR DATOS.", "warning", 9000);
+      });
+    }
+
+    function copiarReporte() {
+      const texto = document.getElementById("reporte-texto").textContent;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto);
+        notificar("Reporte copiado.", "ok");
+      } else {
+        const area = document.createElement("textarea");
+        area.value = texto;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        document.body.removeChild(area);
+        notificar("Reporte copiado.", "ok");
+      }
+    }
+
+    function obtenerBaseDatosTXT() {
+      return {
+        metadata: {
+          nombre: "CHECKLIST_CAMARAS_DB",
+          tipo: "BASE_DATOS_TXT",
+          version: "1.0",
+          fechaExportacion: new Date().toLocaleString("es-MX"),
+          actualizadoPor: CLIENTE_FIREBASE_ID,
+          actualizadoISO: new Date().toISOString(),
+          descripcion: "Base de datos local del checklist de cámaras",
+          panelPTZAbierto: !!document.getElementById("details-ptz")?.open
+        },
+        inventario: {
+          ptz: inventario.ptz,
+          fijas: inventario.fijas,
+          analiticas: inventario.analiticas,
+          lpr: inventario.lpr,
+          panico: inventario.panico
+        },
+		
+        catalogo: catalogo,
+        camarasFuera: camarasFuera,
+        otrosFuera: otrosFuera,
+        revisionesPMI: revisionesPMI,
+        historialPMI: historialPMI,
+        eventosRapidos: eventosRapidos
+      };
+	  
+    }
+
+    function exportarBaseTXT() {
+      const base = obtenerBaseDatosTXT();
+      const contenido = JSON.stringify(base, null, 2);
+
+      const blob = new Blob([contenido], {
+        type: "text/plain;charset=utf-8"
+      });
+
+      const url = URL.createObjectURL(blob);
+
+      const fecha = new Date().toISOString().slice(0, 10);
+      const enlace = document.createElement("a");
+
+      enlace.href = url;
+      enlace.download = `checklist_camaras_db_${fecha}.txt`;
+      document.body.appendChild(enlace);
+      enlace.click();
+      document.body.removeChild(enlace);
+
+      URL.revokeObjectURL(url);
+
+      notificar("Base TXT exportada correctamente.", "ok");
+    }
+
+    function importarBaseTXT(event) {
+      const archivo = event.target.files[0];
+
+      if (!archivo) return;
+
+      const lector = new FileReader();
+
+      lector.onload = function(e) {
+        try {
+          const contenido = e.target.result;
+          const base = JSON.parse(contenido);
+
+          if (
+            !base ||
+            !Array.isArray(base.catalogo) ||
+            !Array.isArray(base.camarasFuera) ||
+            !Array.isArray(base.otrosFuera)
+          ) {
+            notificar("El archivo TXT no contiene una base válida.", "error", 5000);
+            event.target.value = "";
+            return;
+          }
+
+          pedirConfirmacion("¿Deseas cargar esta base TXT? Esto reemplazará los datos actuales del sistema.", function() {
+            catalogo = base.catalogo;
+            camarasFuera = base.camarasFuera;
+            otrosFuera = base.otrosFuera;
+            revisionesPMI = Array.isArray(base.revisionesPMI) ? base.revisionesPMI : [];
+            historialPMI = Array.isArray(base.historialPMI) ? base.historialPMI : [];
+            eventosRapidos = Array.isArray(base.eventosRapidos) ? base.eventosRapidos : [];
+
+            if (base.inventario && typeof base.inventario === "object") {
+              inventario.ptz = numero(base.inventario.ptz);
+              inventario.fijas = numero(base.inventario.fijas);
+              inventario.analiticas = numero(base.inventario.analiticas);
+              inventario.lpr = numero(base.inventario.lpr);
+              inventario.panico = numero(base.inventario.panico);
+            }
+
+            cancelarEditarCatalogo();
+            cancelarEditarFalla();
+            cancelarEditarOtro();
+
+            guardar();
+            render();
+            event.target.value = "";
+
+            notificar("Base TXT importada correctamente.", "ok");
+          }, function() {
+            event.target.value = "";
+          });
+
+          return;
+        } catch (error) {
+          notificar("Error al leer el archivo. Verifica que sea el TXT correcto.", "error", 6000);
+        }
+
+        event.target.value = "";
+      };
+
+      lector.readAsText(archivo);
+    }
+
+    window.addEventListener("storage", function(event) {
+      const clavesSincronizables = [KEY_CATALOGO, KEY_FUERA, KEY_OTROS, KEY_REVISIONES, KEY_HISTORIAL_PMI, KEY_EVENTOS_RAPIDOS];
+
+      if (!clavesSincronizables.includes(event.key) || firebaseAplicandoRemoto) {
+        return;
+      }
+
+      catalogo = cargar(KEY_CATALOGO, catalogoInicial);
+      camarasFuera = cargar(KEY_FUERA, []);
+      otrosFuera = cargar(KEY_OTROS, []);
+      revisionesPMI = cargar(KEY_REVISIONES, []);
+      historialPMI = cargar(KEY_HISTORIAL_PMI, []);
+      eventosRapidos = cargar(KEY_EVENTOS_RAPIDOS, []);
+
+      cancelarEditarCatalogo();
+      cancelarEditarFalla();
+      cancelarEditarOtro();
+      render();
+      marcarEstadoFirebase(firebaseConectado ? "Actualizado en vivo" : "Actualizado local", firebaseConectado ? "ok" : "sync");
+      notificar("Esta pantalla recibió cambios recientes.", "info", 2600);
+    });
+
+function render() {
+  ordenarCatalogo();
+  ordenarCamarasFuera(); // ← NUEVO
+
+  renderCatalogo();
+  cargarSelect();
+  renderCamarasFuera();
+  renderPanelOperativo();
+  renderChequeoRapido();
+  calcular();
+}
+
+    document.getElementById("select-camara").addEventListener("change", actualizarChecksFallaPorPMI);
+    document.getElementById("quick-pmi-lote").addEventListener("input", programarSeleccionRapidaPMI);
+    document.getElementById("quick-pmi-lote").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (quickLoteTimer) clearTimeout(quickLoteTimer);
+        aplicarSeleccionRapidaPMI();
+      }
+    });
+    document.getElementById("modal-historial-pmi").addEventListener("click", function(e) {
+      if (e.target.id === "modal-historial-pmi") cerrarHistorialPMI();
+    });
+
+    window.addEventListener("online", function() {
+      reactivarFirebase();
+      releerFirebaseTickets();
+    });
+    window.addEventListener("focus", function() {
+      reactivarFirebase();
+      releerFirebaseTickets();
+    });
+    document.addEventListener("visibilitychange", function() {
+      if (!document.hidden) {
+        reactivarFirebase();
+        releerFirebaseTickets();
+      }
+    });
+
+    render();
+    iniciarVigilanciaFirebase();
+    iniciarFirebaseAutomatico();
+    conectarFirebaseTicketsSoloLectura();
+    setTimeout(function() {
+      if (!catalogo.length && !camarasFuera.length && !revisionesPMI.length && !historialPMI.length && !eventosRapidos.length) {
+        notificar("El Checklist está vacío. Espera a que conecte 'Tickets' y pulsa RECUPERAR DATOS. La app ya no sobrescribirá Firebase con una base vacía.", "warning", 10000);
+      }
+    }, 1800);
+  </script>
+
+</body>
+
+</html>

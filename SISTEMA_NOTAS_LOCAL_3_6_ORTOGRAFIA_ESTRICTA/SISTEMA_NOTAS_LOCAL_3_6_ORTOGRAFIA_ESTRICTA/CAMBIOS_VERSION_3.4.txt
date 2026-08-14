@@ -1,0 +1,12 @@
+VERSIÓN 3.4 — CORRECCIÓN DE PERSISTENCIA Y SINCRONIZACIÓN
+
+1. Eliminada la base de demostración incluida por error en la versión anterior.
+1.1 Eliminado el acceso directo antiguo que apuntaba a otra ruta de red.
+2. Inicio exclusivo del servidor: se cierran copias anteriores antes de abrir la base local.
+3. GET de notas/estado sin caché, con identificador único por consulta.
+4. La API de listado y detalle devuelve la versión real de la base.
+5. Después de registrar se recarga la lista y se selecciona la nota creada.
+6. Después de eliminar se actualiza la interfaz de inmediato y se verifica que el servidor ya no devuelva la nota.
+7. Se conservan tipificaciones, municipios, ortografía, cierres, supervisión, sesión y fotos arrastrables.
+
+8. Inicio de sesión obligatorio cuando no hay despachador activo, evitando acciones que parecían no responder por falta de sesión.

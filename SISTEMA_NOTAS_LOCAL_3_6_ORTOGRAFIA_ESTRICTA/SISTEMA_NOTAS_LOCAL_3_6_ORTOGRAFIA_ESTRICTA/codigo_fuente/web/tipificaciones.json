@@ -1,0 +1,1995 @@
+{
+  "source": "Catálogo Nacional de Incidentes de Emergencia Versión 2.0 (CNIE 9-1-1)",
+  "count": 282,
+  "items": [
+    {
+      "code": "10101",
+      "name": "ACCIDENTE ACUÁTICO CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10102",
+      "name": "ACCIDENTE DE AERONAVE CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10103",
+      "name": "ACCIDENTE DE MOTOCICLETA CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10104",
+      "name": "ACCIDENTE DE VEHÍCULO AUTOMOTOR CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10105",
+      "name": "ACCIDENTE FERROVIARIO CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10106",
+      "name": "ACCIDENTE FERROVIARIO CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10107",
+      "name": "ACCIDENTE MÚLTIPLE CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10108",
+      "name": "ACCIDENTE MÚLTIPLE CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10109",
+      "name": "ACCIDENTE DE VEHÍCULO DE PASAJEROS CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10110",
+      "name": "ACCIDENTE DE VEHÍCULO DE PASAJEROS CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10111",
+      "name": "ACCIDENTE DE MOTOCICLETA CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10112",
+      "name": "ACCIDENTE DE VEHÍCULO AUTOMOTOR CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10113",
+      "name": "ACCIDENTE DE AERONAVE CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10114",
+      "name": "ACCIDENTE DE EMBARCACIONES CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10115",
+      "name": "ACCIDENTE DE EMBARCACIONES CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10116",
+      "name": "ATROPELLAMIENTO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10117",
+      "name": "ACCIDENTE ACUÁTICO CON FALLECIDO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10118",
+      "name": "ACCIDENTES CON MATERIALES PELIGROSOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10119",
+      "name": "ACCIDENTES CON MATERIALES RADIOACTIVOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10120",
+      "name": "ACCIDENTES CON RIESGO BIOLÓGICO INFECTO-CONTAGIOSO",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10121",
+      "name": "OTROS ACCIDENTES CON LESIONADOS",
+      "type": "MÉDICO",
+      "subtype": "ACCIDENTES",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10201",
+      "name": "AHOGAMIENTO",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10202",
+      "name": "AMPUTACIÓN",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10203",
+      "name": "ASFIXIA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10204",
+      "name": "CAÍDA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10205",
+      "name": "ELECTROCUTADO/LESIÓN POR CORRIENTE ELÉCTRICA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10206",
+      "name": "FRACTURADO/TRAUMATISMO DE EXTREMIDADES",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10207",
+      "name": "HEMORRAGIA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10208",
+      "name": "LESIONADO POR ARMA BLANCA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10209",
+      "name": "LESIONADO POR PROYECTIL DE ARMA DE FUEGO",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10210",
+      "name": "MORDEDURA DE ANIMAL",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10211",
+      "name": "QUEMADURAS",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10212",
+      "name": "TRAUMATISMOS MÚLTIPLES",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10213",
+      "name": "TRAUMATISMO DE CRÁNEO",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10214",
+      "name": "TRAUMATISMO DE TÓRAX (PECHO Y/O ESPALDA)",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10215",
+      "name": "TRAUMATISMO ABDOMINAL",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10216",
+      "name": "TRAUMATISMO GENITAL Y/O URINARIO",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10217",
+      "name": "CONGELAMIENTO/LESIONADO POR CONDICIONES AMBIENTALES",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10218",
+      "name": "HIPOTERMIA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10219",
+      "name": "FALLECIDO DE CAUSA TRAUMÁTICA",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "10220",
+      "name": "OTROS INCIDENTES MÉDICOS TRAUMÁTICOS",
+      "type": "MÉDICO",
+      "subtype": "TRAUMÁTICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10301",
+      "name": "TRABAJO DE PARTO",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10302",
+      "name": "AMENAZA DE ABORTO",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10303",
+      "name": "URGENCIA EN PACIENTE EMBARAZADA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10304",
+      "name": "INFARTO CEREBRAL",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10305",
+      "name": "DIFICULTAD RESPIRATORIA/URGENCIA RESPIRATORIA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10306",
+      "name": "INTOXICACIÓN ETÍLICA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10307",
+      "name": "CONVULSIONES",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10308",
+      "name": "PERSONA INCONSCIENTE/URGENCIA NEUROLÓGICA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10309",
+      "name": "ENVENENAMIENTO POR ANIMAL DE PONZOÑA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10310",
+      "name": "URGENCIA POR ENFERMEDAD GENERAL",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10311",
+      "name": "DOLOR ABDOMINAL/URGENCIA ABDOMINAL",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10312",
+      "name": "DESCOMPENSACIÓN DE LA DIABETES/DESHIDRATACIÓN",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10313",
+      "name": "PARO CARDIORRESPIRATORIO",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10314",
+      "name": "INFARTO/URGENCIA CARDIOLÓGICA",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10315",
+      "name": "INTOXICACIÓN/SOBREDOSIS/ENVENENAMIENTO POR SUSTANCIAS",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10316",
+      "name": "OTROS INCIDENTES MÉDICOS CLÍNICOS",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "10317",
+      "name": "FALLECIDO DE CAUSA NATURAL",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "BAJA"
+    },
+    {
+      "code": "10318",
+      "name": "PERSONA EN CRISIS POR TRASTORNO MENTAL",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "10319",
+      "name": "EPIDEMIAS",
+      "type": "MÉDICO",
+      "subtype": "CLÍNICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20101",
+      "name": "ACCIDENTE FERROVIARIO SIN LESIONADOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20102",
+      "name": "ALMACENAMIENTO DE SUSTANCIAS PELIGROSAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20103",
+      "name": "ANIMAL PELIGROSO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20104",
+      "name": "ANIMALES SUELTOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20105",
+      "name": "FUGAS Y DERRAMES EN ESCUELA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20106",
+      "name": "ENCHARCAMIENTO/ DESBORDAMIENTO DE RÍO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20107",
+      "name": "EXPLOSIÓN",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20108",
+      "name": "FUGAS Y DERRAMES DE SUSTANCIAS QUÍMICAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20109",
+      "name": "HUNDIMIENTOS / AGRIETAMIENTOS/ INESTABILIDAD DE LADERA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20110",
+      "name": "GASES TÓXICOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20111",
+      "name": "OLORES FÉTIDOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20112",
+      "name": "MATERIALES PELIGROSOS O RADIOACTIVOS (EXPOSICIÓN)",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20113",
+      "name": "CAÍDA DE ANUNCIO O ESPECTACULAR",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20114",
+      "name": "TRANSPORTE DE SUSTANCIAS PELIGROSAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "AUXILIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20201",
+      "name": "CONTAMINACIÓN DE SUELO, AIRE Y AGUA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20202",
+      "name": "DERRUMBES",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20203",
+      "name": "ENJAMBRE DE ABEJAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20204",
+      "name": "ERUPCIÓN O EMISIONES VOLCÁNICAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20205",
+      "name": "FRENTES FRÍOS, BAJAS TEMPERATURAS, NEVADAS Y HELADAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20206",
+      "name": "HURACANES",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20207",
+      "name": "INUNDACIONES",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20208",
+      "name": "PLAGAS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20209",
+      "name": "SISMO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20210",
+      "name": "ÁRBOL CAÍDO O POR CAER",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20211",
+      "name": "TORMENTAS DE GRANIZO/DE NIEVE",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20212",
+      "name": "TORNADOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20213",
+      "name": "TSUNAMI",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20214",
+      "name": "VIENTO/TORMENTA DE POLVO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "MEDIO AMBIENTE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20301",
+      "name": "INCENDIO DE CASA HABITACIÓN",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20302",
+      "name": "INCENDIO EN ESCUELA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20303",
+      "name": "INCENDIO DE VEHÍCULO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20304",
+      "name": "INCENDIO DE COMERCIO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20305",
+      "name": "INCENDIO DE EDIFICIO",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20306",
+      "name": "INCENDIO A BORDO DE EMBARCACIÓN",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20307",
+      "name": "INCENDIO FORESTAL",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20308",
+      "name": "QUEMA URBANA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20309",
+      "name": "QUEMA AGROPECUARIA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20310",
+      "name": "INCENDIO DE FÁBRICA O INDUSTRIA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20311",
+      "name": "OTROS INCENDIOS",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "INCENDIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20401",
+      "name": "NAUFRAGIO/HUNDIMIENTO/VARADURA DE EMBARCACIÓN",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "RESCATE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20402",
+      "name": "PERSONA ATRAPADA",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "RESCATE",
+      "priority": "ALTA"
+    },
+    {
+      "code": "20403",
+      "name": "RESCATE ANIMAL",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "RESCATE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "20404",
+      "name": "OTROS RESCATES",
+      "type": "PROTECCIÓN CIVIL",
+      "subtype": "RESCATE",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30101",
+      "name": "VEHÍCULO ABANDONADO",
+      "type": "SEGURIDAD",
+      "subtype": "ABANDONO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30102",
+      "name": "OBJETO SOSPECHOSO O PELIGROSO",
+      "type": "SEGURIDAD",
+      "subtype": "ABANDONO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30103",
+      "name": "PERSONA TIRADA EN VÍA PÚBLICA",
+      "type": "SEGURIDAD",
+      "subtype": "ABANDONO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30201",
+      "name": "DETONACIÓN DE EXPLOSIVOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30202",
+      "name": "DETONACIÓN DE ARMA DE FUEGO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30203",
+      "name": "PERSONA ARMADA EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30204",
+      "name": "PORTACIÓN DE ARMAS O CARTUCHOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30205",
+      "name": "DETONACIÓN DE COHETES O FUEGOS ARTIFICIALES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30206",
+      "name": "DETONACIÓN DE ARMA DE FUEGO EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30207",
+      "name": "TRÁFICO DE ARMAS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON ARMAS/EXPLOSIVOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30301",
+      "name": "AERONAVE SOSPECHOSA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30302",
+      "name": "ARRANCONES O CARRERAS DE VEHÍCULOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30303",
+      "name": "BLOQUEO O CORTE DE VÍAS DE COMUNICACIÓN",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30304",
+      "name": "CIRCULAR EN SENTIDO CONTRARIO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30305",
+      "name": "VEHÍCULO A EXCESO DE VELOCIDAD",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30306",
+      "name": "VEHÍCULO EN HUIDA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30307",
+      "name": "VEHÍCULO SOSPECHOSO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30308",
+      "name": "VEHÍCULO DESCOMPUESTO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30309",
+      "name": "ACCIDENTE DE TRÁNSITO SIN LESIONADOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30310",
+      "name": "OTRAS FALTAS A REGLAMENTO DE TRÁNSITO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LAS VÍAS DE COMUNICACIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "30401",
+      "name": "OTRAS ALARMAS DE EMERGENCIAS ACTIVADAS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30402",
+      "name": "BOTÓN DE EMERGENCIA ACTIVADO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30403",
+      "name": "CRISTALAZO O ROBO AL INTERIOR DE VEHÍCULO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30404",
+      "name": "DAÑO A PROPIEDAD AJENA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30405",
+      "name": "DESPOJO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30406",
+      "name": "EXTORSIÓN",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30407",
+      "name": "EXTORSIÓN TELEFÓNICA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30408",
+      "name": "ACTIVACIÓN DE ALARMA EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30409",
+      "name": "ROBO DE COMBUSTIBLE O TOMA CLANDESTINA DE DUCTOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30410",
+      "name": "ROBO A CAJERO AUTOMÁTICO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30411",
+      "name": "ROBO DE AUTOPARTES O ACCESORIOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30412",
+      "name": "ROBO DE GANADO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30413",
+      "name": "ROBO A CASA HABITACIÓN CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30414",
+      "name": "ROBO A CASA HABITACIÓN SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30415",
+      "name": "ROBO A ESCUELA CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30416",
+      "name": "ROBO A ESCUELA SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30417",
+      "name": "ROBO A GASOLINERA CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30418",
+      "name": "ROBO A GASOLINERA SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30419",
+      "name": "ROBO A NEGOCIO CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30420",
+      "name": "ROBO A NEGOCIO SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30421",
+      "name": "ROBO A TRANSEÚNTE CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30422",
+      "name": "ROBO A TRANSEÚNTE SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30423",
+      "name": "ROBO EN TRANSPORTE PÚBLICO COLECTIVO CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30424",
+      "name": "ROBO EN TRANSPORTE PÚBLICO COLECTIVO SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30425",
+      "name": "ROBO EN TRANSPORTE PÚBLICO INDIVIDUAL CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30426",
+      "name": "ROBO EN TRANSPORTE PÚBLICO INDIVIDUAL SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30427",
+      "name": "ROBO A TRANSPORTISTA CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30428",
+      "name": "ROBO A TRANSPORTISTA SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30429",
+      "name": "ROBO DE VEHÍCULO PARTICULAR CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30430",
+      "name": "ROBO DE VEHÍCULO PARTICULAR SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30431",
+      "name": "ROBO EN CARRETERA CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30432",
+      "name": "ROBO EN CARRETERA SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30433",
+      "name": "ROBO A BANCO CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30434",
+      "name": "ROBO A BANCO SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30435",
+      "name": "ROBO A CASA DE CAMBIO CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30436",
+      "name": "ROBO A CASA DE CAMBIO SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30437",
+      "name": "ROBO A EMPRESA DE TRASLADO DE VALORES CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30438",
+      "name": "ROBO A EMPRESA DE TRASLADO DE VALORES SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30439",
+      "name": "ROBO A FERROCARRIL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30440",
+      "name": "ROBO DE PLACA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30441",
+      "name": "ROBO A TRANSPORTE ESCOLAR CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30442",
+      "name": "ROBO A TRANSPORTE ESCOLAR SIN VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30443",
+      "name": "ROBO A EMBARCACIONES Y PIRATERÍA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30444",
+      "name": "TRANSPORTE ILEGAL DE COMBUSTIBLE",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30445",
+      "name": "ROBO DE ARTE SACRO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30446",
+      "name": "OTROS ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON EL PATRIMONIO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30501",
+      "name": "ABANDONO DE PERSONA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA FAMILIA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30502",
+      "name": "VIOLENCIA DE PAREJA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA FAMILIA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30503",
+      "name": "VIOLENCIA FAMILIAR",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA FAMILIA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30504",
+      "name": "OTROS ACTOS RELACIONADOS CON LA FAMILIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA FAMILIA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30505",
+      "name": "MALTRATO INFANTIL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA FAMILIA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30601",
+      "name": "MENOR EXTRAVIADO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30602",
+      "name": "PERSONA NO LOCALIZADA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30603",
+      "name": "PRIVACIÓN DE LA LIBERTAD",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30604",
+      "name": "REHENES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30605",
+      "name": "ROBO DE INFANTE",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30606",
+      "name": "PERSONA DETENIDA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30607",
+      "name": "SUSTRACCIÓN DE MENORES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30608",
+      "name": "TRÁFICO DE MENORES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30609",
+      "name": "OTROS ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30610",
+      "name": "TENTATIVA DE PRIVACIÓN DE LA LIBERTAD",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30611",
+      "name": "NOTIFICACIÓN DE CIBER INCIDENTE",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD PERSONAL",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30701",
+      "name": "ABUSO SEXUAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30702",
+      "name": "ACOSO U HOSTIGAMIENTO SEXUAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30703",
+      "name": "ATAQUES AL PUDOR",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30704",
+      "name": "ESTUPRO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30705",
+      "name": "EXPLOTACIÓN DE MENORES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30706",
+      "name": "TRATA DE MENORES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30707",
+      "name": "VIOLACIÓN",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30708",
+      "name": "OTROS ACTOS RELACIONADOS CON LA LIBERTAD Y LA SEGURIDAD SEXUAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30709",
+      "name": "TRATA DE PERSONAS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30710",
+      "name": "TRÁFICO DE PERSONAS/INDOCUMENTADAS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30711",
+      "name": "CORRUPCIÓN DE MENORES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA LIBERTAD Y SEGURIDAD SEXUAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30801",
+      "name": "ACTOS DE COMERCIALIZACIÓN ILEGAL DE SANGRE, ÓRGANOS Y TEJIDOS HUMANOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30802",
+      "name": "ASOCIACIÓN DELICTUOSA O PANDILLERISMO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30803",
+      "name": "ENFRENTAMIENTO DE GRUPOS ARMADOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30804",
+      "name": "TERRORISMO O ATENTADO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30805",
+      "name": "AMENAZA DE BOMBA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30806",
+      "name": "OTROS ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30807",
+      "name": "MOTÍN",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30808",
+      "name": "VENTA CLANDESTINA DE PIROTECNIA, COHETES O FUEGOS ARTIFICIALES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30809",
+      "name": "VENTA ILEGAL DE COMBUSTIBLE",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30810",
+      "name": "AMENAZA DE BOMBA EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA SEGURIDAD COLECTIVA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30901",
+      "name": "OTROS ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30902",
+      "name": "ACCIDENTE DE TRÁNSITO CON MUERTOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30903",
+      "name": "VIOLENCIA CONTRA LA MUJER",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30904",
+      "name": "PERSONA SOSPECHOSA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "30905",
+      "name": "AMENAZA DE SUICIDIO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30906",
+      "name": "HOMICIDIO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30907",
+      "name": "PERSONA AGRESIVA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30908",
+      "name": "SUICIDIO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "30909",
+      "name": "AGRESIÓN FÍSICA EN PANDILLA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON LA VIDA Y LA INTEGRIDAD PERSONAL",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31001",
+      "name": "ALLANAMIENTO DE MORADA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31002",
+      "name": "AMENAZA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31003",
+      "name": "DAÑO A BIENES PÚBLICOS, INSTITUCIONES, MONUMENTOS, ENTRE OTROS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31004",
+      "name": "DESCARGA DE DESECHOS SIN PERMISOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31005",
+      "name": "ELECTORALES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31006",
+      "name": "FUGA DE REOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31007",
+      "name": "NARCOMENUDEO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31008",
+      "name": "TOMA DE EDIFICIO PÚBLICO",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31009",
+      "name": "TOMA DE INSTALACIONES EDUCATIVAS CON VIOLENCIA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31010",
+      "name": "TALA ILEGAL",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31011",
+      "name": "TRÁFICO DE MADERA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31012",
+      "name": "TRAFICO Y/O VENTA CLANDESTINA DE ANIMALES",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31013",
+      "name": "TRÁFICO DE DROGAS Y ESTUPEFACIENTES EN LA MAR",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31014",
+      "name": "TRÁFICO DE DROGAS Y ESTUPEFACIENTES EN VÍA PÚBLICA",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31015",
+      "name": "OTROS ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "type": "SEGURIDAD",
+      "subtype": "ACTOS RELACIONADOS CON OTROS BIENES JURÍDICOS",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31101",
+      "name": "ALTERACIÓN DEL ORDEN PÚBLICO POR PERSONA ALCOHOLIZADA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31102",
+      "name": "ALTERACIÓN DEL ORDEN PÚBLICO POR PERSONA DROGADA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31103",
+      "name": "CONDUCTOR EBRIO",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31104",
+      "name": "CONSUMO DE ALCOHOL EN VÍA PÚBLICA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31105",
+      "name": "CONSUMO DE DROGAS EN VÍA PÚBLICA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31106",
+      "name": "CONSUMO DE ALCOHOL EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31107",
+      "name": "CONSUMO DE DROGAS EN ESCUELA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31108",
+      "name": "GRAFITIS",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31109",
+      "name": "MANIFESTACIÓN CON DISTURBIOS O BLOQUEOS",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31110",
+      "name": "MITIN",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31111",
+      "name": "PELEA CLANDESTINA CON ANIMALES",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "31112",
+      "name": "RIÑA/PELEA CLANDESTINA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "ALTA"
+    },
+    {
+      "code": "31113",
+      "name": "PERSONA EXHIBICIONISTA",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "31114",
+      "name": "OTROS TIPOS DE ALTERACIÓN AL ORDEN PÚBLICO",
+      "type": "SEGURIDAD",
+      "subtype": "DISTURBIOS Y ALTERACIÓN DEL ORDEN PÚBLICO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "40101",
+      "name": "CAÍDA DE BARDA",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40102",
+      "name": "CAÍDA DE POSTE",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40103",
+      "name": "FALLA DE ALUMBRADO PÚBLICO",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40104",
+      "name": "FALLAS DE SEMÁFORO",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40105",
+      "name": "ALCANTARILLA SIN TAPA",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40106",
+      "name": "CABLES COLGANDO",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40107",
+      "name": "CORTO CIRCUITO",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40108",
+      "name": "GRAVA SUELTA",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "40109",
+      "name": "AFECTACIÓN DE LOS SERVICIOS BÁSICOS O DE INFRAESTRUCTURA ESTRATÉGICA",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "ALTA"
+    },
+    {
+      "code": "40110",
+      "name": "VIALIDAD EN MAL ESTADO",
+      "type": "SERVICIOS PÚBLICOS",
+      "subtype": "INFRAESTRUCTURA",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50101",
+      "name": "CONCENTRACIÓN PACÍFICA DE PERSONAS",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50102",
+      "name": "TENTATIVA DE ROBO",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50103",
+      "name": "EXTRAVÍO DE PLACA",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50104",
+      "name": "FRAUDE",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50105",
+      "name": "RUIDO EXCESIVO",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50106",
+      "name": "USURPACIÓN DE IDENTIDAD",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50107",
+      "name": "ABUSO DE CONFIANZA",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50108",
+      "name": "ABUSO DE AUTORIDAD",
+      "type": "ASISTENCIA",
+      "subtype": "PROTECCIÓN",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50201",
+      "name": "RESTOS HUMANOS",
+      "type": "ASISTENCIA",
+      "subtype": "NOTIFICACIÓN DE HALLAZGO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50202",
+      "name": "DE ARMA",
+      "type": "ASISTENCIA",
+      "subtype": "NOTIFICACIÓN DE HALLAZGO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50203",
+      "name": "VEHÍCULO RECUPERADO",
+      "type": "ASISTENCIA",
+      "subtype": "NOTIFICACIÓN DE HALLAZGO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50301",
+      "name": "APOYO A LA CIUDADANÍA",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50302",
+      "name": "PERSONA LOCALIZADA",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50303",
+      "name": "MALTRATO DE ANIMALES",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "MEDIA"
+    },
+    {
+      "code": "50304",
+      "name": "PERSONA EN SITUACIÓN DE CALLE",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50305",
+      "name": "SOLICITUD DE RONDÍN",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "50306",
+      "name": "QUEJA CONTRA SERVIDORES PÚBLICOS",
+      "type": "ASISTENCIA",
+      "subtype": "APOYO",
+      "priority": "BAJA"
+    },
+    {
+      "code": "60101",
+      "name": "ALCANTARILLA OBSTRUIDA",
+      "type": "OTROS SERVICIOS",
+      "subtype": "OTROS SERVICIOS PÚBLICOS",
+      "priority": "BAJA"
+    },
+    {
+      "code": "60102",
+      "name": "ANIMAL MUERTO",
+      "type": "OTROS SERVICIOS",
+      "subtype": "OTROS SERVICIOS PÚBLICOS",
+      "priority": "BAJA"
+    },
+    {
+      "code": "60103",
+      "name": "SOLICITUD DE OTROS SERVICIOS PÚBLICOS",
+      "type": "OTROS SERVICIOS",
+      "subtype": "OTROS SERVICIOS PÚBLICOS",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70101",
+      "name": "LLAMADA DE BROMA POR NIÑOS",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70102",
+      "name": "LLAMADA DE PRUEBA",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70103",
+      "name": "LLAMADA INCOMPLETA",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70104",
+      "name": "LLAMADA MUDA",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70105",
+      "name": "TRANSFERENCIA DE LLAMADA",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70106",
+      "name": "INSULTOS POR ADULTOS/LLAMADA OBSCENA",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70107",
+      "name": "JÓVENES/ADULTOS JUGANDO",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    },
+    {
+      "code": "70108",
+      "name": "OTRAS LLAMADAS IMPROCEDENTES",
+      "type": "IMPROCEDENTES",
+      "subtype": "LLAMADAS IMPROCEDENTES",
+      "priority": "BAJA"
+    }
+  ],
+  "verified": true,
+  "verifiedCounts": {
+    "types": 7,
+    "subtypes": 24,
+    "incidents": 282,
+    "byType": {
+      "MÉDICO": 60,
+      "PROTECCIÓN CIVIL": 43,
+      "SEGURIDAD": 141,
+      "SERVICIOS PÚBLICOS": 10,
+      "ASISTENCIA": 17,
+      "OTROS SERVICIOS": 3,
+      "IMPROCEDENTES": 8
+    }
+  }
+}

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Sistema de Notas Informativas</title>
+  <link rel="stylesheet" href="/styles.css?v=3.5.0-catalogos-completos">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Sistema de Notas Informativas <span class="build-badge">UN SOLO EJECUTABLE 3.5</span></div>
+    <nav class="top-actions">
+      <span id="localStatus" class="status-pill online">Conectando al servidor central…</span>
+      <button id="copyLink" class="btn" type="button" title="Copiar el enlace para abrir el sistema en la segunda computadora">Copiar enlace PC 2</button>
+      <button id="sessionBtn" class="btn session-btn" type="button">Despacho: SIN SESIÓN</button>
+      <button id="supervisionBtn" class="btn" type="button">Supervisión</button>
+      <button class="btn nav-btn active" data-view="registro">Registrar nota</button>
+      <button class="btn nav-btn" data-view="dashboard">Dashboard</button>
+      <button id="openWindow" class="btn">Otra pantalla</button>
+      <a class="btn" href="/api/backup">Crear respaldo</a>
+      <button id="shutdownBtn" class="btn danger-outline">Cerrar servidor</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="registroView" class="view active">
+      <form id="noteForm" class="registro-layout" autocomplete="off">
+        <section class="panel-formulario">
+          <div class="folio-row">
+            <div id="folioPrefix" class="prefijo-folio">REF/00000000/</div>
+            <input id="folioManual" class="input-folio" inputmode="numeric" maxlength="20" placeholder="Ej. 1, 00125 o 123456" required>
+          </div>
+          <input id="titulo" class="campo selector-field" maxlength="160" placeholder="Título del Incidente" spellcheck="true" required readonly role="button" aria-haspopup="dialog" title="Haz clic para seleccionar una tipificación del Catálogo Nacional 9-1-1">
+          <div class="fecha-hora">
+            <input id="fecha" class="campo campo-auto" readonly>
+            <input id="hora" class="campo campo-auto" readonly>
+          </div>
+          <select id="corporacion" class="campo" required>
+            <option value="">Corporación</option>
+            <option value="PC">PC — Protección Civil</option>
+            <option value="SPM">SPM — Seguridad Pública Municipal</option>
+            <option value="TRVM">TRVM — Tránsito Vial Municipal</option>
+            <option value="GEVP">GEVP — Guardia Estatal Vial Preventiva</option>
+            <option value="GEP">GEP — Guardia Estatal Preventiva</option>
+            <option value="FRIP">FRIP — Fuerza de Reacción Inmediata Pakal</option>
+          </select>
+          <input id="municipio" class="campo selector-field" maxlength="100" value="Reforma, Chiapas" placeholder="Municipio" required readonly role="button" aria-haspopup="dialog" title="Haz clic para seleccionar el municipio">
+          <button id="saveBtn" class="btn-agregar" type="submit">Agregar Nota Informativa</button>
+          <div id="saveProgress" class="save-progress hidden"><div></div><span>Guardando…</span></div>
+        </section>
+
+        <section class="panel-editor">
+          <div class="editor-toolbar">
+            <button type="button" data-cmd="bold" title="Negrita">B</button>
+            <button type="button" data-cmd="italic" title="Cursiva"><i>I</i></button>
+            <button type="button" data-cmd="underline" title="Subrayado"><u>U</u></button>
+            <button type="button" data-cmd="insertUnorderedList" title="Lista">•</button>
+            <button type="button" data-cmd="undo" title="Deshacer">↶</button>
+            <button type="button" data-cmd="redo" title="Rehacer">↷</button>
+            <button id="correctNowBtn" type="button" title="Corregir ortografía ahora">ABC✓</button>
+          </div>
+          <div id="editorNota" class="editor" contenteditable="true" spellcheck="true" lang="es-MX" data-placeholder="Escriba la Nota Aquí"></div>
+          <div id="orthographyStatus" class="orthography-status">Ortografía automática local activada · se corrige al pegar, al salir del editor y al guardar</div>
+
+          <section id="dropZone" class="photo-zone" tabindex="0">
+            <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden>
+            <div class="photo-zone-copy">
+              <strong>Fotografías opcionales</strong>
+              <span>Arrastra imágenes, haz clic para seleccionarlas o copia desde WhatsApp y presiona <b>Ctrl + V</b>.</span>
+            </div>
+            <button id="choosePhotos" type="button" class="btn small">Seleccionar fotos</button>
+          </section>
+          <div id="photoPreview" class="photo-preview"></div>
+        </section>
+      </form>
+    </section>
+
+    <section id="dashboardView" class="view">
+      <div class="dashboard-layout">
+        <section class="lista-panel">
+          <div class="filtros">
+            <input id="searchInput" type="search" placeholder="Buscar folio, título o municipio">
+            <select id="corpFilter">
+              <option value="">Todas</option>
+              <option value="PC">PC</option><option value="SPM">SPM</option>
+              <option value="TRVM">TRVM</option><option value="GEVP">GEVP</option>
+              <option value="GEP">GEP</option><option value="FRIP">FRIP</option>
+            </select>
+          </div>
+          <div class="list-head"><span id="notesCount">0 notas</span><button id="refreshBtn" class="link-btn">Actualizar</button></div>
+          <div id="notesList" class="lista-notas"></div>
+        </section>
+
+        <section id="viewerPanel" class="visor-panel no-selection">
+          <div class="visor-acciones">
+            <button id="editBtn" class="btn" disabled>Editar</button>
+            <button id="usedBtn" class="btn" disabled>Marcar usada</button>
+            <button id="closeIncidentBtn" class="btn primary" disabled>Cerrar incidente</button>
+            <button id="printBtn" class="btn" disabled>Imprimir</button>
+            <button id="deleteBtn" class="btn danger-outline" disabled>Eliminar</button>
+          </div>
+          <article id="viewer" class="visor-documento"><div class="empty-view">Seleccione una nota informativa</div></article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="editModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head"><h2>Editar Nota Informativa</h2><button id="closeEdit" class="icon-btn">×</button></div>
+      <form id="editForm">
+        <div class="modal-grid">
+          <label>Terminación del folio<input id="editFolio" inputmode="numeric" maxlength="20" required></label>
+          <label>Título<input id="editTitulo" class="selector-field" maxlength="160" spellcheck="true" required readonly role="button" aria-haspopup="dialog"></label>
+          <label>Corporación<select id="editCorporacion" required>
+            <option value="PC">PC — Protección Civil</option><option value="SPM">SPM — Seguridad Pública Municipal</option>
+            <option value="TRVM">TRVM — Tránsito Vial Municipal</option><option value="GEVP">GEVP — Guardia Estatal Vial Preventiva</option>
+            <option value="GEP">GEP — Guardia Estatal Preventiva</option><option value="FRIP">FRIP — Fuerza de Reacción Inmediata Pakal</option>
+          </select></label>
+          <label>Municipio<input id="editMunicipio" class="selector-field" maxlength="100" required readonly role="button" aria-haspopup="dialog"></label>
+        </div>
+        <div class="editor-toolbar modal-toolbar">
+          <button type="button" data-edit-cmd="bold">B</button><button type="button" data-edit-cmd="italic"><i>I</i></button>
+          <button type="button" data-edit-cmd="underline"><u>U</u></button><button type="button" data-edit-cmd="insertUnorderedList">•</button>
+        </div>
+        <div id="editContenido" class="editor edit-editor" contenteditable="true" spellcheck="true" lang="es-MX"></div>
+        <section id="editDropZone" class="photo-zone compact" tabindex="0">
+          <input id="editPhotoInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden>
+          <div class="photo-zone-copy"><strong>Agregar fotografías</strong><span>Arrastra, selecciona o pega con Ctrl + V.</span></div>
+          <button id="editChoosePhotos" type="button" class="btn small">Seleccionar</button>
+        </section>
+        <div id="editPhotoPreview" class="photo-preview"></div>
+        <div id="existingPhotos" class="existing-photos"></div>
+        <div class="modal-actions"><button id="cancelEdit" type="button" class="btn">Cancelar</button><button id="saveEdit" type="submit" class="btn primary">Guardar cambios</button></div>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="incidentModal" class="modal-backdrop picker-backdrop">
+    <div class="modal picker-modal">
+      <div class="modal-head">
+        <div><h2>Seleccionar tipificación del incidente</h2><p class="modal-help">Catálogo Nacional de Incidentes de Emergencia 9-1-1, versión 2.0 · 282 tipificaciones completas. Busca por nombre, código, tipo o subtipo.</p></div>
+        <button id="closeIncidentPicker" class="icon-btn" type="button">×</button>
+      </div>
+      <div class="picker-tools">
+        <input id="incidentSearch" type="search" placeholder="Buscar: persona inconsciente, incendio, robo, 10308…" autocomplete="off">
+        <select id="incidentTypeFilter"><option value="">TODOS LOS TIPOS</option></select>
+      </div>
+      <div id="incidentPickerStatus" class="picker-status">Cargando tipificaciones…</div>
+      <div id="incidentResults" class="picker-results"></div>
+    </div>
+  </div>
+
+  <div id="municipalityModal" class="modal-backdrop picker-backdrop">
+    <div class="modal municipality-modal">
+      <div class="modal-head">
+        <div><h2>Seleccionar municipio</h2><p class="modal-help">Selecciona uno de los municipios de cobertura. Reforma permanece como sede predeterminada.</p></div>
+        <button id="closeMunicipalityPicker" class="icon-btn" type="button">×</button>
+      </div>
+      <div class="picker-tools single-tool">
+        <input id="municipalitySearch" type="search" placeholder="Buscar municipio…" autocomplete="off">
+      </div>
+      <div id="municipalityPickerStatus" class="picker-status"></div>
+      <div id="municipalityResults" class="picker-results municipality-results"></div>
+    </div>
+  </div>
+
+  <div id="sessionModal" class="modal-backdrop session-modal">
+    <div class="modal compact-modal">
+      <div class="modal-head"><h2>Inicio de sesión de despacho</h2></div>
+      <p class="modal-help">Escribe tu nombre o clave de despacho. El sistema registrará quién crea, edita, usa y cierra cada nota.</p>
+      <form id="sessionForm">
+        <label class="single-label">Despachador / operador
+          <input id="dispatcherName" maxlength="80" autocomplete="off" placeholder="Ej. DESPACHADOR 10" required>
+        </label>
+        <div class="modal-actions"><button id="sessionCancel" type="button" class="btn">Cancelar</button><button type="submit" class="btn primary">Iniciar sesión</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="closureModal" class="modal-backdrop">
+    <div class="modal closure-modal">
+      <div class="modal-head"><div><h2>Cerrar incidente</h2><p class="modal-help">El sistema analiza primero el resultado final de la nota y compara los 65 códigos de cierre con sus definiciones completas. Solo sugiere; tú decides si usarlo o cerrar sin código.</p></div><button id="closeClosureModal" class="icon-btn" type="button">×</button></div>
+      <div id="closureLoading" class="closure-loading">Analizando código de cierre…</div>
+      <form id="closureForm" class="hidden">
+        <section id="closureSuggestion" class="closure-suggestion"></section>
+        <div class="closure-grid">
+          <label>Código de cierre
+            <select id="closureCodeSelect"><option value="">SIN CÓDIGO</option></select>
+          </label>
+          <label class="checkbox-label"><input id="closureRequired" type="checkbox"> Código de cierre obligatorio</label>
+        </div>
+        <div id="closureDefinition" class="closure-definition">65 códigos de cierre cargados. Puedes cerrar el incidente sin seleccionar código.</div>
+        <label class="single-label">Observación de cierre (opcional)
+          <textarea id="closureObservation" rows="3" maxlength="500" placeholder="Observación opcional"></textarea>
+        </label>
+        <div class="modal-actions"><button id="cancelClosure" type="button" class="btn">Cancelar</button><button id="confirmClosure" type="submit" class="btn primary">Cerrar incidente</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="supervisionModal" class="modal-backdrop">
+    <div class="modal supervision-modal">
+      <div class="modal-head"><div><h2>Supervisión</h2><p class="modal-help">Registro local de quién inició el servidor y quién realiza acciones en las notas.</p></div><button id="closeSupervision" class="icon-btn" type="button">×</button></div>
+      <div id="serverStarterCard" class="server-starter-card">Cargando información del servidor…</div>
+      <div class="audit-head"><strong>Últimos movimientos</strong><button id="refreshAudit" class="link-btn" type="button">Actualizar</button></div>
+      <div id="auditList" class="audit-list"></div>
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox"><button id="closeLightbox">×</button><img id="lightboxImage" alt="Fotografía"></div>
+  <div id="toasts" class="toast-container"></div>
+  <script src="/app.js?v=3.5.0-catalogos-completos"></script>
+</body>
+</html>

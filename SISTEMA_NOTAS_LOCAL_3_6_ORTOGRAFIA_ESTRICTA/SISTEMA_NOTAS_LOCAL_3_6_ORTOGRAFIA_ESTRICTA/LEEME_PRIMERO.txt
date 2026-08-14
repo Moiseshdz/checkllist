@@ -1,0 +1,55 @@
+VERSIÓN ACTUAL: 3.6 — ORTOGRAFÍA ESTRICTA
+
+SISTEMA DE NOTAS — UN SOLO EJECUTABLE 3.5
+
+Se conserva el funcionamiento LOCAL: el servidor y la base JSON siguen estando en la computadora principal. No requiere MySQL, Internet ni instalar un servicio.
+
+COMPUTADORA PRINCIPAL
+1. Conserva tu carpeta datos si ya tienes notas guardadas.
+2. Reemplaza únicamente SistemaNotas.exe para actualizar sin perder información.
+3. Ejecuta SistemaNotas.exe.
+4. Selecciona COMPUTADORA PRINCIPAL / INICIAR COMO SERVIDOR.
+5. Permite el acceso de Windows Firewall en redes privadas si Windows lo solicita.
+6. Dentro del sistema pulsa COPIAR ENLACE PC 2.
+7. Esta computadora debe permanecer encendida mientras las dos PCs usen el sistema.
+
+SEGUNDA COMPUTADORA
+1. Copia el mismo SistemaNotas.exe a la segunda computadora.
+2. Ejecútalo.
+3. Selecciona SEGUNDA COMPUTADORA / CONECTAR COMO CLIENTE.
+4. Pega el enlace copiado desde la computadora principal.
+5. El enlace se guarda localmente para los siguientes usos.
+
+CORRECCIONES CONSERVADAS DE 3.4
+- Se retiró el acceso directo antiguo porque apuntaba a una ruta de red anterior y podía abrir otra copia del sistema. Ejecuta SistemaNotas.exe directamente.
+- Se eliminó del paquete la base de prueba que hacía aparecer la nota REF/20260813/05624 en instalaciones nuevas.
+- Al iniciar como servidor se cierra cualquier otra instancia anterior del Sistema de Notas que siga abierta en segundo plano. Así el navegador no termina conectado a otra carpeta/base local.
+- Las consultas del Dashboard se fuerzan contra el servidor sin caché.
+- Si no existe sesión de Despacho, el inicio de sesión queda obligatorio antes de crear, editar, usar, cerrar o eliminar una nota; así la auditoría siempre identifica al operador.
+- Al registrar una nota, el Dashboard vuelve a consultar la base y selecciona automáticamente la nota recién creada.
+- Al eliminar una nota, se quita inmediatamente de la pantalla y después se verifica contra la base del servidor. Si siguiera apareciendo, el sistema muestra un error de sincronización.
+- La lista de notas y el visor usan la versión real de la base para sincronizarse entre las dos PCs.
+
+NOVEDADES 3.5
+- Catálogo CNIE V2.0 verificado con 282 tipificaciones completas, 7 tipos y 24 subtipos.
+- Catálogo de cierre verificado con 65 códigos y sus definiciones completas.
+- Detector de cierre mejorado para priorizar el resultado final y las últimas líneas operativas.
+- Ortografía automática reforzada con diccionario local y correcciones seguras de errores frecuentes.
+- Normalización visual de notas pegadas para conservar orden y facilitar lectura/detección.
+
+FUNCIONES CONSERVADAS
+- Selector/buscador de 282 tipificaciones VERIFICADAS del Catálogo Nacional de Incidentes de Emergencia 9-1-1 V2.0.
+- Selector de 24 municipios de cobertura; Reforma queda como sede predeterminada.
+- Inicio de sesión de despacho y auditoría de quién registra, edita, usa, cierra, elimina o agrega fotos.
+- Supervisión de quién inició el servidor (usuario de Windows y nombre de PC).
+- Corrección ortográfica automática local reforzada: pegar, salir, guardar, editar y botón ABC✓.
+- Catálogo local COMPLETO de 65 códigos de cierre con definiciones completas y sugerencia automática.
+- Código de cierre opcional por defecto.
+- Cierre automático a los 30 minutos para notas nuevas no usadas cuando existe una sugerencia confiable.
+- Fotografías arrastrables hacia otra página compatible.
+
+IMPORTANTE
+- NO uses el modo Servidor en las dos computadoras.
+- La carpeta datos solamente debe conservarse en la computadora principal.
+- Si ya tienes información, NO reemplaces ni borres datos/sistema_notas.db.json ni datos/uploads.
+- El ZIP 3.4 ya no incluye una base de ejemplo; en una instalación nueva el programa crea una base local vacía automáticamente.

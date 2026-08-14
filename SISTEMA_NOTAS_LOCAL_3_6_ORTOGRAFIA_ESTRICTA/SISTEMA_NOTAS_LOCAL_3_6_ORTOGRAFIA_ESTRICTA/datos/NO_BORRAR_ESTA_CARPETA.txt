@@ -1,0 +1,1 @@
+Esta carpeta guarda la base local y las fotografías. No la borres si ya contiene información.
