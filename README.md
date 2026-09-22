@@ -35,7 +35,7 @@ Aplicación para organizar y estructurar notas, mejorar la captura de informaci�
 ## Estructura principal
 
 ```text
-checkllist/
+operations-monitoring-toolkit/
 ├── CheckList_PMI_MODO_MASIVO_FALLAS_REPORTE_TURNO.html
 ├── FATIGA-2.3.1-INCIDENTES-UNIDADES-CIERRES.html
 ├── SISTEMA_NOTAS_LOCAL_3_6_ORTOGRAFIA_ESTRICTA/
